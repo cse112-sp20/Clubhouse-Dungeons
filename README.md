@@ -15,7 +15,7 @@
 
 1. First setup the project using the instructions above
 2. Then to run all jest tests in <code>test/</code> run the command <code>npm run test</code>. 
-3. If you want to remove the npm errors cause by jest errors, run the command <code>npm run test -s</code>
+3. If you want to remove the npm errors caused by jest errors, run the command <code>npm run test -s</code>
 
 ## How to test extension in Chrome:
 
