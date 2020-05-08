@@ -2,7 +2,7 @@
 
 ## Getting setup:
 
-1. First clone this repository by entering <code>git clone https://github.com/CMaytom/Quaranteam-8.git</code> into terminal
+1. First clone this repository by entering <code>git clone https://github.com/cse112-sp20/Quaranteam-8.git</code> into terminal
 2. If you don't have node installed on your computer, install it from https://nodejs.org/en/download/. Once you have node installed, go to the root of the repository and run <code>npm install</code>
 
 ## How to lint:
