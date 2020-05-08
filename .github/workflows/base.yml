@@ -1,0 +1,19 @@
+name: Base Pipeline
+
+on: pull_request
+
+jobs:
+  LintAndTest:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Lint
+      uses: hallee/eslint-action@master
+      with:
+        repo-token: ${{secrets.GITHUB_TOKEN}}
+    - name: Run Jest
+      uses: stefanoeb/jest-action@1.0.2
+      with:
+        jestArgs: test/*.test.js
