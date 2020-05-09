@@ -7,8 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "jest test/*.test.js",
-    "lint": "eslint --fix src/"
+    "test": "jest test/",
+    "lint": "eslint --fix src/",
+    "lint:report": "eslint --output-file eslint_report.json --format json src/"
   },
   "author": "quaranteam8",
   "license": "ISC",
