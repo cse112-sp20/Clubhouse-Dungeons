@@ -22,7 +22,7 @@ battleLogTab.addEventListener("click", () => selectTab(2));
 /**
  * Apply appropriate styles to selected tab and panel item
  * 
- * @param tabIndex - index of tab
+ * @param {int} tabIndex - index of tab
  */
 function selectTab(tabIndex) {
 
@@ -129,14 +129,14 @@ function sumOfStoryPoints() {
 } //sumOfStoryPoints()
 
 /* checks if the window is loaded */
-const call = (window.onload = () => {
+window.onload = () => {
   /* checks if button is loaded */
   const btn = document.getElementById("sumButton");
   if (btn) {
     /* attach sumButton function to sumOfStoryPoints on click */
     btn.addEventListener("click", sumOfStoryPoints, false);
   }
-});
+}
 
 
 document.addEventListener(
