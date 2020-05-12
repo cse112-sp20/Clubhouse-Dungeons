@@ -10,43 +10,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="popup.css">
     <meta charset="UTF-8" />
 	<title>Quaranteam-8</title>
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
 
     <!-- Battliefield contains the monster, healthbar, and top warriors -->
-    <div class="battlefield"></div>
+    <div class="battlefield">
 
     </div>
 
-    <div class="not-battlefield">
+    <div class="panel">
 
         <!-- Tabs contains the buttons for displaying stories and logs -->
         <div class="tabs">
 
-            <div id="selectedTabBG"></div>
-
-            <div class="tab" id="myStoriesButton">My Stories</div>
-            <div class="tab" id="allStoriesButton">All Stories</div>
-            <div class="tab" id="battleLogButton">Battle Log</div>
+            <div class="tab selected" id="myStoriesTab" onclick="selectTab(0)">My Stories</div>
+            <div class="tab" id="allStoriesTab" onclick="selectTab(1)">All Stories</div>
+            <div class="tab" id="battleLogTab" onclick="selectTab(2)">Battle Log</div>
 
         </div>
 
         <!-- All stories assigned to user -->
-        <div class="my-stories">
-
+        <div class="panel-item selected" id="myStories">
+            <div class="story">
+                Story 1
+            </div>
         </div>
 
         <!-- All stories -->
-        <div class="all-stories">
-
+        <div class="panel-item" id="allStories">
+            <div class="story">
+                Story X
+            </div>
         </div>
 
         <!-- Log of all actions -->
-        <div class="battle-log">
-
+        <div class="panel-item" id="battleLog">
+            <div class="story">
+                Kyle finished Story 1
+            </div>
         </div>
     </div>
 
