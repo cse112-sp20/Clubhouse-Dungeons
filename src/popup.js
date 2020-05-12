@@ -1,6 +1,56 @@
 // const fetch = require('node-fetch');
 const API_TOKEN = '5eb1122c-36fd-435d-b318-02dc21ea111d'
 
+// Element to create fancy animated tab highlight
+// const selectedTabBG = document.getElementById("selectedTabBG");
+
+// Tab elements
+const myStoriesTab = document.getElementById('myStoriesTab')
+const allStoriesTab = document.getElementById('allStoriesTab')
+const battleLogTab = document.getElementById('battleLogTab')
+
+// Containers for actual elements
+const myStories = document.getElementById('myStories')
+const allStories = document.getElementById('allStories')
+const battleLog = document.getElementById('battleLog')
+
+/**
+ * Apply appropriate styles to selected tab and panel item
+ *
+ * @param tabIndex - index of tab
+ */
+function selectTab (tabIndex) {
+  // Deselect previously selected tab and hide previously selected panel item
+  var selectedTabs = document.getElementsByClassName('selected')
+  while (selectedTabs.length > 0) {
+    selectedTabs[0].classList.remove('selected')
+  }
+
+  switch (tabIndex) {
+    // My Stories
+    case 0:
+      myStoriesTab.classList.add('selected')
+      myStories.classList.add('selected')
+      break
+    // All Stories
+    case 1:
+      allStoriesTab.classList.add('selected')
+      allStories.classList.add('selected')
+      break
+    // Battle Log
+    case 2:
+      battleLogTab.classList.add('selected')
+      battleLog.classList.add('selected')
+      break
+
+    default:
+  }
+}
+
+/* function that sums all stories points in all projects and returns the sum
+             Process: fetch projects, for each project fetch all stories, for each stories fetch the story points
+          */
+
 /* function that sums all stories points in all projects and returns the sum
  */
 function sumOfStoryPoints () {

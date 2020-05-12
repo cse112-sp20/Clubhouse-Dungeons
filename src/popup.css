@@ -1,10 +1,38 @@
-#button {
-background-color: #4caf50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+.battlefield {
+  height: 50%;
+  background: #244768;
+}
+
+.panel {
+  height: 50%;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.tab {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 1rem 0;
+  border-bottom: 2px solid rgba(0,0,0,0);
+}
+.tab.selected {
+  border-bottom: 2px solid #0084ff;
+}
+
+.panel-item {
+  display: none;
+  padding: 16pt;
+}
+.panel-item.selected {
+  display: flex;
 }
