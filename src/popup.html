@@ -1,53 +1,49 @@
 <style>
-    .center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 50px;
-    }
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+  }
 </style>
 
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel = "stylesheet" href="popup.css">
+  <head>
+    <link rel="stylesheet" href="popup.css" />
     <meta charset="UTF-8" />
-	<title>Quaranteam-8</title>
-</head>
-<body>
+    <title>Quaranteam-8</title>
+  </head>
+  <body>
     <!-- Battliefield contains the monster, healthbar, and top warriors -->
-    <div class="battlefield">
-
-    </div>
+    <div class="battlefield"></div>
 
     <!-- Tabs contains the buttons for displaying stories and logs -->
-    <div class="tabs">
-
-    </div>
+    <div class="tabs"></div>
 
     <!-- All stories assigned to user -->
-    <div class="my-stories">
-
-    </div>
+    <div class="my-stories"></div>
 
     <!-- All stories -->
-    <div class="all-stories">
-
-    </div>
+    <div class="all-stories"></div>
 
     <!-- Log of all actions -->
-    <div class="battle-log">
-
-    </div>
-
-
+    <div class="battle-log"></div>
 
     <h1 style="text-align: center;">Quaranteam-8</h1>
     <h2 style="text-align: center;">Welcome to our Chrome Extension</h2>
     <p style="text-align: center;"><img src="images/quaranteam8logo.png" /></p>
     <div class="center">
-        <button id="button">Display/Refresh Clubhouse Story Data</button>
-        <script src="popup.js" charset="utf-8"></script>
+      <button id="button">Display/Refresh Clubhouse Story Data</button>
+      <script src="popup.js" charset="utf-8"></script>
     </div>
-</body>
+    <!-- Button for story point summation -->
+    <div class="center">
+      <button id="sumButton">Sum all story points</button>
+    </div>
+    <!-- Pops up when story point button is pressed -->
+    <div class="center">
+      <h2 id="story"></h2>
+    </div>
+  </body>
 </html>
