@@ -14,6 +14,11 @@ const myStories = document.getElementById("myStories");
 const allStories = document.getElementById("allStories");
 const battleLog = document.getElementById("battleLog");
 
+// Click event listeners for tabs
+myStoriesTab.addEventListener("click", selectTab(0));
+allStoriesTab.addEventListener("click", selectTab(1));
+battleLogTab.addEventListener("click", selectTab(2));
+
 /**
  * Apply appropriate styles to selected tab and panel item
  * 
