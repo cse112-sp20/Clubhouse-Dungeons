@@ -16,17 +16,20 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .tab {
+  font-size: 12pt;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
-  padding: 1rem 0;
-  border-bottom: 2px solid rgba(0,0,0,0);
+  padding: 16pt;
+  border-top: 2pt solid rgba(0,0,0,0);
+  border-bottom: 2pt solid rgba(0,0,0,0);
 }
 .tab.selected {
-  border-bottom: 2px solid #0084ff;
+  border-bottom: 2pt solid #0084ff;
 }
 
 .panel-item {
@@ -35,4 +38,8 @@ body {
 }
 .panel-item.selected {
   display: flex;
+}
+
+.story {
+  font-size: 16pt;
 }
