@@ -1,10 +1,10 @@
 <style>
-    .center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 50px;
-    }
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+  }
 </style>
 
 <!DOCTYPE html>
@@ -17,7 +17,7 @@
 <body>
 
     <!-- Battliefield contains the monster, healthbar, and top warriors -->
-    <div class="battlefield">
+    <div class="battlefield"></div>
 
     </div>
 
@@ -56,8 +56,16 @@
     <h2 style="text-align: center;">Welcome to our Chrome Extension</h2>
     <p style="text-align: center;"><img src="images/quaranteam8logo.png" /></p>
     <div class="center">
-        <button id="button">Display/Refresh Clubhouse Story Data</button>
-        <script src="popup.js" charset="utf-8"></script>
+      <button id="button">Display/Refresh Clubhouse Story Data</button>
+      <script src="popup.js" charset="utf-8"></script>
     </div>
-</body>
+    <!-- Button for story point summation -->
+    <div class="center">
+      <button id="sumButton">Sum all story points</button>
+    </div>
+    <!-- Pops up when story point button is pressed -->
+    <div class="center">
+      <h2 id="story"></h2>
+    </div>
+  </body>
 </html>
