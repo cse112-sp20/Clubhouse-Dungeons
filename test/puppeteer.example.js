@@ -1,15 +1,18 @@
 const puppeteer = require('puppeteer');
 const assert = require('assert');
 
-const extensionPath = '../../../../../src';
-const extensionID = `najinbkanbgciaaboeggmbaencfmcpjh`; // Right now , this extension id works for me, but I wonder if it will change 
-const extensionPopupHtml = `popup.html`;
+const extensionPath = '../../../../../src'; // This is the path to the manifext.json file
+const extensionID = `najinbkanbgciaaboeggmbaencfmcpjh`; // This extension ID might not work for you, but if it does, feel free to remove this comment :)
+const extensionPopupHtml = `popup.html`; // The main page of our extension
 
+// Puppeteer object variables here
 let extensionPage = null;
 let browser = null;
 
-
-
+/**
+ * Calling the testing function here.  It is an async method.
+ * We are defining the async function and immediately calling it
+ */
 (async () => {
 
   // Open a new browser with puppeteer and load the extension
