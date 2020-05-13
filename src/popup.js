@@ -52,11 +52,8 @@ function selectTab (tabIndex) {
   }
 }
 
-/* function that sums all stories points in all projects and returns the sum
-             Process: fetch projects, for each project fetch all stories, for each stories fetch the story points
-          */
-
-/* function that sums all stories points in all projects and returns the sum
+/**
+ * function that sums all stories points in all projects and returns the sum
  */
 function sumOfStoryPoints () {
   /* array to store all story points */
