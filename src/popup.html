@@ -11,15 +11,45 @@
 <html>
 
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Quaranteam-8</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 
 <body>
-
   <!-- Battliefield contains the monster, healthbar, and top warriors -->
   <div class="battlefield">
+
+    <div class="nav">
+      <div id="teamName">Quaranteam-8</div>
+      <div id="userName">Kyle Johnson</div>
+    </div>
+
+    <div id="healthbar">
+      <div id="healthText">110 / 250</div>
+      <div id="healthLeft"></div>
+    </div>
+
+    <img id="monster" src="images/sully.png">
+
+    <div class="top-warriors">
+      <div class="top-warriors-title">Top Warriors</div>
+      <div class="top-warrior">
+        <div class="number">1</div>
+        <div class="name" id="warrior1Name">Kyle</div>
+        <div class="points" id="warrior1Points">50 dmg</div>
+      </div>
+      <div class="top-warrior">
+        <div class="number">2</div>
+        <div class="name" id="warrior2Name">Chase</div>
+        <div class="points" id="warrior2Points">42 dmg</div>
+      </div>
+      <div class="top-warrior">
+        <div class="number">3</div>
+        <div class="name" id="warrior3Name">Danny</div>
+        <div class="points" id="warrior3Points">39 dmg</div>
+      </div>
+    </div>
 
   </div>
 
@@ -28,9 +58,9 @@
     <!-- Tabs contains the buttons for displaying stories and logs -->
     <div class="tabs">
 
-      <div class="tab selected" id="myStoriesTab" onclick="selectTab(0)">My Stories</div>
-      <div class="tab" id="allStoriesTab" onclick="selectTab(1)">All Stories</div>
-      <div class="tab" id="battleLogTab" onclick="selectTab(2)">Battle Log</div>
+      <div class="tab selected" id="myStoriesTab">My Stories</div>
+      <div class="tab" id="allStoriesTab">All Stories</div>
+      <div class="tab" id="battleLogTab">Battle Log</div>
 
     </div>
 
