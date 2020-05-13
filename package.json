@@ -14,7 +14,9 @@
   "author": "quaranteam8",
   "license": "ISC",
   "dependencies": {
-    "eslint-plugin-jsdoc": "^24.0.6"
+    "eslint-plugin-jsdoc": "^24.0.6",
+    "puppeteer": "^3.0.4",
+    "shasum": "^1.0.2"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
