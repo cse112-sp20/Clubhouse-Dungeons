@@ -1,5 +1,5 @@
 // const fetch = require('node-fetch');
-const API_TOKEN = '5eb1122c-36fd-435d-b318-02dc21ea111d'
+// const API_TOKEN = '5eb1122c-36fd-435d-b318-02dc21ea111d'
 
 // Element to create fancy animated tab highlight
 // const selectedTabBG = document.getElementById("selectedTabBG");
@@ -17,7 +17,7 @@ const battleLog = document.getElementById('battleLog')
 /**
  * Apply appropriate styles to selected tab and panel item
  *
- * @param tabIndex - index of tab
+ * @param {number} tabIndex - index of tab
  */
 function selectTab (tabIndex) {
   // Deselect previously selected tab and hide previously selected panel item
@@ -47,11 +47,8 @@ function selectTab (tabIndex) {
   }
 }
 
-/* function that sums all stories points in all projects and returns the sum
-             Process: fetch projects, for each project fetch all stories, for each stories fetch the story points
-          */
-
-/* function that sums all stories points in all projects and returns the sum
+/*
+ * function that sums all stories points in all projects and returns the sum
  */
 function sumOfStoryPoints () {
   /* array to store all story points */

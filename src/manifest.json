@@ -12,5 +12,8 @@
     "default_icon": "images/quaranteam8logo.png",
     "default_popup": "popup.html",
     "default_title": "Quaranteam-8"
-  }
+  },
+  "permissions": [
+    "storage"
+  ]
 }
