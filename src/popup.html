@@ -1,26 +1,109 @@
 <style>
-    .center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 50px;
-    }
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+  }
 </style>
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link rel = "stylesheet" href="popup.css">
-    <meta charset="UTF-8" />
-	<title>Quaranteam-8</title>
+  <meta charset="UTF-8">
+  <title>Quaranteam-8</title>
+  <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
-    <h1 style="text-align: center;">Quaranteam-8</h1>
-    <h2 style="text-align: center;">Welcome to our Chrome Extension</h2>
-    <p style="text-align: center;"><img src="images/quaranteam8logo.png" /></p>
-    <div class="center">
-        <button id="button">Display/Refresh Clubhouse Story Data</button>
-        <script src="popup.js" charset="utf-8"></script>
+  <!-- Battliefield contains the monster, healthbar, and top warriors -->
+  <div class="battlefield">
+
+    <div class="nav">
+      <div id="teamName">Quaranteam-8</div>
+      <div id="userName">Kyle Johnson</div>
     </div>
+
+    <div id="healthbar">
+      <div id="healthText">110 / 250</div>
+      <div id="healthLeft"></div>
+    </div>
+
+    <img id="monster" src="images/sully.png">
+
+    <div class="top-warriors">
+      <div class="top-warriors-title">Top Warriors</div>
+      <div class="top-warrior">
+        <div class="number">1</div>
+        <div class="name" id="warrior1Name">Kyle</div>
+        <div class="points" id="warrior1Points">50 dmg</div>
+      </div>
+      <div class="top-warrior">
+        <div class="number">2</div>
+        <div class="name" id="warrior2Name">Chase</div>
+        <div class="points" id="warrior2Points">42 dmg</div>
+      </div>
+      <div class="top-warrior">
+        <div class="number">3</div>
+        <div class="name" id="warrior3Name">Danny</div>
+        <div class="points" id="warrior3Points">39 dmg</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel">
+
+    <!-- Tabs contains the buttons for displaying stories and logs -->
+    <div class="tabs">
+
+      <div class="tab selected" id="myStoriesTab">My Stories</div>
+      <div class="tab" id="allStoriesTab">All Stories</div>
+      <div class="tab" id="battleLogTab">Battle Log</div>
+
+    </div>
+
+    <!-- All stories assigned to user -->
+    <div class="panel-item selected" id="myStories">
+      <div class="story">
+        Story 1
+      </div>
+    </div>
+
+    <!-- All stories -->
+    <div class="panel-item" id="allStories">
+      <div class="story">
+        Story X
+      </div>
+    </div>
+
+    <!-- Log of all actions -->
+    <div class="panel-item" id="battleLog">
+      <div class="story">
+        Kyle finished Story 1
+      </div>
+    </div>
+  </div>
+
+
+
+  <h1 style="text-align: center;">Quaranteam-8</h1>
+  <h2 style="text-align: center;">Welcome to our Chrome Extension</h2>
+  <p style="text-align: center;"><img src="images/quaranteam8logo.png" /></p>
+  <div class="center">
+    <button id="button">Display/Refresh Clubhouse Story Data</button>
+  </div>
+  <!-- Button for story point summation -->
+  <div class="center">
+    <button id="sumButton">Sum all story points</button>
+  </div>
+  <!-- Pops up when story point button is pressed -->
+  <div class="center">
+    <h2 id="story"></h2>
+  </div>
+  <script src="./api/api.js"></script>
+  <script src="popup.js" charset="utf-8"></script>
 </body>
+
 </html>
