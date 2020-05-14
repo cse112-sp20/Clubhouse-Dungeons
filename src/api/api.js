@@ -27,9 +27,9 @@ const fetchProjectStoriesAsync = async (projectId) => {
   return res.json()
 }
 
-/* Fetch all stories in all projects. Returns a promise */
-
 /**
+ * Fetch all stories in all projects
+ * 
  * @async
  * @returns {Promise<Array>}
  */
@@ -46,5 +46,3 @@ const fetchStoriesAsync = async () => {
         .flat()
     })
 }
-
-exports.fetchStoriesAsync = fetchStoriesAsync
