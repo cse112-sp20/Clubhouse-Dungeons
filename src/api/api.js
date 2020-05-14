@@ -1,5 +1,3 @@
-const API_TOKEN = '5eb1122c-36fd-435d-b318-02dc21ea111d'
-
 /**
  * Fetch all projects
  *
@@ -53,5 +51,3 @@ const fetchMemberInfoAsync = async (apiToken) => {
   })
   return res.json()
 }
-
-exports.fetchStoriesAsync = fetchStoriesAsync
