@@ -8,6 +8,9 @@
   },
   "scripts": {
     "build": "webpack",
+    "clean": "run-script-os",
+    "clean:darwin:linux": "rm -rf dist",
+    "clean:win32": "rmdir /Q /S dist",
     "test": "jest test/",
     "lint": "eslint --fix src/",
     "lint:report": "eslint --output-file eslint_report.json --format json src/"
@@ -28,6 +31,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "jest": "^26.0.1",
+    "run-script-os": "^1.1.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   }
