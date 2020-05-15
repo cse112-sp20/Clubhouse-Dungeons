@@ -13,6 +13,7 @@ module.exports = {
   plugins: [
     new CopyPlugin(
       [
+        { from: 'manifest.json', to: '' },
         { from: 'src/login/login.html', to: '' },
         { from: 'src/popup.html', to: '' },
         { from: 'src/popup.css', to: '' }
