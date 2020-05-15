@@ -1,4 +1,4 @@
-import { fetchMemberInfoAsync } from '../api/api'
+import { setApiToken, fetchMemberInfoAsync } from '../api/api'
 
 document.addEventListener(
   'DOMContentLoaded',
@@ -6,7 +6,7 @@ document.addEventListener(
     /**
      * Function to handle onClick event
      */
-    function onClick() {
+    function onClick () {
       var apiKey = document.getElementById('apiEntry').value
 
       console.log(document.getElementById('apiEntry').value)
@@ -17,6 +17,7 @@ document.addEventListener(
           if (res.message === 'Unauthorized') {
             alert('Invalid key!')
           } else {
+            setApiToken(apiKey)
             localStorage.setItem('api_token', apiKey)
             localStorage.setItem('member_id', res.id)
             localStorage.setItem('member_name', res.name)

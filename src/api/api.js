@@ -1,3 +1,5 @@
+export var API_TOKEN
+
 /**
  * Fetch all projects
  *
@@ -50,4 +52,13 @@ export const fetchMemberInfoAsync = async (apiToken) => {
     headers: { 'Content-Type': 'application/json' }
   })
   return res.json()
+}
+
+/**
+ * Set {@var API_TOKEN} to {@param apiToken}
+ *
+ * @param {string} apiToken
+ */
+export const setApiToken = (apiToken) => {
+  API_TOKEN = apiToken
 }
