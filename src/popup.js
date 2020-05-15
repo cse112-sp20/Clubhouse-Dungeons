@@ -1,5 +1,7 @@
-// const fetch = require('node-fetch');
-const API_TOKEN = '5eb1122c-36fd-435d-b318-02dc21ea111d'
+import { fetchProjectsAsync, fetchProjectStoriesAsync } from './api/api'
+
+var API_TOKEN = localStorage.getItem('api_token')
+// const API_TOKEN = '5eb1122c-36fd-435d-b318-02dc21ea111d'
 
 // Element to create fancy animated tab highlight
 // const selectedTabBG = document.getElementById("selectedTabBG");
@@ -15,14 +17,14 @@ const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
 
 // Click event listeners for tabs
-myStoriesTab.addEventListener("click", () => selectTab(0));
-allStoriesTab.addEventListener("click", () => selectTab(1));
-battleLogTab.addEventListener("click", () => selectTab(2));
+myStoriesTab.addEventListener('click', () => selectTab(0))
+allStoriesTab.addEventListener('click', () => selectTab(1))
+battleLogTab.addEventListener('click', () => selectTab(2))
 
 /**
  * Apply appropriate styles to selected tab and panel item
- * 
- * @param {int} tabIndex - index of tab
+ *
+ * @param {number} tabIndex - index of tab
  */
 function selectTab (tabIndex) {
   // Deselect previously selected tab and hide previously selected panel item
@@ -52,7 +54,7 @@ function selectTab (tabIndex) {
   }
 }
 
-/**
+/*
  * function that sums all stories points in all projects and returns the sum
  */
 function sumOfStoryPoints () {
@@ -60,68 +62,45 @@ function sumOfStoryPoints () {
   var storyPoints = []
   var sum = 0
   var completedSum = 0
-  /* Fetch all projects. Returns a promise */
-  const fetchProjects = () =>
-    fetch(`https://api.clubhouse.io/api/v3/projects?token=${API_TOKEN}`, {
-      headers: { 'Content-Type': 'application/json' }
-    })
 
-  /* Fetch all stories in a project. Returns a promise */
-  const fetchProjectStories = (projectId) =>
-    fetch(
-      `https://api.clubhouse.io/api/v3/projects/${projectId}/stories?token=${API_TOKEN}`,
-      {
-        headers: { 'Content-Type': 'application/json' }
-      }
-    )
-
-  fetchProjects()
-    .then((projRes) => projRes.json())
+  fetchProjectsAsync()
     .then((projData) => {
-      var i
-      /* loops for all projects within account */
-      for (i = 0; i < projData.length; i++) {
-        const projID = projData[i].id
+      projData.map((proj) => {
+        const projID = proj.id
         /* for each project, get all stories within the project */
-        fetchProjectStories(projID)
-          .then((storyRes) => storyRes.json())
+        fetchProjectStoriesAsync(projID)
           .then((storyData) => {
-            var j
-            /* for each story, get all story id and points */
-            for (j = 0; j < storyData.length; j++) {
-              const currStoryID = storyData[j].id
-              /* check for non-null estimates */
-              if (storyData[j].estimate) {
+            storyData.map((story) => {
+              const currStoryID = story.id
+              if (story.estimate) {
                 /* if story is completed */
-                if (storyData[j].completed) {
-                  completedSum += storyData[j].estimate
+                if (story.completed) {
+                  completedSum += story.estimate
                 }
-
                 /* method 1: sums estimates in accumulator */
-                sum += storyData[j].estimate
+                sum += story.estimate
                 /* method 2: pushes id and respective points as JS object to array */
                 storyPoints.push({
                   storyID: currStoryID,
-                  points: storyData[j].estimate
+                  points: story.estimate
                 })
               }
-            }
-
-            /* method 2: sums all point values from storyPoints array which also holds respective id */
-            var storySum = 0
-            Object.values(storyPoints).map((data) => {
-              storySum += data.points
+              /* method 2: sums all point values from storyPoints array which also holds respective id */
+              var storySum = 0
+              Object.values(storyPoints).map((data) => {
+                storySum += data.points
+              })
+              /* update storyPoint HTML in current HTML DOM */
+              document.getElementById('story').textContent =
+                'Damage Done: ' +
+                completedSum +
+                ' Total Health: ' +
+                sum +
+                ' Total Health: ' +
+                storySum
             })
-            /* update storyPoint HTML in current HTML DOM */
-            document.getElementById('story').textContent =
-              'Damage Done: ' +
-              completedSum +
-              ' Total Health: ' +
-              sum +
-              ' Total Health: ' +
-              storySum
           })
-      }
+      })
     })
 } // sumOfStoryPoints()
 
@@ -129,10 +108,8 @@ function sumOfStoryPoints () {
 window.onload = () => {
   /* checks if button is loaded */
   const btn = document.getElementById('sumButton')
-  if (btn) {
-    /* attach sumButton function to sumOfStoryPoints on click */
-    btn.addEventListener('click', sumOfStoryPoints, false)
-  }
+  /* attach sumButton function to sumOfStoryPoints on click */
+  btn.addEventListener('click', sumOfStoryPoints, false)
 }
 
 document.addEventListener(
