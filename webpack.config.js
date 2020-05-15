@@ -2,6 +2,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 module.exports = {
+  mode: 'production',
   entry: {
     login: './src/login/login.js',
     popup: './src/popup.js',
