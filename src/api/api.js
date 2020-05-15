@@ -1,10 +1,12 @@
+import { API_TOKEN } from '../popup'
+
 /**
  * Fetch all projects
  *
  * @async
  * @returns {Promise<Array>}
  */
-const fetchProjectsAsync = async () => {
+export const fetchProjectsAsync = async () => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/projects?token=${API_TOKEN}`, {
     headers: { 'Content-Type': 'application/json' }
   })
@@ -18,7 +20,7 @@ const fetchProjectsAsync = async () => {
  * @param {string} projectId
  * @returns {Promise<Array>}
  */
-const fetchProjectStoriesAsync = async (projectId) => {
+export const fetchProjectStoriesAsync = async (projectId) => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/projects/${projectId}/stories?token=${API_TOKEN}`, {
     headers: { 'Content-Type': 'application/json' }
   })
@@ -27,11 +29,11 @@ const fetchProjectStoriesAsync = async (projectId) => {
 
 /**
  * Fetch all stories in all projects
- * 
+ *
  * @async
  * @returns {Promise<Array>}
  */
-const fetchStoriesAsync = async () => {
+export const fetchStoriesAsync = async () => {
   return await fetchProjectsAsync()
     .then(projects => {
       return Promise.all(projects.map(project => fetchProjectStoriesAsync(project.id)))
@@ -45,7 +47,7 @@ const fetchStoriesAsync = async () => {
     })
 }
 
-const fetchMemberInfoAsync = async (apiToken) => {
+export const fetchMemberInfoAsync = async (apiToken) => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/member?token=${apiToken}`, {
     headers: { 'Content-Type': 'application/json' }
   })

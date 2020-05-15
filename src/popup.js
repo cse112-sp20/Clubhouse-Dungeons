@@ -1,5 +1,6 @@
+import { fetchProjectsAsync, fetchProjectStoriesAsync } from 'api/api.js'
 // const fetch = require('node-fetch');
-var API_TOKEN = localStorage.getItem("api_token");
+export var API_TOKEN = localStorage.getItem('api_token')
 // const API_TOKEN = '5eb1122c-36fd-435d-b318-02dc21ea111d'
 
 // Element to create fancy animated tab highlight
