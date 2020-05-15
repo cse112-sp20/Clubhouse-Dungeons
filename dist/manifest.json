@@ -10,7 +10,7 @@
   },
   "browser_action": {
     "default_icon": "images/quaranteam8logo.png",
-    "default_popup": "login/login.html",
+    "default_popup": "login.html",
     "default_title": "Quaranteam-8"
   },
   "permissions": [

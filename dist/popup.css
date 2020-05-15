@@ -1,0 +1,149 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+.battlefield {
+  height: 50%;
+  background: #244768;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 16pt;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,1);
+}
+
+.nav div {
+  padding: 16pt;
+}
+
+#monster {
+  height: 50%;
+}
+
+#healthbar {
+  position: relative;
+  width: 50%;
+  height: 24pt;
+  background: #2c3e50;
+  border-radius: 100pt;
+  border: 2px solid rgba(0,0,0,0.3);
+  box-shadow: 0 2pt 8pt rgba(0,0,0,0.3) inset;
+}
+
+#healthbar #healthText {
+  position: absolute;
+  top: 6pt;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14pt;
+  line-height: 14pt;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,1);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+#healthbar #healthLeft {
+  width: 50%; /* Width should be set in javascript based on story points */
+  height: 20pt;
+  margin: 2pt;
+  border-radius: 100pt;
+  text-align: right;
+  background: linear-gradient(-180deg, #e74c3c 0%, #c0392b 100%);
+  box-shadow: 0 0 4pt rgba(0,0,0,0.3),
+              0 3pt 3pt rgba(255,255,255,0.3) inset,
+              0 -3pt 3pt rgba(0,0,0,0.3) inset;
+}
+
+.top-warriors {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.top-warriors .top-warriors-title {
+  position: absolute;
+  top: -12pt;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12pt;
+  color: rgba(255,255,255,.5);
+}
+
+.top-warriors .top-warrior {
+  position: relative;
+  background: rgba(255,255,255,.2);
+  border-radius: 8pt;
+  color: rgba(255,255,255,1);
+  padding: 8pt 8pt 8pt 40pt;
+  margin: 8pt;
+}
+
+.top-warriors .top-warrior .number {
+  position: absolute;
+  top: 8pt;
+  left: 10pt;
+  font-size: 32pt;
+  line-height: 32pt;
+}
+
+.top-warriors .top-warrior .name {
+  font-size: 16pt;
+}
+
+.top-warriors .top-warrior .points {
+  font-size: 12pt;
+  color: rgba(255,255,255,.5);
+}
+
+.panel {
+  height: 50%;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.tab {
+  font-size: 12pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 16pt;
+  border-top: 2pt solid rgba(0,0,0,0);
+  border-bottom: 2pt solid rgba(0,0,0,0);
+}
+.tab.selected {
+  border-bottom: 2pt solid #0084ff;
+}
+
+.panel-item {
+  display: none;
+  padding: 16pt;
+}
+.panel-item.selected {
+  display: flex;
+}
+
+.story {
+  font-size: 16pt;
+}
