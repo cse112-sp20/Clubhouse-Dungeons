@@ -1,10 +1,10 @@
-import { fetchProjectsAsync, fetchProjectStoriesAsync } from './api/api'
+import { fetchMembersAsync, fetchMemberInfoAsync, fetchProjectsAsync, fetchProjectStoriesAsync } from './api/api'
 
-var API_TOKEN
-chrome.storage.sync.get('api_token', (store) => {
-  console.log(store)
-  API_TOKEN = store.api_token
-})
+// var API_TOKEN
+// chrome.storage.sync.get('api_token', (store) => {
+//   console.log(store)
+//   API_TOKEN = store.api_token
+// })
 
 // Element to create fancy animated tab highlight
 // const selectedTabBG = document.getElementById("selectedTabBG");
@@ -140,35 +140,8 @@ document.addEventListener(
         el4.remove()
       }
 
-      /* Fetch all projects. Returns a promise */
-      const fetchProjects = () =>
-        fetch(`https://api.clubhouse.io/api/v3/projects?token=${API_TOKEN}`, {
-          headers: { 'Content-Type': 'application/json' }
-        })
-
-      /* UNUSED Fetch a project with ID. Returns a promise
-      const fetchProject = (projectId) => fetch(`https://api.clubhouse.io/api/v3/projects/${projectId}?token=${API_TOKEN}`, {
-        headers: { 'Content-Type': 'application/json' }
-      }) */
-
-      /* Fetch all stories in a project. Returns a promise */
-      const fetchProjectStories = (projectId) =>
-        fetch(
-          `https://api.clubhouse.io/api/v3/projects/${projectId}/stories?token=${API_TOKEN}`,
-          {
-            headers: { 'Content-Type': 'application/json' }
-          }
-        )
-
-      /* Fetch all members in the organization. Returns a promise */
-      const fetchMembers = () =>
-        fetch(`https://api.clubhouse.io/api/v3/members?token=${API_TOKEN}`, {
-          headers: { 'Content-Type': 'application/json' }
-        })
-
       // Fetch all members !!!!!!!!!!!!!!!!!!!!!
-      fetchMembers()
-        .then((rawRes) => rawRes.json())
+      fetchMembersAsync()
         .then((res) => {
           // res is an array of member objects
           // console.log(res);
@@ -181,8 +154,7 @@ document.addEventListener(
           // console.log(memberMap);
 
           // Fetch projects
-          fetchProjects()
-            .then((rawRes) => rawRes.json())
+          fetchProjectsAsync()
             .then((res) => {
               // res is an array of project objects
               // console.log(res);
@@ -217,8 +189,7 @@ document.addEventListener(
               document.body.appendChild(projDetails)
 
               // Look at the stories in the firstProj
-              fetchProjectStories(firstProj.id)
-                .then((rawRes) => rawRes.json())
+              fetchProjectStoriesAsync(firstProj.id)
                 .then((res) => {
                   // res is an array of story objects
                   // console.log(res);
