@@ -107,20 +107,16 @@ function sumOfStoryPoints () {
     })
 } // sumOfStoryPoints()
 
-/* checks if the window is loaded */
-window.onload = () => {
-  /* checks if button is loaded */
-  const btn = document.getElementById('sumButton')
-  /* attach sumButton function to sumOfStoryPoints on click */
-  btn.addEventListener('click', sumOfStoryPoints, false)
-}
-
 document.addEventListener(
   'DOMContentLoaded',
   () => {
     /**
      * Function to handle onClick event
      */
+    const btn = document.getElementById('sumButton')
+    /* attach sumButton function to sumOfStoryPoints on click */
+    btn.addEventListener('click', sumOfStoryPoints, false)
+
     function onClick () {
       // Remove previously created document elements
       const el1 = document.getElementById('inspectProj')
