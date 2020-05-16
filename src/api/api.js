@@ -1,4 +1,8 @@
 export var API_TOKEN
+chrome.storage.sync.get('api_token', (store) => {
+  console.log(store)
+  API_TOKEN = store.api_token
+})
 
 /**
  * Fetch all projects
