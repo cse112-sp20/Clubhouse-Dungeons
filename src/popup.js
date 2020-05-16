@@ -1,4 +1,4 @@
-import { fetchMembersAsync, fetchMemberInfoAsync, fetchProjectsAsync, fetchProjectStoriesAsync } from './api/api'
+import { fetchMembersAsync, fetchProjectsAsync, fetchProjectStoriesAsync } from './api/api'
 
 // Element to create fancy animated tab highlight
 // const selectedTabBG = document.getElementById("selectedTabBG");

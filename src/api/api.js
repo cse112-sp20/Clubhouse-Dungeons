@@ -61,8 +61,8 @@ export const fetchMemberInfoAsync = async (apiToken) => {
 export const fetchMembersAsync = async () => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/members?token=${API_TOKEN}`, {
     headers: { 'Content-Type': 'application/json' }
-  });
-  return res.json();
+  })
+  return res.json()
 }
 
 /**
