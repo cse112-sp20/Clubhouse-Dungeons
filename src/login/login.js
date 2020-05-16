@@ -1,5 +1,11 @@
 import { setApiToken, fetchMemberInfoAsync } from '../api/api'
 
+chrome.storage.sync.get('api_token', (res) => {
+  if (res) {
+    window.location.href = '../popup.html'
+  }
+})
+
 document.addEventListener(
   'DOMContentLoaded',
   () => {
@@ -18,9 +24,18 @@ document.addEventListener(
             alert('Invalid key!')
           } else {
             setApiToken(apiKey)
+            /*
             localStorage.setItem('api_token', apiKey)
             localStorage.setItem('member_id', res.id)
             localStorage.setItem('member_name', res.name)
+            */
+            chrome.storage.sync.set(
+              {
+                api_token: apiKey,
+                member_id: res.id,
+                member_name: res.name
+              }, () => { console.log('storing member info') })
+
             window.location.href = '../popup.html'
           }
         })
