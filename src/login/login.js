@@ -27,11 +27,7 @@ document.addEventListener(
             alert('Invalid key!')
           } else {
             setApiToken(apiKey)
-            /*
-            localStorage.setItem('api_token', apiKey)
-            localStorage.setItem('member_id', res.id)
-            localStorage.setItem('member_name', res.name)
-            */
+            // store user info into the StorageArea storage.sync
             chrome.storage.sync.set(
               {
                 api_token: apiKey,
