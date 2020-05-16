@@ -2,6 +2,7 @@ import { setApiToken, fetchMemberInfoAsync } from '../api/api'
 
 chrome.storage.sync.get('api_token', (res) => {
   if (res) {
+    setApiToken(res.api_token)
     window.location.href = '../popup.html'
   }
 })

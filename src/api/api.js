@@ -1,5 +1,12 @@
 export var API_TOKEN
 
+// get api token if is already in storage
+chrome.storage.sync.get('api_token', (res) => {
+  if (res) {
+    API_TOKEN = res.api_token
+  }
+})
+
 /**
  * Fetch all projects
  *

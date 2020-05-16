@@ -2,9 +2,11 @@ import { fetchProjectsAsync, fetchProjectStoriesAsync } from './api/api'
 
 // var API_TOKEN = localStorage.getItem('api_token')
 var API_TOKEN
+// get api token if is already in storage
 chrome.storage.sync.get('api_token', (res) => {
-  API_TOKEN = res.api_token
-  // alert(API_TOKEN) // used for testing
+  if (res) {
+    API_TOKEN = res.api_token
+  }
 })
 // const API_TOKEN = '5eb1122c-36fd-435d-b318-02dc21ea111d'
 
