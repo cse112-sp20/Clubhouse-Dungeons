@@ -1,14 +1,10 @@
 import { fetchProjectsAsync, fetchProjectStoriesAsync } from './api/api'
 
-// var API_TOKEN = localStorage.getItem('api_token')
 var API_TOKEN
-// get api token if is already in storage
-chrome.storage.sync.get('api_token', (res) => {
-  if (res) {
-    API_TOKEN = res.api_token
-  }
+chrome.storage.sync.get('api_token', (store) => {
+  console.log(store)
+  API_TOKEN = store.api_token
 })
-// const API_TOKEN = '5eb1122c-36fd-435d-b318-02dc21ea111d'
 
 // Element to create fancy animated tab highlight
 // const selectedTabBG = document.getElementById("selectedTabBG");

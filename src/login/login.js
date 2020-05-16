@@ -1,8 +1,10 @@
 import { setApiToken, fetchMemberInfoAsync } from '../api/api'
 
-chrome.storage.sync.get('api_token', (res) => {
-  if (res) {
-    setApiToken(res.api_token)
+chrome.storage.sync.get('api_token', (store) => {
+  const errorExists = chrome.runtime.lastError !== undefined
+  const tokenExists = Object.prototype.hasOwnProperty.call(store, 'api_token')
+  if (!errorExists && tokenExists) {
+    console.log(store)
     window.location.href = '../popup.html'
   }
 })
@@ -13,7 +15,7 @@ document.addEventListener(
     /**
      * Function to handle onClick event
      */
-    function onClick () {
+    function onClick() {
       var apiKey = document.getElementById('apiEntry').value
 
       console.log(document.getElementById('apiEntry').value)
