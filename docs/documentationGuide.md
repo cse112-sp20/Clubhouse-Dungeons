@@ -34,7 +34,6 @@ JSDoc provides us with a standardized way of writing comments in our code to des
 
 function foo(n) { return n }
 ```
-
 ### JSDoc Types
 ```
 @param {string=} n              Optional
@@ -77,8 +76,17 @@ Documentation.js is a documentation generator. It's used to generate documentati
 ### Command to generate documentation
 ```npm run documentation```
 
+### Linting Rules
+1. JSDoc Comments
+2. [JS Standard Style guide](https://standardjs.com/rules-en.html)
+
+### How to lint
+To have the linter run automated fixes and report errors use the command:
+```npm run lint```
+You should do this before commiting any changes to keep our repositories log clean of any commits that just fix linting errors.
 
 ## Useful Links
 1. [JSDoc\.app](https://jsdoc.app/)
 2. [Documentation.js](https://github.com/documentationjs/documentation)
+3. [JS Standard Style guide](https://standardjs.com/rules-en.html)
 
