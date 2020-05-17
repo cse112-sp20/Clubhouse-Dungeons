@@ -136,7 +136,6 @@ body {
   /* text-transform: uppercase; */
   color: rgba(255,255,255,1);
   padding: 10px 3%;
-  border-bottom: 1px solid rgba(255,255,255,.1);
 }
 
 #profileContainer {
@@ -157,7 +156,7 @@ body {
   justify-content: center;
   align-items: center;
   color: #ffffff;
-  padding: 6px;
+  padding: 4px;
   border-radius: 8px;
   background: transparent;
   transition: all .2s linear;
@@ -174,19 +173,35 @@ body {
 
 #memberProfile .member-icon {
   position: relative;
-  height: 24px;
-  width: 24px;
+  height: 32px;
+  width: 32px;
   border-radius: 500px;
   border: 1px solid rgb(172, 172, 172);
   overflow: hidden;
 }
+
 #memberProfile .member-icon #memberIcon {
   height: 100%;
   width: 100%;
 }
+
 #memberProfile #memberName {
   padding: 0 10px;
 }
+
+#memberProfile #memberTeam {
+  font-size: 9px;
+  font-weight: bold;
+  color: rgba(255,255,255,.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 10px;
+}
+
+#profileContainer.open #memberProfile #memberTeam {
+  color: rgba(0,0,0,.3);
+}
+
 .carrot {
   width: 16px;
   font-size: 12px;
