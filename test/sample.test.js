@@ -12,7 +12,7 @@ var browser;
 describe('extension', () => {
     beforeAll(async () => {
         // describe path to our extension
-        const pathToExtension = require('path').join(__dirname, '../');
+        const pathToExtension = require('path').join(__dirname, '../src');
         browser = await puppeteer.launch({
             headless: false,
             args: [
