@@ -153,7 +153,6 @@ const setup = () => {
       chrome.storage.sync.get(['api_token', 'member_id'], store => {
         API_TOKEN = store.api_token
         MEMBER_ID = store.member_id
-
         Promise.all([
           fetchStoriesAsync()
             .then(stories => {

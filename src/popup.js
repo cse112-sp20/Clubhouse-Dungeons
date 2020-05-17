@@ -63,6 +63,12 @@ document.addEventListener(
   () => {
     setup()
       .then(() => {
+        /* Set user name text with member id */
+        chrome.storage.sync.get(['member_id'], store => {
+          console.log(store.member_id)
+          document.getElementById('userName').textContent = getMemberName(store.member_id)
+        })
+
         /* Set progress bar values */
         const { completed, total } = getProgress()
         document.getElementById('healthText').appendChild(document.createTextNode(`${completed} / ${total}`))
