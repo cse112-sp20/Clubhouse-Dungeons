@@ -56,12 +56,10 @@ body {
 }
 
 #healthbar #healthLeft {
-  width: 50%; /* Width should be set in javascript based on story points */
   height: 20pt;
   margin: 2pt;
   border-radius: 100pt;
   text-align: right;
-  background: linear-gradient(-180deg, #e74c3c 0%, #c0392b 100%);
   box-shadow: 0 0 4pt rgba(0,0,0,0.3),
               0 3pt 3pt rgba(255,255,255,0.3) inset,
               0 -3pt 3pt rgba(0,0,0,0.3) inset;
