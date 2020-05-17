@@ -4,8 +4,14 @@ import {
   getAllIncompleteStories,
   getBattleLog,
   getMemberName,
+  getMemberProfile,
   getProgress
 } from './api/api'
+
+// Member profile button and info
+const memberProfile = document.getElementById('memberProfile')
+const memberName = document.getElementById('memberName')
+const memberIcon = document.getElementById('memberIcon')
 
 // Element to create fancy animated tab highlight
 // const selectedTabBG = document.getElementById("selectedTabBG");
@@ -68,6 +74,11 @@ document.addEventListener(
           console.log(store.member_id)
           document.getElementById('userName').textContent = getMemberName(store.member_id)
         })
+
+        /* Get member info for profile button */
+        const memberProfile = getMemberProfile();
+        memberName.innerHTML = memberProfile.name;
+        memberIcon.src = memberProfile.icon;
 
         /* Set progress bar values */
         const { completed, total } = getProgress()
