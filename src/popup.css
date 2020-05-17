@@ -1,9 +1,13 @@
 body {
   font-family: sans-serif;
   margin: 0;
+  height: 100vh;
+  min-height: 600px;
+  min-width: 400px;
 }
 
 .battlefield {
+  position: relative;
   height: 50%;
   background: #244768;
   display: flex;
@@ -17,7 +21,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 16pt;
+  font-size: 12px;
   font-weight: bold;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -25,30 +29,42 @@ body {
 }
 
 .nav div {
-  padding: 16pt;
+  padding: 12px;
+}
+
+.boss-container {
+  position: relative;
+  max-height: 50%;
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #monster {
-  height: 50%;
+  max-height: 90%;
 }
 
 #healthbar {
   position: relative;
-  width: 50%;
-  height: 24pt;
+  width: 100%;
+  height: 18px;
   background: #2c3e50;
-  border-radius: 100pt;
-  border: 2px solid rgba(0,0,0,0.3);
-  box-shadow: 0 2pt 8pt rgba(0,0,0,0.3) inset;
+  border-radius: 100px;
+  border: 1px solid rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3) inset,
+              0 1px 4px rgba(0,0,0,0.3);
+  /* margin: 12px 0; */
 }
 
 #healthbar #healthText {
   position: absolute;
-  top: 6pt;
+  top: 4px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 14pt;
-  line-height: 14pt;
+  font-size: 12px;
+  line-height: 12px;
   font-weight: bold;
   letter-spacing: 2px;
   color: rgba(255,255,255,1);
@@ -57,14 +73,14 @@ body {
 
 #healthbar #healthLeft {
   width: 50%; /* Width should be set in javascript based on story points */
-  height: 20pt;
-  margin: 2pt;
-  border-radius: 100pt;
+  height: 16px;
+  margin: 1px;
+  border-radius: 100px;
   text-align: right;
   background: linear-gradient(-180deg, #e74c3c 0%, #c0392b 100%);
-  box-shadow: 0 0 4pt rgba(0,0,0,0.3),
-              0 3pt 3pt rgba(255,255,255,0.3) inset,
-              0 -3pt 3pt rgba(0,0,0,0.3) inset;
+  box-shadow: 0 0 4px rgba(0,0,0,0.3),
+              0 3px 3px rgba(255,255,255,0.3) inset,
+              0 -3px 3px rgba(0,0,0,0.3) inset;
 }
 
 .top-warriors {
@@ -75,40 +91,42 @@ body {
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
+  margin-top: 16px;
 }
 
 .top-warriors .top-warriors-title {
   position: absolute;
-  top: -12pt;
+  top: -10px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 12pt;
+  font-size: 10px;
   color: rgba(255,255,255,.5);
 }
 
 .top-warriors .top-warrior {
   position: relative;
+  height: 24px;
   background: rgba(255,255,255,.2);
-  border-radius: 8pt;
+  border-radius: 8px;
   color: rgba(255,255,255,1);
-  padding: 8pt 8pt 8pt 40pt;
-  margin: 8pt;
+  padding: 8px 8px 8px 32px;
+  margin: 8px 4px;
 }
 
 .top-warriors .top-warrior .number {
   position: absolute;
-  top: 8pt;
-  left: 10pt;
-  font-size: 32pt;
-  line-height: 32pt;
+  top: 8px;
+  left: 10px;
+  font-size: 24px;
+  line-height: 24px;
 }
 
 .top-warriors .top-warrior .name {
-  font-size: 16pt;
+  font-size: 12px;
 }
 
 .top-warriors .top-warrior .points {
-  font-size: 12pt;
+  font-size: 10px;
   color: rgba(255,255,255,.5);
 }
 
@@ -124,26 +142,26 @@ body {
 }
 
 .tab {
-  font-size: 12pt;
+  font-size: 10px;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
-  padding: 16pt;
-  border-top: 2pt solid rgba(0,0,0,0);
-  border-bottom: 2pt solid rgba(0,0,0,0);
+  padding: 10px;
+  border-top: 2px solid rgba(0,0,0,0);
+  border-bottom: 2px solid rgba(0,0,0,0);
 }
 .tab.selected {
-  border-bottom: 2pt solid #0084ff;
+  border-bottom: 2px solid #0084ff;
 }
 
 .panel-item {
   display: none;
-  padding: 16pt;
+  padding: 12px;
 }
 .panel-item.selected {
   display: flex;
 }
 
 .story {
-  font-size: 16pt;
+  font-size: 12px;
 }
