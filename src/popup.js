@@ -8,7 +8,8 @@ import {
   getProgress
 } from './api/api'
 
-// Tab elements
+// Member profile button and info
+const memberProfile = document.getElementById('memberProfile')
 const memberName = document.getElementById('memberName')
 const memberIcon = document.getElementById('memberIcon')
 

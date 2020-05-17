@@ -58,6 +58,11 @@ body {
   color: rgba(255,255,255,.4);
 }
 
+#memberMenu {
+  display: none;
+  position: absolute;
+}
+
 .boss-container {
   position: relative;
   max-height: 50%;
