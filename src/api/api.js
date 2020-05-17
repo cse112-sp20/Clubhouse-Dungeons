@@ -73,3 +73,10 @@ export const fetchMembersAsync = async () => {
 export const setApiToken = (apiToken) => {
   API_TOKEN = apiToken
 }
+
+/**
+ * Set the current value of {@var API_TOKEN} to undefined
+ */
+export const removeApiToken = () => {
+  API_TOKEN = undefined
+}

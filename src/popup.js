@@ -1,4 +1,4 @@
-import { fetchMembersAsync, fetchProjectsAsync, fetchProjectStoriesAsync } from './api/api'
+import { fetchMembersAsync, fetchProjectsAsync, fetchProjectStoriesAsync, removeApiToken } from './api/api'
 
 // Element to create fancy animated tab highlight
 // const selectedTabBG = document.getElementById("selectedTabBG");
@@ -18,6 +18,27 @@ myStoriesTab.addEventListener('click', () => selectTab(0))
 allStoriesTab.addEventListener('click', () => selectTab(1))
 battleLogTab.addEventListener('click', () => selectTab(2))
 
+/**
+ * Signout by removing all items from StorageArea storage.sync
+ */
+const signout = () => {
+  chrome.storage.sync.clear((clear) => {
+    if (chrome.runtime.lastError === undefined) {
+      console.log('storage cleared')
+      // remove the api token in use from api.js
+      removeApiToken()
+      // load the login page
+      window.location.href = 'login.html'
+    } else {
+      alert('Error trying to clear storage')
+    }
+  })
+}
+// add event listener for signoutButton
+const signoutButton = document.getElementById('signoutButton')
+if (signoutButton) {
+  signoutButton.addEventListener('click', signout, false)
+}
 /**
  * Apply appropriate styles to selected tab and panel item
  *
