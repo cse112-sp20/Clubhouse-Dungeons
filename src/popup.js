@@ -69,16 +69,10 @@ document.addEventListener(
   () => {
     setup()
       .then(() => {
-        /* Set user name text with member id */
-        chrome.storage.sync.get(['member_id'], store => {
-          console.log(store.member_id)
-          document.getElementById('userName').textContent = getMemberName(store.member_id)
-        })
-
         /* Get member info for profile button */
-        const memberProfile = getMemberProfile();
-        memberName.innerHTML = memberProfile.name;
-        memberIcon.src = memberProfile.icon;
+        const memberProfile = getMemberProfile()
+        memberName.innerHTML = memberProfile.name
+        memberIcon.src = memberProfile.icon
 
         /* Set progress bar values */
         const { completed, total } = getProgress()

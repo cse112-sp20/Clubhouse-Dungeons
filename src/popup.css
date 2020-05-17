@@ -103,13 +103,13 @@ body {
 }
 
 #healthbar #healthLeft {
-  height: 20pt;
-  margin: 2pt;
-  border-radius: 100pt;
+  height: 16px;
+  margin: 1px;
+  border-radius: 100px;
   text-align: right;
-  box-shadow: 0 0 4pt rgba(0,0,0,0.3),
-              0 3pt 3pt rgba(255,255,255,0.3) inset,
-              0 -3pt 3pt rgba(0,0,0,0.3) inset;
+  box-shadow: 0 0 4px rgba(0,0,0,0.3),
+              0 3px 3px rgba(255,255,255,0.3) inset,
+              0 -3px 3px rgba(0,0,0,0.3) inset;
 }
 
 .top-warriors {
