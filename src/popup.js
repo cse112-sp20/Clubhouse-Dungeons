@@ -13,7 +13,10 @@ import {
 const profileContainer = document.getElementById('profileContainer')
 const memberProfile = document.getElementById('memberProfile')
 const memberName = document.getElementById('memberName')
-const memberIcon = document.getElementById('memberIcon')
+const memberTeam = document.getElementById('memberTeam')
+
+const healthText = document.getElementById('healthText')
+const healthLeft = document.getElementById('healthLeft')
 
 // Member menu and menu buttons
 const memberMenu = document.getElementById('memberMenu')
@@ -134,7 +137,8 @@ document.addEventListener(
 
         /* Set progress bar values */
         const { completed, total } = getProgress()
-        document.getElementById('healthText').appendChild(document.createTextNode(`${completed} / ${total}`))
+        healthLeft.style.width = (completed / total) * 100 + '%'
+        healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
 
         /* Populate tabs */
         const myStoriesList = document.createElement('ul')
