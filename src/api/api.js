@@ -123,6 +123,20 @@ const getBattleLog = () => {
 const getMemberName = (memberId) => {
   return MEMBER_MAP[memberId].profile.name
 }
+const getMemberProfile = () => {
+  // Relevant user profile details
+  if (MEMBER_MAP[MEMBER_ID].profile.display_icon) {
+    return {
+      name: MEMBER_MAP[MEMBER_ID].profile.name,
+      icon: MEMBER_MAP[MEMBER_ID].profile.display_icon.url
+    }
+  } else {
+    return {
+      name: MEMBER_MAP[MEMBER_ID].profile.name,
+      icon: 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png'
+    }
+  }
+}
 
 const getProgress = () => {
   let completed = 0
@@ -182,6 +196,7 @@ module.exports = {
   getAllIncompleteStories,
   getBattleLog,
   getMemberName,
+  getMemberProfile,
   getProgress,
   onLogin,
   setup

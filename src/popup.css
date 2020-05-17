@@ -17,19 +17,45 @@ body {
 }
 
 .nav {
-  width: 100%;
+  width: 94%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  /* font-weight: bold; */
+  letter-spacing: 1px;
+  /* text-transform: uppercase; */
   color: rgba(255,255,255,1);
+  padding: 10px 3%;
+  border-bottom: 1px solid rgba(255,255,255,.1);
 }
 
-.nav div {
-  padding: 12px;
+#memberProfile {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#memberProfile .member-icon {
+  position: relative;
+  height: 24px;
+  width: 24px;
+  border-radius: 500px;
+  border: 1px solid rgb(172, 172, 172);
+  overflow: hidden;
+}
+#memberProfile .member-icon #memberIcon {
+  height: 100%;
+  width: 100%;
+}
+#memberProfile #memberName {
+  padding: 0 10px;
+}
+#memberProfile .carrot {
+  font-size: 8px;
+  color: rgba(255,255,255,.4);
 }
 
 .boss-container {
