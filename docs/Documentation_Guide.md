@@ -3,14 +3,14 @@
 
 1.  Tool Overview
 2.  JSDoc
-3.  Documentation.js
+3.  jsdoc-to-markdown
 4.  Eslint
 5.  Useful Links
 
 ## Tool Overview
 The tools we use for maintaining our API-level documentation include:
 -   JSDoc
--   Documentation.js
+-   jsdoc-to-markdown
 
 ### How to install our tools:
 After cloning our repository, run the command:
@@ -70,23 +70,27 @@ function play (song) {
 @module <name>
 ```
 
-## Documentation.js
-Documentation.js is a documentation generator. It's used to generate documentation from JSDoc formatted comments within your code.
+## jsdoc-to-markdown
+jsdoc-to-markdown generates markdown API documentation based on jsdoc annotated source code.
 
 ### Command to generate documentation
-```npm run documentation```
+```npm run documentation:build```
+
+## Eslint
+ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code, with the goal of making code more consistent and avoiding bugs.
 
 ### Linting Rules
 1. JSDoc Comments
 2. [JS Standard Style guide](https://standardjs.com/rules-en.html)
 
-### How to lint
+### Command to run Eslint
 To have the linter run automated fixes and report errors use the command:
 ```npm run lint```
 You should do this before commiting any changes to keep our repositories log clean of any commits that just fix linting errors.
 
 ## Useful Links
 1. [JSDoc\.app](https://jsdoc.app/)
-2. [Documentation.js](https://github.com/documentationjs/documentation)
+2. [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown)
 3. [JS Standard Style guide](https://standardjs.com/rules-en.html)
+4. [Eslint](https://eslint.org/)
 

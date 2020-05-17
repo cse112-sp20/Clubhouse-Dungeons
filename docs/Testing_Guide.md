@@ -1,4 +1,4 @@
-# Documentation Guide
+# Testing Guide
 ### Table of Contents
 
 1.  Tool Overview
