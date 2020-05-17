@@ -3,7 +3,7 @@ const assert = require('assert');
 
 const extensionPath = '../../../../../'; // This is the path to the manifext.json file
 const extensionID = `kggoidbofmfjedcmnincmhlefijkpgej`; // This extension ID might not work for you, but if it does, feel free to remove this comment :)
-const extensionPopupHtml = `src/popup.html`; // The main page of our extension
+const extensionPopupHtml = `popup.html`; // The main page of our extension
 
 // Puppeteer object variables here
 let extensionPage = null;
