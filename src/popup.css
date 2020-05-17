@@ -1,9 +1,117 @@
 body {
+  position: relative;
   font-family: sans-serif;
   margin: 0;
-  height: 100vh;
-  min-height: 600px;
-  min-width: 400px;
+
+  height: 600px;
+  width: 400px;
+}
+
+.login-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #244768;
+  background: linear-gradient(0deg, #0084ff 0%, #244768 100%);
+  padding: 16px 0;
+}
+
+.login-modal {
+  width: 80%;
+  background: #ffffff;
+  padding: 16px;
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.login-modal h1 {
+  margin: 0 0 16px 0;
+  text-align: center;
+  color: #244768;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form input {
+  outline: none;
+  background: transparent;
+  padding: 12px;
+  margin: 16px 0 8px 0;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  transition: all .2s linear;
+}
+.login-form input:focus {
+  border: 1px solid rgba(0,132,255,1);
+}
+
+.login-form button {
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: #0084ff7c;
+  padding: 12px;
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all .2s linear;
+}
+.login-form:valid button:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+.login-form:valid button {
+  background: #0084ff;
+}
+
+.instructions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8px;
+  background: #ffffff;
+  /* margin: 0 auto; */
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+
+}
+
+.instructions .instruction {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 4px;
+}
+
+.instructions .instruction .number {
+  background: #0084ff;
+  color: #ffffff;
+  text-align: center;
+  height: 16px;
+  width: 16px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 16px;
+  padding: 6px;
+  border-radius: 500px;
+  margin-right: 8px;
+}
+
+.instructions .instruction .text {
+  color: #0084ff;
+}
+.instructions .instruction .text a {
+  color: #0084ff;
+  font-weight: bold;
+}
+.instructions .instruction .text span {
+  font-weight: bold;
 }
 
 .battlefield {
@@ -63,7 +171,6 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   color: rgba(0,0,0,0.9);
 }
-
 
 #memberProfile .member-icon {
   position: relative;
