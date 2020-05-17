@@ -1,4 +1,8 @@
 export var API_TOKEN
+chrome.storage.sync.get('api_token', (store) => {
+  console.log(store)
+  API_TOKEN = store.api_token
+})
 
 /**
  * Fetch all projects
@@ -49,6 +53,13 @@ export const fetchStoriesAsync = async () => {
 
 export const fetchMemberInfoAsync = async (apiToken) => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/member?token=${apiToken}`, {
+    headers: { 'Content-Type': 'application/json' }
+  })
+  return res.json()
+}
+
+export const fetchMembersAsync = async () => {
+  const res = await fetch(`https://api.clubhouse.io/api/v3/members?token=${API_TOKEN}`, {
     headers: { 'Content-Type': 'application/json' }
   })
   return res.json()
