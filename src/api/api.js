@@ -51,7 +51,7 @@ const fetchStoriesAsync = async () => {
     })
 }
 
-export const fetchMemberInfoAsync = async (apiToken) => {
+const fetchMemberInfoAsync = async (apiToken) => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/member?token=${apiToken}`, {
     headers: { 'Content-Type': 'application/json' }
   })
@@ -86,16 +86,16 @@ const getStories = ({ memberOnly = false, incompleteOnly = false, completeOnly =
   return stories
 }
 
-export const getMyIncompleteStories = () => {
+const getMyIncompleteStories = () => {
   return getStories({ memberOnly: true, incompleteOnly: true })
 }
 
-export const getAllIncompleteStories = () => {
+const getAllIncompleteStories = () => {
   return getStories({ incompleteOnly: true })
 }
 
 // Returns stories in sorted by most recently completed
-export const getBattleLog = () => {
+const getBattleLog = () => {
   const compare = (a, b) => {
     const dateA = Date.parse(
       a.completed_at_override
@@ -120,11 +120,11 @@ export const getBattleLog = () => {
   return stories
 }
 
-export const getMemberName = (memberId) => {
+const getMemberName = (memberId) => {
   return MEMBER_MAP[memberId].profile.name
 }
 
-export const getProgress = () => {
+const getProgress = () => {
   let completed = 0
   let total = 0
   getStories().map(story => {
@@ -138,7 +138,7 @@ export const getProgress = () => {
   return { completed, total }
 }
 
-export const onLogin = (apiToken, memberId) => {
+const onLogin = (apiToken, memberId) => {
   // Init global vars that don't require fetching
   API_TOKEN = apiToken
   MEMBER_ID = memberId
@@ -147,7 +147,7 @@ export const onLogin = (apiToken, memberId) => {
   setup()
 }
 
-export const setup = () => {
+const setup = () => {
   if (!SETUP) {
     SETUP = new Promise((resolve, reject) => {
       chrome.storage.sync.get(['api_token', 'member_id'], store => {
@@ -174,4 +174,15 @@ export const setup = () => {
     })
   }
   return SETUP
+}
+
+module.exports = {
+  fetchMemberInfoAsync,
+  getMyIncompleteStories,
+  getAllIncompleteStories,
+  getBattleLog,
+  getMemberName,
+  getProgress,
+  onLogin,
+  setup
 }
