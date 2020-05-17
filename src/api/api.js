@@ -201,3 +201,10 @@ module.exports = {
   onLogin,
   setup
 }
+
+/**
+ * Set the current value of {@var API_TOKEN} to undefined
+ */
+export const removeApiToken = () => {
+  API_TOKEN = undefined
+}
