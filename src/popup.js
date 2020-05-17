@@ -5,13 +5,19 @@ import {
   getBattleLog,
   getMemberName,
   getMemberProfile,
-  getProgress
+  getProgress,
+  removeApiToken
 } from './api/api'
 
 // Member profile button and info
+const profileContainer = document.getElementById('profileContainer')
 const memberProfile = document.getElementById('memberProfile')
 const memberName = document.getElementById('memberName')
 const memberIcon = document.getElementById('memberIcon')
+
+// Member menu and menu buttons
+const memberMenu = document.getElementById('memberMenu')
+const signoutButton = document.getElementById('signoutButton')
 
 // Element to create fancy animated tab highlight
 // const selectedTabBG = document.getElementById("selectedTabBG");
@@ -31,6 +37,7 @@ myStoriesTab.addEventListener('click', () => selectTab(0))
 allStoriesTab.addEventListener('click', () => selectTab(1))
 battleLogTab.addEventListener('click', () => selectTab(2))
 
+
 /**
  * Signout by removing all items from StorageArea storage.sync
  */
@@ -47,17 +54,46 @@ const signout = () => {
     }
   })
 }
-// add event listener for signoutButton
-const signoutButton = document.getElementById('signoutButton')
-if (signoutButton) {
-  signoutButton.addEventListener('click', signout, false)
+
+/**
+ * Show member profile menu
+ */
+const toggleMemberMenu = () => {
+  if (profileContainer.classList.contains('closed')) {
+    profileContainer.classList.remove('closed')
+    profileContainer.classList.add('open')
+  } else {
+    profileContainer.classList.remove('open')
+    profileContainer.classList.add('closed')
+  }
 }
+
+/**
+ * Close member profile menu on outside click
+ */
+document.body.addEventListener('click', (event) => {
+  if (event.target.id.length > 0) {
+    if (!event.target.id.substring(0, 5) == 'member' && memberMenu.classList.contains('show')) {
+      toggleMemberMenu();
+    }
+  } else {
+    toggleMemberMenu();
+  }
+
+})
+profileContainer.addEventListener('click', toggleMemberMenu)
+signoutButton.addEventListener('click', signout)
+
 /**
  * Apply appropriate styles to selected tab and panel item
  *
  * @param {number} tabIndex - index of tab
  */
 function selectTab (tabIndex) {
+  // Close profile menu if it's open
+  if (memberMenu.classList.contains('show')) {
+    toggleMemberMenu();
+  }
   // Deselect previously selected tab and hide previously selected panel item
   var selectedTabs = document.getElementsByClassName('selected')
   while (selectedTabs.length > 0) {

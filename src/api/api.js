@@ -138,6 +138,13 @@ const getMemberProfile = () => {
   }
 }
 
+/**
+ * Set the current value of {@var API_TOKEN} to undefined
+ */
+const removeApiToken = () => {
+  API_TOKEN = undefined
+}
+
 const getProgress = () => {
   let completed = 0
   let total = 0
@@ -199,12 +206,7 @@ module.exports = {
   getMemberProfile,
   getProgress,
   onLogin,
-  setup
+  setup,
+  removeApiToken
 }
 
-/**
- * Set the current value of {@var API_TOKEN} to undefined
- */
-export const removeApiToken = () => {
-  API_TOKEN = undefined
-}
