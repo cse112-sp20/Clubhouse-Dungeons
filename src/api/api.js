@@ -65,17 +65,17 @@ const fetchMembersAsync = async () => {
   return res.json()
 }
 
+const isComplete = story => story.completed === true
+
 const getStories = ({ memberOnly = false, incompleteOnly = false, completeOnly = false } = {}) => {
   if (STORIES === undefined) {
     console.log('getStories called before api::STORIES assigned')
     return
   }
 
-  const isComplete = story => story.completed === true
-
   let stories = STORIES
   if (memberOnly) {
-    stories = stories.filter(story => story.owner_ids.indexOf(MEMBER_ID !== -1))
+    stories = stories.filter(story => story.owner_ids.indexOf(MEMBER_ID) !== -1)
   }
   if (incompleteOnly) {
     stories = stories.filter(story => !isComplete(story))
@@ -115,9 +115,27 @@ export const getBattleLog = () => {
     }
   }
 
-  const stories = getStories({ incompleteOnly: true })
+  const stories = getStories({ completeOnly: true })
   stories.sort(compare)
   return stories
+}
+
+export const getMemberName = (memberId) => {
+  return MEMBER_MAP[memberId].profile.name
+}
+
+export const getProgress = () => {
+  let completed = 0
+  let total = 0
+  getStories().map(story => {
+    if (story.estimate) {
+      if (isComplete(story)) {
+        completed += story.estimate
+      }
+      total += story.estimate
+    }
+  })
+  return { completed, total }
 }
 
 export const onLogin = (apiToken, memberId) => {
@@ -131,37 +149,29 @@ export const onLogin = (apiToken, memberId) => {
 
 export const setup = () => {
   if (!SETUP) {
-    if (!API_TOKEN || !MEMBER_ID) {
-      SETUP = Promise.all(
-        chrome.storage.sync.get('api_token', store => {
-          API_TOKEN = store.api_token
-          MEMBER_ID = store.member_id
-        }),
-        fetchStoriesAsync()
-          .then(stories => {
-            STORIES = stories
-          }),
-        fetchMembersAsync()
-          .then(members => {
-            members.map(member => {
-              MEMBER_MAP[member.id] = member
+    SETUP = new Promise((resolve, reject) => {
+      chrome.storage.sync.get(['api_token', 'member_id'], store => {
+        API_TOKEN = store.api_token
+        MEMBER_ID = store.member_id
+
+        Promise.all([
+          fetchStoriesAsync()
+            .then(stories => {
+              STORIES = stories
+            }),
+          fetchMembersAsync()
+            .then(members => {
+              MEMBER_MAP = {}
+              members.map(member => {
+                MEMBER_MAP[member.id] = member
+              })
             })
+        ])
+          .then(() => {
+            resolve('All globals are setup')
           })
-      )
-    } else {
-      SETUP = Promise.all(
-        fetchStoriesAsync()
-          .then(stories => {
-            STORIES = stories
-          }),
-        fetchMembersAsync()
-          .then(members => {
-            members.map(member => {
-              MEMBER_MAP[member.id] = member
-            })
-          })
-      )
-    }
-    return SETUP
+      })
+    })
   }
+  return SETUP
 }
