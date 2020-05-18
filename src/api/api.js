@@ -270,4 +270,3 @@ module.exports = {
   setup,
   removeApiToken
 }
-

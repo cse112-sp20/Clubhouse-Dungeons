@@ -12,9 +12,13 @@ import {
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
-const memberProfile = document.getElementById('memberProfile')
-const memberName = document.getElementById('memberName')
+// const memberProfile = document.getElementById('memberProfile')
 const memberIcon = document.getElementById('memberIcon')
+const memberName = document.getElementById('memberName')
+// const memberTeam = document.getElementById('memberTeam')
+
+const healthText = document.getElementById('healthText')
+const healthLeft = document.getElementById('healthLeft')
 
 // Member menu and menu buttons
 const memberMenu = document.getElementById('memberMenu')
@@ -32,6 +36,15 @@ const battleLogTab = document.getElementById('battleLogTab')
 const myStories = document.getElementById('myStories')
 const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
+
+// Top 3 point earners
+// TODO: Set these values
+// const warrior1Name = document.getElementById('warrior1Name')
+// const warrior1Points = document.getElementById('warrior1Points')
+// const warrior2Name = document.getElementById('warrior2Name')
+// const warrior2Points = document.getElementById('warrior2Points')
+// const warrior3Name = document.getElementById('warrior3Name')
+// const warrior3Points = document.getElementById('warrior3Points')
 
 // Click event listeners for tabs
 myStoriesTab.addEventListener('click', () => selectTab(0))
@@ -73,11 +86,13 @@ const toggleMemberMenu = () => {
  */
 document.body.addEventListener('click', (event) => {
   if (event.target.id.length > 0) {
-    if (!event.target.id.substring(0, 5) == 'member' && memberMenu.classList.contains('show')) {
+    if (!event.target.id.substring(0, 5) === 'member' && memberMenu.classList.contains('show')) {
       toggleMemberMenu()
     }
   } else {
-    toggleMemberMenu()
+    if (memberMenu.classList.contains('show')) {
+      toggleMemberMenu()
+    }
   }
 })
 profileContainer.addEventListener('click', toggleMemberMenu)
@@ -120,6 +135,15 @@ function selectTab (tabIndex) {
   }
 }
 
+/**
+ * TODO: Complete story
+ *
+ * @param {Story} story
+ */
+function completeStory (story) {
+  console.log('complete story', story)
+}
+
 document.addEventListener(
   'DOMContentLoaded',
   () => {
@@ -129,6 +153,10 @@ document.addEventListener(
         const memberProfile = getMemberProfile()
         memberName.innerHTML = memberProfile.name
         memberIcon.src = memberProfile.icon
+        // TODO: set memberTeam.innerHTML to user's team name
+
+
+
 
         /* Get top warraiors and update text */
         const topWarriors = getTopWarriors()
@@ -142,7 +170,8 @@ document.addEventListener(
 
         /* Set progress bar values */
         const { completed, total } = getProgress()
-        document.getElementById('healthText').appendChild(document.createTextNode(`${completed} / ${total}`))
+        healthLeft.style.width = (completed / total) * 100 + '%'
+        healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
 
         /* Set progress bar color change */
         const greenThreshold = (2 / 5) * total
@@ -156,35 +185,56 @@ document.addEventListener(
         healthBar.style.width = (completed * 100 / total) + '%'
 
         /* Populate tabs */
-        const myStoriesList = document.createElement('ul')
-        getMyIncompleteStories().map(story => {
-          const li = document.createElement('li')
-          li.appendChild(document.createTextNode(`${story.name} --- ${story.estimate} points`))
-          myStoriesList.appendChild(li)
-        })
-        myStories.appendChild(myStoriesList)
 
-        const allStoriesList = document.createElement('ul')
+        // My Stories
+        getMyIncompleteStories().map(story => {
+          const storyDiv = document.createElement('div')
+          const storyButton = document.createElement('div')
+          storyDiv.classList.add('story')
+          storyButton.classList.add('story-button')
+          storyButton.innerHTML = '<img src="images/sword.png" >'
+          storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+          storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+          storyButton.addEventListener('click', () => completeStory(story))
+          storyDiv.prepend(storyButton)
+          myStories.appendChild(storyDiv)
+        })
+
         getAllIncompleteStories().map(story => {
-          const li = document.createElement('li')
           const ownerNames = story.owner_ids.length > 0
             ? story.owner_ids.map(memberId => getMemberName(memberId))
-            : 'unassigned'
-          li.appendChild(document.createTextNode(`${story.name} --- ${ownerNames} --- ${story.estimate} points`))
-          allStoriesList.appendChild(li)
-        })
-        allStories.appendChild(allStoriesList)
+            : ['Unassigned']
 
-        const battleLogList = document.createElement('ul')
+          console.log(ownerNames)
+          const storyDiv = document.createElement('div')
+          const storyButton = document.createElement('div')
+          storyDiv.classList.add('story')
+          storyButton.classList.add('story-button')
+          storyButton.innerHTML = '<img src="images/sword.png" >'
+          storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+          storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+          const ownersDiv = document.createElement('div')
+          ownersDiv.classList.add('owners')
+          ownerNames.forEach(ownerName => {
+            const ownerDiv = document.createElement('div')
+            ownerDiv.innerHTML = ownerName
+            ownersDiv.append(ownerDiv)
+          })
+          storyButton.addEventListener('click', () => completeStory(story))
+          storyDiv.prepend(storyButton)
+          storyDiv.append(ownersDiv)
+          allStories.appendChild(storyDiv)
+        })
+
         getBattleLog().map(story => {
-          const li = document.createElement('li')
           const ownerNames = story.owner_ids.length > 0
             ? story.owner_ids.map(memberId => getMemberName(memberId)).join(', ')
             : 'unassigned'
-          li.appendChild(document.createTextNode(`${ownerNames} completed ${story.name} --- ${story.estimate} points`))
-          battleLogList.appendChild(li)
+          const actionDiv = document.createElement('div')
+          actionDiv.classList.add('action')
+          actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + story.estimate + ' DMG'
+          battleLog.appendChild(actionDiv)
         })
-        battleLog.appendChild(battleLogList)
       })
   },
   false
