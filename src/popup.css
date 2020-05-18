@@ -53,7 +53,8 @@ body {
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
-  background: #0084ff7c;
+  /* background: #0084ff7c; */
+  background: #0084ff;
   padding: 12px;
   border-radius: 8px;
   outline: none;
@@ -61,12 +62,12 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   transition: all .2s linear;
 }
-.login-form:valid button:hover {
+/* .login-form:valid button:hover {
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 .login-form:valid button {
   background: #0084ff;
-}
+} */
 
 .instructions {
   display: flex;
