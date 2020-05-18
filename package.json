@@ -19,7 +19,9 @@
   "license": "ISC",
   "dependencies": {
     "eslint-plugin-jsdoc": "^24.0.6",
+    "jest-fetch-mock": "^3.0.3",
     "jest-puppeteer": "^4.4.0",
+    "node-fetch": "^2.6.0",
     "puppeteer": "^3.0.4"
   },
   "devDependencies": {
