@@ -74,7 +74,7 @@ function play (song) {
 jsdoc-to-markdown generates markdown API documentation based on jsdoc annotated source code.
 
 ### Command to generate documentation
-```npm run documentation:build```
+```npm run docs:build```
 
 ## Eslint
 ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code, with the goal of making code more consistent and avoiding bugs.
@@ -93,4 +93,3 @@ You should do this before commiting any changes to keep our repositories log cle
 2. [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown)
 3. [JS Standard Style guide](https://standardjs.com/rules-en.html)
 4. [Eslint](https://eslint.org/)
-
