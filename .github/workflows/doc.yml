@@ -5,7 +5,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  Lint:
+  Updating-Documentation:
     runs-on: ubuntu-latest
 
     steps:
