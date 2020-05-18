@@ -94,6 +94,67 @@ const getAllIncompleteStories = () => {
   return getStories({ incompleteOnly: true })
 }
 
+/**
+ * Gets top 3 point contributors from completed stories
+ *  @returns {Array}
+ */
+const getTopWarriors = () => {
+  // Map to hold name, points
+  var contributions = new Map()
+  var stories = getStories({ completeOnly: true })
+  stories.map((story) => {
+    // If owner of stories exist
+    if (story.owner_ids && story.estimate) {
+      // Update points for each owner
+      story.owner_ids.map(memberId => {
+        var memberName = getMemberName(memberId)
+        var storyPoints = story.estimate
+        if (memberName) {
+          if (contributions.has(memberName)) {
+            contributions.set(memberName, contributions.get(memberName) + storyPoints)
+          } else {
+            contributions.set(memberName, storyPoints)
+          }
+        }
+      })
+    }
+  })
+  var list = []
+  var firstPair = findContributor(contributions)
+  var secondPair = findContributor(contributions)
+  var thirdPair = findContributor(contributions)
+  list.push(firstPair)
+  list.push(secondPair)
+  list.push(thirdPair)
+
+  return list
+}
+
+/**
+ * Finds top contributor by points in parameter map
+ * @param {Map} contributions
+ * @returns {Object}
+ */
+const findContributor = (contributions) => {
+  var memberName = 'Empty'
+  var memberPoint = 0
+  // Iterate through map and find greatest value
+  for (const [key, value] of contributions) {
+    if (value > memberPoint) {
+      memberPoint = value
+      memberName = key
+    }
+  }
+  // If found, remove from map
+  if (memberName !== 'Empty') {
+    contributions.delete(memberName)
+  }
+  return {
+    name: memberName,
+    points: memberPoint
+  }
+}
+
 // Returns stories in sorted by most recently completed
 const getBattleLog = () => {
   const compare = (a, b) => {
@@ -194,6 +255,7 @@ module.exports = {
   getMyIncompleteStories,
   getAllIncompleteStories,
   getBattleLog,
+  getTopWarriors,
   getMemberName,
   getMemberProfile,
   getProgress,
