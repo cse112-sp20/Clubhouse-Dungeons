@@ -185,15 +185,14 @@ document.addEventListener(
 
         /* Set progress bar values */
         const { completed, total } = getProgress()
-        healthLeft.style.width = (completed / total) * 100 + '%'
-        healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
+        healthLeft.style.width = ((total - completed) / total) * 100 + '%'
+        healthText.appendChild(document.createTextNode(`${total - completed} / ${total}`))
 
         /* Set progress bar color change */
         const greenThreshold = (2 / 5) * total
         const yellowThreshold = (1 / 5) * total
-        const healthBar = document.getElementById('healthLeft')
-        healthBar.style.background = (completed > greenThreshold) ? 'linear-gradient(-180deg, #00ff00 0%, #00cc00 100%)'
-          : (completed > yellowThreshold) ? 'linear-gradient(-180deg, #ffff00 0%, #e6e600 100%)'
+        healthLeft.style.background = (total - completed > greenThreshold) ? 'linear-gradient(-180deg, #00ff00 0%, #00cc00 100%)'
+          : (total - completed > yellowThreshold) ? 'linear-gradient(-180deg, #ffff00 0%, #e6e600 100%)'
             : 'linear-gradient(-180deg, #e74c3c 0%, #c0392b 100%)'
 
         /* Populate tabs */
