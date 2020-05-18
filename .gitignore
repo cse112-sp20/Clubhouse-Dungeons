@@ -7,6 +7,9 @@ node_modules/
 # Webpack bundle
 dist/
 
+# Coverage Report Folder
+coverage/
+
 # Optional eslint cache
 .eslintcache
 
@@ -15,3 +18,6 @@ dist/
 
 # System Files
 .DS_Store
+
+# Dynamic Documentation
+docs/API_Documentation.md

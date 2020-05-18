@@ -123,6 +123,27 @@ const getBattleLog = () => {
 const getMemberName = (memberId) => {
   return MEMBER_MAP[memberId].profile.name
 }
+const getMemberProfile = () => {
+  // Relevant user profile details
+  if (MEMBER_MAP[MEMBER_ID].profile.display_icon) {
+    return {
+      name: MEMBER_MAP[MEMBER_ID].profile.name,
+      icon: MEMBER_MAP[MEMBER_ID].profile.display_icon.url
+    }
+  } else {
+    return {
+      name: MEMBER_MAP[MEMBER_ID].profile.name,
+      icon: 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png'
+    }
+  }
+}
+
+/**
+ * Set the current value of {@var API_TOKEN} to undefined
+ */
+const removeApiToken = () => {
+  API_TOKEN = undefined
+}
 
 const getProgress = () => {
   let completed = 0
@@ -176,13 +197,44 @@ const setup = () => {
   return SETUP
 }
 
+
+/** Used for testing only.  Does the same thing as setup, but does not use chrome storage
+ * @param apiToken the token to set the API_TOKEN var to 
+ * @param memberID the id to set MEMBER_ID var to
+ */
+const setupTest = (apiToken, memberID) =>{
+  API_TOKEN = apiToken;
+  MEMBER_ID = memberID;
+
+  Promise.all([
+    fetchStoriesAsync()
+      .then(stories => {
+        STORIES = stories
+      }),
+    fetchMembersAsync()
+      .then(members => {
+        MEMBER_MAP = {}
+        members.map(member => {
+          MEMBER_MAP[member.id] = member
+        })
+      })
+  ])
+    .then(() => {
+      resolve('All globals are setup')
+    })
+}
+
 module.exports = {
   fetchMemberInfoAsync,
   getMyIncompleteStories,
   getAllIncompleteStories,
   getBattleLog,
   getMemberName,
+  getMemberProfile,
   getProgress,
   onLogin,
-  setup
+  setup,
+  removeApiToken,
+  setupTest
 }
+

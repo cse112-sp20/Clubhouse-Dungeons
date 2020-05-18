@@ -1,0 +1,30 @@
+name: Documentation Pipeline
+
+on: 
+  push:
+    branches: [ develop ]
+
+jobs:
+  Updating-Documentation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setting up Node.JS 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: "12.x"
+    - name: Install Node Dependencies
+      run: npm install
+    - name: Generate API Documentation
+      run: npm run docs:build
+    - name: Updating Wiki
+      uses: Decathlon/wiki-page-creator-action@master
+      env:
+        GH_PAT: ${{ secrets.GH_WIKI_TOKEN }}
+        MD_FOLDER: docs
+        ACTION_MAIL: cmaytom@ucsd.edu
+        ACTION_NAME: cmaytom
+        OWNER: cse112-sp20
+        REPO_NAME: Quaranteam-8
+        TRANSLATE_UNDERSCORE_TO_SPACE: "true"

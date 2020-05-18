@@ -4,8 +4,24 @@ import {
   getAllIncompleteStories,
   getBattleLog,
   getMemberName,
-  getProgress
+  getMemberProfile,
+  getProgress,
+  removeApiToken
 } from './api/api'
+
+// Member profile button and info
+const profileContainer = document.getElementById('profileContainer')
+// const memberProfile = document.getElementById('memberProfile')
+const memberIcon = document.getElementById('memberIcon')
+const memberName = document.getElementById('memberName')
+// const memberTeam = document.getElementById('memberTeam')
+
+const healthText = document.getElementById('healthText')
+const healthLeft = document.getElementById('healthLeft')
+
+// Member menu and menu buttons
+const memberMenu = document.getElementById('memberMenu')
+const signoutButton = document.getElementById('signoutButton')
 
 // Element to create fancy animated tab highlight
 // const selectedTabBG = document.getElementById("selectedTabBG");
@@ -20,10 +36,68 @@ const myStories = document.getElementById('myStories')
 const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
 
+// Top 3 point earners
+// TODO: Set these values
+// const warrior1Name = document.getElementById('warrior1Name')
+// const warrior1Points = document.getElementById('warrior1Points')
+// const warrior2Name = document.getElementById('warrior2Name')
+// const warrior2Points = document.getElementById('warrior2Points')
+// const warrior3Name = document.getElementById('warrior3Name')
+// const warrior3Points = document.getElementById('warrior3Points')
+
 // Click event listeners for tabs
 myStoriesTab.addEventListener('click', () => selectTab(0))
 allStoriesTab.addEventListener('click', () => selectTab(1))
 battleLogTab.addEventListener('click', () => selectTab(2))
+
+
+/**
+ * Signout by removing all items from StorageArea storage.sync
+ */
+const signout = () => {
+  chrome.storage.sync.clear((clear) => {
+    if (chrome.runtime.lastError === undefined) {
+      console.log('storage cleared')
+      // remove the api token in use from api.js
+      removeApiToken()
+      // load the login page
+      window.location.href = 'login.html'
+    } else {
+      alert('Error trying to clear storage')
+    }
+  })
+}
+
+/**
+ * Show member profile menu
+ */
+const toggleMemberMenu = () => {
+  if (profileContainer.classList.contains('closed')) {
+    profileContainer.classList.remove('closed')
+    profileContainer.classList.add('open')
+  } else {
+    profileContainer.classList.remove('open')
+    profileContainer.classList.add('closed')
+  }
+}
+
+/**
+ * Close member profile menu on outside click
+ */
+document.body.addEventListener('click', (event) => {
+  if (event.target.id.length > 0) {
+    if (!event.target.id.substring(0, 5)==='member' && memberMenu.classList.contains('show')) {
+      toggleMemberMenu();
+    }
+  } else {
+    if (memberMenu.classList.contains('show')) {
+      toggleMemberMenu();
+    }
+  }
+
+})
+profileContainer.addEventListener('click', toggleMemberMenu)
+signoutButton.addEventListener('click', signout)
 
 /**
  * Apply appropriate styles to selected tab and panel item
@@ -31,6 +105,10 @@ battleLogTab.addEventListener('click', () => selectTab(2))
  * @param {number} tabIndex - index of tab
  */
 function selectTab (tabIndex) {
+  // Close profile menu if it's open
+  if (memberMenu.classList.contains('show')) {
+    toggleMemberMenu();
+  }
   // Deselect previously selected tab and hide previously selected panel item
   var selectedTabs = document.getElementsByClassName('selected')
   while (selectedTabs.length > 0) {
@@ -58,45 +136,83 @@ function selectTab (tabIndex) {
   }
 }
 
+/**
+ * TODO: Complete story
+ * 
+ * @param {Story} story 
+ */
+function completeStory(story) {
+  console.log('complete story', story)
+}
+
 document.addEventListener(
   'DOMContentLoaded',
   () => {
     setup()
       .then(() => {
+
+        /* Get member info for profile button */
+        const memberProfile = getMemberProfile();
+        memberName.innerHTML = memberProfile.name;
+        memberIcon.src = memberProfile.icon;
+        // TODO: set memberTeam.innerHTML to user's team name
+
         /* Set progress bar values */
         const { completed, total } = getProgress()
-        document.getElementById('healthText').appendChild(document.createTextNode(`${completed} / ${total}`))
+        healthLeft.style.width = (completed / total) * 100 + '%'
+        healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
 
         /* Populate tabs */
-        const myStoriesList = document.createElement('ul')
-        getMyIncompleteStories().map(story => {
-          const li = document.createElement('li')
-          li.appendChild(document.createTextNode(`${story.name} --- ${story.estimate} points`))
-          myStoriesList.appendChild(li)
-        })
-        myStories.appendChild(myStoriesList)
 
-        const allStoriesList = document.createElement('ul')
+        // My Stories
+        getMyIncompleteStories().map(story => {
+          const storyDiv = document.createElement('div')
+          const storyButton = document.createElement('div')
+          storyDiv.classList.add('story')
+          storyButton.classList.add('story-button')
+          storyButton.innerHTML = '<img src="images/sword.png" >'
+          storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+          storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+          storyButton.addEventListener('click', () => completeStory(story))
+          storyDiv.prepend(storyButton)
+          myStories.appendChild(storyDiv)
+        })
+
         getAllIncompleteStories().map(story => {
-          const li = document.createElement('li')
           const ownerNames = story.owner_ids.length > 0
             ? story.owner_ids.map(memberId => getMemberName(memberId))
-            : 'unassigned'
-          li.appendChild(document.createTextNode(`${story.name} --- ${ownerNames} --- ${story.estimate} points`))
-          allStoriesList.appendChild(li)
-        })
-        allStories.appendChild(allStoriesList)
+            : ['Unassigned']
 
-        const battleLogList = document.createElement('ul')
+          console.log(ownerNames);
+          const storyDiv = document.createElement('div')
+          const storyButton = document.createElement('div')
+          storyDiv.classList.add('story')
+          storyButton.classList.add('story-button')
+          storyButton.innerHTML = '<img src="images/sword.png" >'
+          storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+          storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+          const ownersDiv = document.createElement('div')
+          ownersDiv.classList.add('owners')
+          ownerNames.forEach(ownerName => {
+            const ownerDiv = document.createElement('div')
+            ownerDiv.innerHTML = ownerName
+            ownersDiv.append(ownerDiv)
+          });
+          storyButton.addEventListener('click', () => completeStory(story))
+          storyDiv.prepend(storyButton)
+          storyDiv.append(ownersDiv)
+          allStories.appendChild(storyDiv)
+        })
+
         getBattleLog().map(story => {
-          const li = document.createElement('li')
           const ownerNames = story.owner_ids.length > 0
             ? story.owner_ids.map(memberId => getMemberName(memberId)).join(', ')
             : 'unassigned'
-          li.appendChild(document.createTextNode(`${ownerNames} completed ${story.name} --- ${story.estimate} points`))
-          battleLogList.appendChild(li)
+          const actionDiv = document.createElement('div')
+          actionDiv.classList.add('action')
+          actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + story.estimate + ' DMG'
+          battleLog.appendChild(actionDiv)
         })
-        battleLog.appendChild(battleLogList)
       })
   },
   false
