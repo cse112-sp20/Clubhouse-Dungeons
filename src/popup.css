@@ -31,12 +31,39 @@ body {
   border-bottom: 1px solid rgba(255,255,255,.1);
 }
 
+#profileContainer {
+  position: relative;
+}
+
+#profileContainer.closed {
+
+}
+
+#profileContainer.open {
+  
+}
+
 #memberProfile {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  color: #ffffff;
+  padding: 6px;
+  border-radius: 8px;
+  background: transparent;
+  transition: all .2s linear;
 }
+#profileContainer.closed #memberProfile {
+  border: 1px solid rgba(0,0,0,0);
+}
+#profileContainer.open #memberProfile {
+  border: 1px solid #0084ff;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  color: rgba(0,0,0,0.9);
+}
+
 
 #memberProfile .member-icon {
   position: relative;
@@ -53,14 +80,50 @@ body {
 #memberProfile #memberName {
   padding: 0 10px;
 }
-#memberProfile .carrot {
-  font-size: 8px;
+.carrot {
+  width: 16px;
+  font-size: 12px;
+  transition: all .2s linear;
+}
+#profileContainer.closed .carrot {
   color: rgba(255,255,255,.4);
 }
+#profileContainer.open .carrot {
+  color: rgba(0,0,0,0.4);
+  transform: rotateX(180deg);
+} 
 
 #memberMenu {
-  display: none;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
   position: absolute;
+  top: 48px;
+  left: 0;
+  transition: all .2s linear;
+  background: #ffffff;
+  color: rgba(0,0,0,0.8);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+#profileContainer.closed #memberMenu {
+  display: none;
+}
+#profileContainer.open #memberMenu {
+  display: block;
+}
+
+.menu-item {
+  padding: 8px;
+  margin: 8px;
+  border-radius: 4px;
+  transition: all .2s linear;
+}
+.menu-item:hover {
+  background: rgba(0,0,0,0.2);
 }
 
 .boss-container {

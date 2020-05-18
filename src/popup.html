@@ -9,23 +9,25 @@
 
 <body>
   <!-- Battliefield contains the monster, healthbar, and top warriors -->
-  <div class="battlefield">
+  <div class="battlefield" id="battlefield">
 
     <div class="nav">
       <div id="teamName">Quaranteam-8</div>
 
-      <!-- Member profile button -->
-      <div id="memberProfile">
-        <div class="member-icon">
-          <img id="memberIcon"/>
+      <div id="profileContainer" class="closed">
+        <!-- Member profile info and button to open menu -->
+        <div id="memberProfile">
+          <div class="member-icon">
+            <img id="memberIcon"/>
+          </div>
+          <div id="memberName"></div>
+          <span class="carrot">&#9662</span>
         </div>
-        <div id="memberName"></div>
-        <span class="carrot">&#9660</span>
-      </div>
 
-      <!-- Member profile menu -->
-      <div id="memberMenu">
-        <div id="signoutButton">Signout</div>
+        <!-- Member profile menu -->
+        <div id="memberMenu" class="hide">
+          <div id="signoutButton" class="menu-item">Signout</div>
+        </div>
       </div>
 
     </div>
