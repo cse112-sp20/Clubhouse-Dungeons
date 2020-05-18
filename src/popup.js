@@ -35,6 +35,15 @@ const myStories = document.getElementById('myStories')
 const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
 
+// Top 3 point earners
+// TODO: Set these values
+const warrior1Name = document.getElementById('warrior1Name')
+const warrior1Points = document.getElementById('warrior1Points')
+const warrior2Name = document.getElementById('warrior2Name')
+const warrior2Points = document.getElementById('warrior2Points')
+const warrior3Name = document.getElementById('warrior3Name')
+const warrior3Points = document.getElementById('warrior3Points')
+
 // Click event listeners for tabs
 myStoriesTab.addEventListener('click', () => selectTab(0))
 allStoriesTab.addEventListener('click', () => selectTab(1))
@@ -145,6 +154,7 @@ document.addEventListener(
         const memberProfile = getMemberProfile();
         memberName.innerHTML = memberProfile.name;
         memberIcon.src = memberProfile.icon;
+        // TODO: set memberTeam.innerHTML to user's team name
 
         /* Set progress bar values */
         const { completed, total } = getProgress()
