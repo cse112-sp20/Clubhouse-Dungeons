@@ -80,7 +80,9 @@ document.body.addEventListener('click', (event) => {
       toggleMemberMenu();
     }
   } else {
-    toggleMemberMenu();
+    if (memberMenu.classList.contains('show')) {
+      toggleMemberMenu();
+    }
   }
 
 })
@@ -124,6 +126,15 @@ function selectTab (tabIndex) {
   }
 }
 
+/**
+ * TODO: Complete story
+ * 
+ * @param {Story} story 
+ */
+function completeStory(story) {
+  console.log('complete story', story)
+}
+
 document.addEventListener(
   'DOMContentLoaded',
   () => {
@@ -141,13 +152,20 @@ document.addEventListener(
         healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
 
         /* Populate tabs */
-        const myStoriesList = document.createElement('ul')
+
+        // My Stories
         getMyIncompleteStories().map(story => {
-          const li = document.createElement('li')
-          li.appendChild(document.createTextNode(`${story.name} --- ${story.estimate} points`))
-          myStoriesList.appendChild(li)
+          const storyDiv = document.createElement('div')
+          const storyButton = document.createElement('div')
+          storyDiv.classList.add('story')
+          storyButton.classList.add('story-button')
+          storyButton.innerHTML = '<img src="images/sword.png" >'
+          storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+          storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+          storyButton.addEventListener('click', () => completeStory(story))
+          storyDiv.prepend(storyButton)
+          myStories.appendChild(storyDiv)
         })
-        myStories.appendChild(myStoriesList)
 
         const allStoriesList = document.createElement('ul')
         getAllIncompleteStories().map(story => {

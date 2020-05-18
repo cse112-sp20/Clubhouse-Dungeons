@@ -349,12 +349,20 @@ body {
 
 .panel {
   height: 50%;
+  background: #ffffff;
+  color: #2c3e50;
+}
+
+.dark-mode .panel {
+  background: #2c3e50;
+  color: #ffffff;
 }
 
 .tabs {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  background: rgba(255,255,255,.1);
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
@@ -362,7 +370,7 @@ body {
   font-size: 10px;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   padding: 10px;
   border-top: 2px solid rgba(0,0,0,0);
   border-bottom: 2px solid rgba(0,0,0,0);
@@ -380,5 +388,59 @@ body {
 }
 
 .story {
+  position: relative;
+  height: 40px;
+  width: 100%;
+  background: #ffffff;
+  padding: 8px 8px 8px 60px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.dark-mode .story {
+  background: #34495e;
+}
+
+.story .story-button {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 40px;
+  height: 40px;
+  background: #34495e;
+  border: 1px solid #FFD700;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2) inset,
+              0 2px 8px rgba(0,0,0,.2);
+  border-radius: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.story .story-button img {
+  height: 60%;
+  opacity: .5;
+  transition: all .2s linear;
+}
+.story .story-button:hover img {
+  opacity: 1;
+}
+
+.story .name {
   font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #34495e;
+  margin-bottom: 2px;
+}
+
+.story .points {
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #34495e70;
 }
