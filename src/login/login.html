@@ -1,27 +1,39 @@
-<style>
-    .center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 50px;
-        width: 400px;
-    }
-</style>
-
+<!DOCTYPE html>
 <html>
 
 <head>
-    <title>Clubhouse API Login Page</title>
+  <meta charset="UTF-8">
+  <title>Quaranteam-8</title>
+  <link rel="stylesheet" href="../popup.css">
 </head>
 
+
 <body>
-    <h1 style="text-align: center;">Quaranteam-8 Clubhouse Login</h1>
-    <div class="center">
-        <input id="apiEntry" placeholder="Enter your Clubhouse API key" size=40>
-        <br>
-        <button id="button">Submit</button>
-        <script src="login.js"></script>
+  <div class="login-container">
+    <div class="login-modal">
+      <h1>Login</h1>
+      <div class="instructions">
+        <div class="instruction">
+          <div class="number">1</div>
+          <div class="text">Go to <a href="https://app.clubhouse.io/quaranteam-8/settings/account/api-tokens">Settings > API Tokens</a> in Clubhouse</div>
+        </div>
+        <div class="instruction">
+          <div class="number">2</div>
+          <div class="text">Enter a token name then click <span>Generate Token</span></div>
+        </div>
+        <div class="instruction">
+          <div class="number">3</div>
+          <div class="text">Copy the generated token into the box below</div>
+        </div>
+      </div>
+      <div class="login-form">
+        <input id="apiEntry" placeholder="Clubhouse API key" required>
+        <button id="button">Enter</button>
+      </div>
     </div>
+  </div>
+
+  <script src="login.js"></script>
 </body>
 
 </html>

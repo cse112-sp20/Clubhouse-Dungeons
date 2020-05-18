@@ -42,8 +42,8 @@ document.addEventListener(
           }
         })
         .catch((e) => {
+          console.log('error', e)
           alert('Error')
-          console.log(e)
         })
     } // OnClick()
     document.querySelector('button').addEventListener('click', onClick, false)

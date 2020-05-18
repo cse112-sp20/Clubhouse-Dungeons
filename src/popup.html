@@ -1,12 +1,3 @@
-<style>
-  .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-  }
-</style>
-
 <!DOCTYPE html>
 <html>
 
@@ -18,19 +9,41 @@
 
 <body>
   <!-- Battliefield contains the monster, healthbar, and top warriors -->
-  <div class="battlefield">
+  <div class="battlefield" id="battlefield">
 
     <div class="nav">
-      <div id="teamName">Quaranteam-8</div>
-      <div id="userName">Kyle Johnson</div>
+
+      <div></div>
+      <div id="profileContainer" class="closed">
+        <!-- Member profile info and button to open menu -->
+        <div id="memberProfile">
+          <div class="member-icon">
+            <img id="memberIcon" />
+          </div>
+          <div>
+            <div id="memberName"></div>
+            <div id="memberTeam">Quaranteam-8</div>
+          </div>
+          <span class="carrot">&#9662</span>
+        </div>
+
+        <!-- Member profile menu -->
+        <div id="memberMenu" class="hide">
+          <div id="signoutButton" class="menu-item">Signout</div>
+        </div>
+      </div>
+
     </div>
 
-    <div id="healthbar">
-      <div id="healthText"></div>
-      <div id="healthLeft"></div>
-    </div>
+    <div class="boss-container">
 
-    <img id="monster" src="images/sully.png">
+      <div id="healthbar">
+        <div id="healthText"></div>
+        <div id="healthLeft"></div>
+      </div>
+
+      <img id="monster" src="images/sully.png">
+    </div>
 
     <div class="top-warriors">
       <div class="top-warriors-title">Top Warriors</div>
@@ -77,13 +90,7 @@
     </div>
   </div>
 
-
-
-  <h1 style="text-align: center;">Quaranteam-8</h1>
-  <h2 style="text-align: center;">Welcome to our Chrome Extension</h2>
-  <p style="text-align: center;"><img src="images/quaranteam8logo.png" /></p>
-
-  <script src="popup.js" charset="utf-8"></script>
+  <script src="popup.js"></script>
 </body>
 
 </html>
