@@ -7,18 +7,23 @@
     "test": "test"
   },
   "scripts": {
+    "test": "jest test/",
+    "test:coverage": "jest test/ --coverage",
     "build": "webpack",
     "clean": "run-script-os",
     "clean:darwin:linux": "rm -rf dist",
     "clean:win32": "rmdir /Q /S dist",
-    "test": "jest test/",
     "lint": "eslint --fix src/",
-    "lint:report": "eslint --output-file eslint_report.json --format json src/"
+    "lint:report": "eslint --output-file eslint_report.json --format json src/",
+    "docs:build": "node scripts/doc.js > docs/API_Documentation.md"
   },
   "author": "quaranteam8",
   "license": "ISC",
   "dependencies": {
-    "eslint-plugin-jsdoc": "^24.0.6"
+    "eslint-plugin-jsdoc": "^24.0.6",
+    "jsdoc": "^3.6.4",
+    "jsdoc-to-markdown": "^5.0.3",
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^5.1.1",
@@ -34,5 +39,8 @@
     "run-script-os": "^1.1.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
+  },
+  "jest": {
+    "verbose": true
   }
 }
