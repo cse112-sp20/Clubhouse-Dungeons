@@ -233,9 +233,11 @@ body {
 }
 #profileContainer.closed #memberMenu {
   display: none;
+  height: 0;
 }
 #profileContainer.open #memberMenu {
   display: block;
+  height: auto;
 }
 
 .menu-item {
@@ -306,8 +308,7 @@ body {
   justify-content: space-between;
   position: relative;
   font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   margin-top: 16px;
 }
 
@@ -318,6 +319,7 @@ body {
   transform: translateX(-50%);
   font-size: 10px;
   color: rgba(255,255,255,.5);
+  text-transform: uppercase;
 }
 
 .top-warriors .top-warrior {
@@ -340,11 +342,14 @@ body {
 
 .top-warriors .top-warrior .name {
   font-size: 12px;
+  line-height: 12px;
 }
 
 .top-warriors .top-warrior .points {
   font-size: 10px;
+  line-height: 12px;
   color: rgba(255,255,255,.5);
+  text-transform: uppercase;
 }
 
 .panel {
@@ -364,6 +369,7 @@ body {
   justify-content: space-evenly;
   background: rgba(255,255,255,.1);
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 9;
 }
 
 .tab {
@@ -382,15 +388,22 @@ body {
 .panel-item {
   display: none;
   padding: 12px;
+  max-height: 100%;
+  overflow-y: scroll;
 }
 .panel-item.selected {
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding-bottom: 100px;
 }
 
 .story {
   position: relative;
   height: 40px;
-  width: 100%;
+  min-height: 40px;
+  /* width: 100%; */
   background: #ffffff;
   padding: 8px 8px 8px 60px;
   border-radius: 8px;
@@ -399,6 +412,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  margin: 8px 0;
 }
 .dark-mode .story {
   background: #34495e;
@@ -443,4 +457,20 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #34495e70;
+}
+.story .owners {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  font-size: 10px;
+  color: #34495e;
+}
+
+.action {
+  padding: 8px;
+  border-bottom: 1px solid rgba(0,0,0,.1);
 }

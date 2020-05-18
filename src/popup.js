@@ -167,27 +167,41 @@ document.addEventListener(
           myStories.appendChild(storyDiv)
         })
 
-        const allStoriesList = document.createElement('ul')
         getAllIncompleteStories().map(story => {
-          const li = document.createElement('li')
           const ownerNames = story.owner_ids.length > 0
             ? story.owner_ids.map(memberId => getMemberName(memberId))
-            : 'unassigned'
-          li.appendChild(document.createTextNode(`${story.name} --- ${ownerNames} --- ${story.estimate} points`))
-          allStoriesList.appendChild(li)
-        })
-        allStories.appendChild(allStoriesList)
+            : ['Unassigned']
 
-        const battleLogList = document.createElement('ul')
+          console.log(ownerNames);
+          const storyDiv = document.createElement('div')
+          const storyButton = document.createElement('div')
+          storyDiv.classList.add('story')
+          storyButton.classList.add('story-button')
+          storyButton.innerHTML = '<img src="images/sword.png" >'
+          storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+          storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+          const ownersDiv = document.createElement('div')
+          ownersDiv.classList.add('owners')
+          ownerNames.forEach(ownerName => {
+            const ownerDiv = document.createElement('div')
+            ownerDiv.innerHTML = ownerName
+            ownersDiv.append(ownerDiv)
+          });
+          storyButton.addEventListener('click', () => completeStory(story))
+          storyDiv.prepend(storyButton)
+          storyDiv.append(ownersDiv)
+          allStories.appendChild(storyDiv)
+        })
+
         getBattleLog().map(story => {
-          const li = document.createElement('li')
           const ownerNames = story.owner_ids.length > 0
             ? story.owner_ids.map(memberId => getMemberName(memberId)).join(', ')
             : 'unassigned'
-          li.appendChild(document.createTextNode(`${ownerNames} completed ${story.name} --- ${story.estimate} points`))
-          battleLogList.appendChild(li)
+          const actionDiv = document.createElement('div')
+          actionDiv.classList.add('action')
+          actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + story.estimate + ' DMG'
+          battleLog.appendChild(actionDiv)
         })
-        battleLog.appendChild(battleLogList)
       })
   },
   false
