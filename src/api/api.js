@@ -51,6 +51,37 @@ const fetchStoriesAsync = async () => {
     })
 }
 
+const getCurrentTime = () => {
+  var today = new Date()
+  return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + 'Z'
+}
+
+/**
+ * Request update to story info using workflow_state_id and time completed
+ * @param {string} storyId - public id of the story
+ */
+const completeStoriesAsync = async (storyId) => {
+  const res = await fetch(`https://api.clubhouse.io/api/v3/stories/${storyId}?token=${API_TOKEN}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ completed_at_override: getCurrentTime(), workflow_state_id: 500000011 })
+  })
+  return res.json()
+}
+
+/**
+ * Request undo completion of story info using workflow_state_id
+ * @param {string} storyId - public id of the story
+ */
+const revertCompleteStoriesAsync = async (storyId) => {
+  const res = await fetch(`https://api.clubhouse.io/api/v3/stories/${storyId}?token=${API_TOKEN}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ workflow_state_id: 50000008 })
+  })
+  return res.json()
+}
+
 const fetchMemberInfoAsync = async (apiToken) => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/member?token=${apiToken}`, {
     headers: { 'Content-Type': 'application/json' }
@@ -95,9 +126,9 @@ const getAllIncompleteStories = () => {
 }
 
 /**
- * Gets top 3 point contributors from completed stories
- *  @returns {Array}
- */
+   * Gets top 3 point contributors from completed stories
+   *  @returns {Array}
+   */
 const getTopWarriors = () => {
   // Map to hold name, points
   var map = new Map()
@@ -105,10 +136,11 @@ const getTopWarriors = () => {
     map.set(memberId, memberObj)
   }
   /**
- * Finds top contributor by points in parameter map
- * @returns {Object}
- */
+   * Finds top contributor by points in parameter map
+   * @returns {Object}
+   */
   const findContributor = () => {
+    // Set default top warrior values
     var memberName = 'Empty'
     var memberPoints = 0
     var memId
@@ -174,19 +206,21 @@ const getMemberProfile = () => {
   if (MEMBER_MAP[MEMBER_ID].profile.display_icon) {
     return {
       name: MEMBER_MAP[MEMBER_ID].profile.name,
-      icon: MEMBER_MAP[MEMBER_ID].profile.display_icon.url
+      icon: MEMBER_MAP[MEMBER_ID].profile.display_icon.url,
+      role: MEMBER_MAP[MEMBER_ID].role
     }
   } else {
     return {
       name: MEMBER_MAP[MEMBER_ID].profile.name,
-      icon: 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png'
+      icon: 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png',
+      role: MEMBER_MAP[MEMBER_ID].role
     }
   }
 }
 
 /**
- * Set the current value of {@var API_TOKEN} to undefined
- */
+   * Set the current value of {@var API_TOKEN} to undefined
+   */
 const removeApiToken = () => {
   API_TOKEN = undefined
 }
@@ -257,6 +291,8 @@ const setup = () => {
 
 module.exports = {
   fetchMemberInfoAsync,
+  completeStoriesAsync,
+  revertCompleteStoriesAsync,
   getMyIncompleteStories,
   getAllIncompleteStories,
   getBattleLog,

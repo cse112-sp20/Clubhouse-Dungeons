@@ -2,6 +2,8 @@ import {
   setup,
   getMyIncompleteStories,
   getAllIncompleteStories,
+  completeStoriesAsync,
+  revertCompleteStoriesAsync,
   getBattleLog,
   getTopWarriors,
   getMemberName,
@@ -15,7 +17,7 @@ const profileContainer = document.getElementById('profileContainer')
 // const memberProfile = document.getElementById('memberProfile')
 const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
-// const memberTeam = document.getElementById('memberTeam')
+const memberTeam = document.getElementById('memberTeam')
 
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
@@ -38,13 +40,13 @@ const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
 
 // Top 3 point earners
-// TODO: Set these values
-// const warrior1Name = document.getElementById('warrior1Name')
-// const warrior1Points = document.getElementById('warrior1Points')
-// const warrior2Name = document.getElementById('warrior2Name')
-// const warrior2Points = document.getElementById('warrior2Points')
-// const warrior3Name = document.getElementById('warrior3Name')
-// const warrior3Points = document.getElementById('warrior3Points')
+
+const warrior1Name = document.getElementById('warrior1Name')
+const warrior1Points = document.getElementById('warrior1Points')
+const warrior2Name = document.getElementById('warrior2Name')
+const warrior2Points = document.getElementById('warrior2Points')
+const warrior3Name = document.getElementById('warrior3Name')
+const warrior3Points = document.getElementById('warrior3Points')
 
 // Click event listeners for tabs
 myStoriesTab.addEventListener('click', () => selectTab(0))
@@ -136,11 +138,27 @@ function selectTab (tabIndex) {
 }
 
 /**
- * TODO: Complete story
+ * Complete story onClick
  *
  * @param {Story} story
  */
 function completeStory (story) {
+  completeStoriesAsync(story.id)
+    .then((data) => {
+      console.log(data)
+    })
+  console.log('complete story', story)
+}
+/**
+ * Undo complete story onClick
+ *
+ * @param {Story} story
+ */
+function undoCompleteStory (story) {
+  revertCompleteStoriesAsync(story.id)
+    .then((data) => {
+      console.log(data)
+    })
   console.log('complete story', story)
 }
 
@@ -153,17 +171,17 @@ document.addEventListener(
         const memberProfile = getMemberProfile()
         memberName.innerHTML = memberProfile.name
         memberIcon.src = memberProfile.icon
-        // TODO: set memberTeam.innerHTML to user's team name
+        memberTeam.innerHTML = memberProfile.role /* sets role of member not organization/team */
 
         /* Get top warraiors and update text */
         const topWarriors = getTopWarriors()
-        document.getElementById('warrior1Name').innerText = (topWarriors) ? `${topWarriors[0].name}` : 'Kevin'
-        document.getElementById('warrior2Name').innerText = (topWarriors) ? `${topWarriors[1].name}` : 'Chris'
-        document.getElementById('warrior3Name').innerText = (topWarriors) ? `${topWarriors[2].name}` : 'Jedd'
+        warrior1Name.innerText = `${topWarriors[0].name}`
+        warrior2Name.innerText = `${topWarriors[1].name}`
+        warrior3Name.innerText = `${topWarriors[2].name}`
 
-        document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
-        document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
-        document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
+        warrior1Points.innerText = `${topWarriors[0].points}` + ' DMG'
+        warrior2Points.innerText = `${topWarriors[1].points}` + ' DMG'
+        warrior3Points.innerText = `${topWarriors[2].points}` + ' DMG'
 
         /* Set progress bar values */
         const { completed, total } = getProgress()
@@ -199,7 +217,7 @@ document.addEventListener(
             ? story.owner_ids.map(memberId => getMemberName(memberId))
             : ['Unassigned']
 
-          console.log(ownerNames)
+          // console.log(ownerNames)
           const storyDiv = document.createElement('div')
           const storyButton = document.createElement('div')
           storyDiv.classList.add('story')
