@@ -202,7 +202,7 @@ const setup = () => {
  * @param apiToken the token to set the API_TOKEN var to 
  * @param memberID the id to set MEMBER_ID var to
  */
-const setupTest = (apiToken, memberID) =>{
+const setupTest = (apiToken, memberID, cb) =>{
   API_TOKEN = apiToken;
   MEMBER_ID = memberID;
 
@@ -220,7 +220,7 @@ const setupTest = (apiToken, memberID) =>{
       })
   ])
     .then(() => {
-      resolve('All globals are setup')
+      cb();
     })
 }
 
