@@ -155,9 +155,6 @@ document.addEventListener(
         memberIcon.src = memberProfile.icon
         // TODO: set memberTeam.innerHTML to user's team name
 
-
-
-
         /* Get top warraiors and update text */
         const topWarriors = getTopWarriors()
         document.getElementById('warrior1Name').innerText = (topWarriors) ? `${topWarriors[0].name}` : 'Kevin'
