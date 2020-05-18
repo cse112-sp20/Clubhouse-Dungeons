@@ -100,59 +100,44 @@ const getAllIncompleteStories = () => {
  */
 const getTopWarriors = () => {
   // Map to hold name, points
-  var contributions = new Map()
-  var stories = getStories({ completeOnly: true })
-  stories.map((story) => {
-    // If owner of stories exist
-    if (story.owner_ids && story.estimate) {
-      // Update points for each owner
-      story.owner_ids.map(memberId => {
-        var memberName = getMemberName(memberId)
-        var storyPoints = story.estimate
-        if (memberName) {
-          if (contributions.has(memberName)) {
-            contributions.set(memberName, contributions.get(memberName) + storyPoints)
-          } else {
-            contributions.set(memberName, storyPoints)
-          }
-        }
-      })
+  var map = new Map()
+  for (const [memberId, memberObj] of Object.entries(MEMBER_MAP)) {
+    map.set(memberId, memberObj)
+  }
+  /**
+ * Finds top contributor by points in parameter map
+ * @returns {Object}
+ */
+  const findContributor = () => {
+    var memberName = 'Empty'
+    var memberPoints = 0
+    var memId
+    // Iterate through map and find greatest value
+    for (const [memberId, memberObj] of map) {
+      if (memberObj.points > memberPoints) {
+        memberPoints = memberObj.points
+        memberName = getMemberName(memberId)
+        memId = memberId
+      }
     }
-  })
+    // If found, remove from map
+    if (memberName !== 'Empty') {
+      map.delete(memId)
+    }
+    return {
+      name: memberName,
+      points: memberPoints
+    }
+  }
+  // Finds top three contributors and push to returned list
   var list = []
-  var firstPair = findContributor(contributions)
-  var secondPair = findContributor(contributions)
-  var thirdPair = findContributor(contributions)
+  var firstPair = findContributor()
+  var secondPair = findContributor()
+  var thirdPair = findContributor()
   list.push(firstPair)
   list.push(secondPair)
   list.push(thirdPair)
-
   return list
-}
-
-/**
- * Finds top contributor by points in parameter map
- * @param {Map} contributions
- * @returns {Object}
- */
-const findContributor = (contributions) => {
-  var memberName = 'Empty'
-  var memberPoint = 0
-  // Iterate through map and find greatest value
-  for (const [key, value] of contributions) {
-    if (value > memberPoint) {
-      memberPoint = value
-      memberName = key
-    }
-  }
-  // If found, remove from map
-  if (memberName !== 'Empty') {
-    contributions.delete(memberName)
-  }
-  return {
-    name: memberName,
-    points: memberPoint
-  }
 }
 
 // Returns stories in sorted by most recently completed
@@ -248,7 +233,20 @@ const setup = () => {
               })
             })
         ])
+
           .then(() => {
+            // Initalize member map points to 0
+            for (const memberObj of Object.values(MEMBER_MAP)) {
+              memberObj.points = 0
+            }
+            // Set total contributed points to each member
+            getStories({ completeOnly: true }).map((story) => {
+              if (story.owner_ids && story.estimate) {
+                story.owner_ids.map((memberId) => {
+                  MEMBER_MAP[memberId].points += story.estimate
+                })
+              }
+            })
             resolve('All globals are setup')
           })
       })
