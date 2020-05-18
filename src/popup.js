@@ -11,9 +11,10 @@ import {
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
-const memberProfile = document.getElementById('memberProfile')
+// const memberProfile = document.getElementById('memberProfile')
+const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
-const memberTeam = document.getElementById('memberTeam')
+// const memberTeam = document.getElementById('memberTeam')
 
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
@@ -37,12 +38,12 @@ const battleLog = document.getElementById('battleLog')
 
 // Top 3 point earners
 // TODO: Set these values
-const warrior1Name = document.getElementById('warrior1Name')
-const warrior1Points = document.getElementById('warrior1Points')
-const warrior2Name = document.getElementById('warrior2Name')
-const warrior2Points = document.getElementById('warrior2Points')
-const warrior3Name = document.getElementById('warrior3Name')
-const warrior3Points = document.getElementById('warrior3Points')
+// const warrior1Name = document.getElementById('warrior1Name')
+// const warrior1Points = document.getElementById('warrior1Points')
+// const warrior2Name = document.getElementById('warrior2Name')
+// const warrior2Points = document.getElementById('warrior2Points')
+// const warrior3Name = document.getElementById('warrior3Name')
+// const warrior3Points = document.getElementById('warrior3Points')
 
 // Click event listeners for tabs
 myStoriesTab.addEventListener('click', () => selectTab(0))
@@ -85,7 +86,7 @@ const toggleMemberMenu = () => {
  */
 document.body.addEventListener('click', (event) => {
   if (event.target.id.length > 0) {
-    if (!event.target.id.substring(0, 5) == 'member' && memberMenu.classList.contains('show')) {
+    if (!event.target.id.substring(0, 5)==='member' && memberMenu.classList.contains('show')) {
       toggleMemberMenu();
     }
   } else {
