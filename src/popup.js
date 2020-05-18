@@ -38,7 +38,6 @@ myStoriesTab.addEventListener('click', () => selectTab(0))
 allStoriesTab.addEventListener('click', () => selectTab(1))
 battleLogTab.addEventListener('click', () => selectTab(2))
 
-
 /**
  * Signout by removing all items from StorageArea storage.sync
  */
@@ -75,12 +74,11 @@ const toggleMemberMenu = () => {
 document.body.addEventListener('click', (event) => {
   if (event.target.id.length > 0) {
     if (!event.target.id.substring(0, 5) == 'member' && memberMenu.classList.contains('show')) {
-      toggleMemberMenu();
+      toggleMemberMenu()
     }
   } else {
-    toggleMemberMenu();
+    toggleMemberMenu()
   }
-
 })
 profileContainer.addEventListener('click', toggleMemberMenu)
 signoutButton.addEventListener('click', signout)
@@ -93,7 +91,7 @@ signoutButton.addEventListener('click', signout)
 function selectTab (tabIndex) {
   // Close profile menu if it's open
   if (memberMenu.classList.contains('show')) {
-    toggleMemberMenu();
+    toggleMemberMenu()
   }
   // Deselect previously selected tab and hide previously selected panel item
   var selectedTabs = document.getElementsByClassName('selected')
