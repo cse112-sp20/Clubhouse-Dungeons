@@ -7,6 +7,9 @@ node_modules/
 # Webpack bundle
 dist/
 
+# Coverage Report Folder
+coverage/
+
 # Optional eslint cache
 .eslintcache
 
