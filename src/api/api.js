@@ -53,7 +53,9 @@ const fetchStoriesAsync = async () => {
 
 const getCurrentTime = () => {
   var today = new Date()
-  return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + 'Z'
+  var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+  var time = 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + 'Z'
+  return date + time
 }
 
 /**
