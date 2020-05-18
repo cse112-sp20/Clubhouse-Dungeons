@@ -291,10 +291,7 @@ body {
 }
 
 #healthbar #healthLeft {
-<<<<<<< HEAD
-=======
   width: 100%;
->>>>>>> 20d40ecf82d7a7253570e18ff634764b1effc041
   height: 16px;
   margin: 1px;
   border-radius: 100px;

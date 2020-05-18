@@ -178,9 +178,6 @@ document.addEventListener(
           : (completed > yellowThreshold) ? 'linear-gradient(-180deg, #ffff00 0%, #e6e600 100%)'
             : 'linear-gradient(-180deg, #e74c3c 0%, #c0392b 100%)'
 
-        /* Set progress bar width */
-        healthBar.style.width = (completed * 100 / total) + '%'
-
         /* Populate tabs */
 
         // My Stories
