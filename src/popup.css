@@ -302,6 +302,16 @@ body {
   transition: width 1s ease-out;
 }
 
+.healthBarGreenState {
+  background: linear-gradient(-180deg, #00ff00 0%, #00cc00 100%)
+}
+.healthBarYellowState {
+  background: linear-gradient(-180deg, #ffff00 0%, #e6e600 100%)
+}
+.healthBarRedState {
+  background: linear-gradient(-180deg, #e74c3c 0%, #c0392b 100%)
+}
+
 .top-warriors {
   display: flex;
   flex-direction: row;

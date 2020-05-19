@@ -191,10 +191,9 @@ document.addEventListener(
         /* Set progress bar color change */
         const greenThreshold = (2 / 5) * total
         const yellowThreshold = (1 / 5) * total
-        healthLeft.style.background = (total - completed > greenThreshold) ? 'linear-gradient(-180deg, #00ff00 0%, #00cc00 100%)'
-          : (total - completed > yellowThreshold) ? 'linear-gradient(-180deg, #ffff00 0%, #e6e600 100%)'
-            : 'linear-gradient(-180deg, #e74c3c 0%, #c0392b 100%)'
-
+        healthLeft.className += (total - completed > greenThreshold) ? 'healthBarGreenState'
+          : (total - completed > yellowThreshold) ? 'healthBarYellowState'
+            : 'healthBarRedState'
         /* Populate tabs */
 
         // My Stories

@@ -132,16 +132,16 @@ const getAllIncompleteStories = () => {
    *  @returns {Array}
    */
 const getTopWarriors = () => {
-  // Map to hold name, points
+  // Map to hold member ID as key and member object as value
   var map = new Map()
   for (const [memberId, memberObj] of Object.entries(MEMBER_MAP)) {
     map.set(memberId, memberObj)
   }
   /**
-   * Finds top contributor by points in parameter map
+   * Finds top warrior by points and removes from map
    * @returns {Object}
    */
-  const findContributor = () => {
+  const removeTopWarrior = () => {
     // Set default top warrior values
     var memberName = 'Empty'
     var memberPoints = 0
@@ -154,7 +154,7 @@ const getTopWarriors = () => {
         memId = memberId
       }
     }
-    // If found, remove from map
+    // If top warrior found, remove from map
     if (memberName !== 'Empty') {
       map.delete(memId)
     }
@@ -163,15 +163,21 @@ const getTopWarriors = () => {
       points: memberPoints
     }
   }
-  // Finds top three contributors and push to returned list
-  var list = []
-  var firstPair = findContributor()
-  var secondPair = findContributor()
-  var thirdPair = findContributor()
-  list.push(firstPair)
-  list.push(secondPair)
-  list.push(thirdPair)
-  return list
+  // Finds top three warriors and push to returned list
+  var warriorList = []
+  var firstPair = removeTopWarrior()
+  var secondPair = removeTopWarrior()
+  var thirdPair = removeTopWarrior()
+  // if (firstPair.member !== 'Empty') {
+  warriorList.push(firstPair)
+  //  }
+  // if (secondPair.member !== 'Empty') {
+  warriorList.push(secondPair)
+  //  }
+  // if (thirdPair.member !== 'Empty') {
+  warriorList.push(thirdPair)
+  // }
+  return warriorList
 }
 
 // Returns stories in sorted by most recently completed
