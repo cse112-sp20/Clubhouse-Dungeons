@@ -6,7 +6,8 @@ const resolve = require("isomorphic-fetch").resolve;
 
 const myIncompleteCount = 2;
 const myIncompleteIDs = [56, 90];
-
+const myName = '_Test User_';
+const myIcon = 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png'
 
 /**
  * Testing for api.getMyIncompleteStories()
@@ -25,3 +26,45 @@ it('Test Incomplete Stories', done => {
         done();
     });
 });
+
+/**
+ * Testing suite for api.js unit tests
+ * Copied Arren's format
+ * 
+ */
+describe('api simple unit tests', () => {
+
+    /**
+     * Unit Test 1:
+     * Checks if getMemberName returns correct name
+     */
+    it('Testing getMemberName', () => {
+        var name;
+        // test setup - tried in beforeAll/beforeEach block, can't get it to work
+        api.setupTest(testAPIToken, memberID, () => {
+            name = api.getMemberName();
+            expect(name).toMatch(myName);
+            done();
+        })
+
+    });
+
+    /**
+     * Unit Test 2:
+     * Checks if getMemberProfile returns a correct default profile
+     */
+    it('Testing default getMemberProfile', () => {
+        var name;
+        var icon;
+        var profile;
+
+        api.setupTest(testAPIToken, memberID, () => {
+            profile = getMemberProfile();
+            expect(profile.name).toMatch(myName);
+            expect(profile.icon).toContain(myIcon);
+            done();
+        });
+
+    });
+
+})

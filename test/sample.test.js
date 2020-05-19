@@ -1,3 +1,4 @@
+
 test('1 is 1', () => {
     expect(1).toBe(1);
 });
@@ -41,10 +42,10 @@ describe('extension', () => {
         //await expect(page).toContain('Quaranteam - 8')
         //await expect(page.title()).resolves.toMatch('Quaranteam - 8');
         //await expect(browser).toMatch('')
+
+        browser.close();
     });
 })
-
-
 
 //test('clicks the button', () => {
 //    buttonClick(myMock);
