@@ -14,7 +14,7 @@ const profileContainer = document.getElementById('profileContainer')
 // const memberProfile = document.getElementById('memberProfile')
 const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
-// const memberTeam = document.getElementById('memberTeam')
+const memberTeam = document.getElementById('memberTeam')
 
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
@@ -49,7 +49,6 @@ const battleLog = document.getElementById('battleLog')
 myStoriesTab.addEventListener('click', () => selectTab(0))
 allStoriesTab.addEventListener('click', () => selectTab(1))
 battleLogTab.addEventListener('click', () => selectTab(2))
-
 
 /**
  * Signout by removing all items from StorageArea storage.sync
@@ -86,15 +85,14 @@ const toggleMemberMenu = () => {
  */
 document.body.addEventListener('click', (event) => {
   if (event.target.id.length > 0) {
-    if (!event.target.id.substring(0, 5)==='member' && memberMenu.classList.contains('show')) {
-      toggleMemberMenu();
+    if (!event.target.id.substring(0, 5) === 'member' && memberMenu.classList.contains('show')) {
+      toggleMemberMenu()
     }
   } else {
     if (memberMenu.classList.contains('show')) {
-      toggleMemberMenu();
+      toggleMemberMenu()
     }
   }
-
 })
 profileContainer.addEventListener('click', toggleMemberMenu)
 signoutButton.addEventListener('click', signout)
@@ -107,7 +105,7 @@ signoutButton.addEventListener('click', signout)
 function selectTab (tabIndex) {
   // Close profile menu if it's open
   if (memberMenu.classList.contains('show')) {
-    toggleMemberMenu();
+    toggleMemberMenu()
   }
   // Deselect previously selected tab and hide previously selected panel item
   var selectedTabs = document.getElementsByClassName('selected')
@@ -138,10 +136,10 @@ function selectTab (tabIndex) {
 
 /**
  * TODO: Complete story
- * 
- * @param {Story} story 
+ *
+ * @param {Story} story
  */
-function completeStory(story) {
+function completeStory (story) {
   console.log('complete story', story)
 }
 
@@ -150,12 +148,11 @@ document.addEventListener(
   () => {
     setup()
       .then(() => {
-
         /* Get member info for profile button */
-        const memberProfile = getMemberProfile();
-        memberName.innerHTML = memberProfile.name;
-        memberIcon.src = memberProfile.icon;
-        // TODO: set memberTeam.innerHTML to user's team name
+        const memberProfile = getMemberProfile()
+        memberIcon.src = memberProfile.icon
+        memberName.innerHTML = memberProfile.name
+        memberTeam.innerHTML = memberProfile.workspace
 
         /* Set progress bar values */
         const { completed, total } = getProgress()
@@ -183,7 +180,7 @@ document.addEventListener(
             ? story.owner_ids.map(memberId => getMemberName(memberId))
             : ['Unassigned']
 
-          console.log(ownerNames);
+          console.log(ownerNames)
           const storyDiv = document.createElement('div')
           const storyButton = document.createElement('div')
           storyDiv.classList.add('story')
@@ -197,7 +194,7 @@ document.addEventListener(
             const ownerDiv = document.createElement('div')
             ownerDiv.innerHTML = ownerName
             ownersDiv.append(ownerDiv)
-          });
+          })
           storyButton.addEventListener('click', () => completeStory(story))
           storyDiv.prepend(storyButton)
           storyDiv.append(ownersDiv)
