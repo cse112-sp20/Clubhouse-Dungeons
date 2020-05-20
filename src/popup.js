@@ -3,7 +3,7 @@ import {
   getMyIncompleteStories,
   getAllIncompleteStories,
   completeStoriesAsync,
-  revertCompleteStoriesAsync,
+  // revertCompleteStoriesAsync,
   getBattleLog,
   getTopWarriors,
   getMemberName,
@@ -154,12 +154,25 @@ function completeStory (story) {
  *
  * @param {Story} story
  */
+/* not yet implemented
 function undoCompleteStory (story) {
   revertCompleteStoriesAsync(story.id)
     .then((data) => {
       console.log(data)
     })
   console.log('complete story', story)
+}
+*/
+/**
+ * Estimate the amount of story points a story is worth
+ * (ensure that the value is at least 0 instead of null)
+ *
+ * @param {number} storyPoints the number of story points allocated to a
+ * specific story
+ * @returns {number} the number of points the story is worth
+ */
+const estimateStoryPoints = storyPoints => {
+  return storyPoints === null ? 0 : storyPoints
 }
 
 document.addEventListener(
@@ -204,7 +217,7 @@ document.addEventListener(
           storyButton.classList.add('story-button')
           storyButton.innerHTML = '<img src="images/sword.png" >'
           storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
-          storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+          storyDiv.innerHTML += '<div class="points">' + estimateStoryPoints(story.estimate) + ' DMG</div>'
           storyButton.addEventListener('click', () => completeStory(story))
           storyDiv.prepend(storyButton)
           myStories.appendChild(storyDiv)
@@ -222,7 +235,7 @@ document.addEventListener(
           storyButton.classList.add('story-button')
           storyButton.innerHTML = '<img src="images/sword.png" >'
           storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
-          storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+          storyDiv.innerHTML += '<div class="points">' + estimateStoryPoints(story.estimate) + ' DMG</div>'
           const ownersDiv = document.createElement('div')
           ownersDiv.classList.add('owners')
           ownerNames.forEach(ownerName => {
@@ -242,7 +255,7 @@ document.addEventListener(
             : 'unassigned'
           const actionDiv = document.createElement('div')
           actionDiv.classList.add('action')
-          actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + story.estimate + ' DMG'
+          actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + estimateStoryPoints(story.estimate) + ' DMG'
           battleLog.appendChild(actionDiv)
         })
       })
