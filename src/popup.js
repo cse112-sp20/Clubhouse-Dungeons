@@ -15,7 +15,7 @@ const profileContainer = document.getElementById('profileContainer')
 // const memberProfile = document.getElementById('memberProfile')
 const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
-// const memberTeam = document.getElementById('memberTeam')
+const memberTeam = document.getElementById('memberTeam')
 
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
@@ -151,9 +151,9 @@ document.addEventListener(
       .then(() => {
         /* Get member info for profile button */
         const memberProfile = getMemberProfile()
-        memberName.innerHTML = memberProfile.name
         memberIcon.src = memberProfile.icon
-        // TODO: set memberTeam.innerHTML to user's team name
+        memberName.innerHTML = memberProfile.name
+        memberTeam.innerHTML = memberProfile.workspace
 
         /* Get top warraiors and update text */
         const topWarriors = getTopWarriors()
