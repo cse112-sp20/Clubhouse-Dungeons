@@ -146,6 +146,7 @@ function completeStory (story) {
   completeStoriesAsync(story.id)
     .then((data) => {
       console.log(data)
+      location.reload()
     })
   console.log('complete story', story)
 }
@@ -158,6 +159,7 @@ function undoCompleteStory (story) {
   revertCompleteStoriesAsync(story.id)
     .then((data) => {
       alert(JSON.stringify(data))
+      location.reload()
     })
   console.log('undo complete story', story)
 }
