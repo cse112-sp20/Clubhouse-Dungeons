@@ -3,7 +3,7 @@ import {
   getMyIncompleteStories,
   getAllIncompleteStories,
   completeStoriesAsync,
-  // revertCompleteStoriesAsync,
+  revertCompleteStoriesAsync,
   getBattleLog,
   getTopWarriors,
   getMemberName,
@@ -154,15 +154,13 @@ function completeStory (story) {
  *
  * @param {Story} story
  */
-/* not yet implemented
 function undoCompleteStory (story) {
   revertCompleteStoriesAsync(story.id)
     .then((data) => {
-      console.log(data)
+      alert(JSON.stringify(data))
     })
-  console.log('complete story', story)
+  console.log('undo complete story', story)
 }
-*/
 /**
  * Estimate the amount of story points a story is worth
  * (ensure that the value is at least 0 instead of null)
@@ -254,8 +252,13 @@ document.addEventListener(
             ? story.owner_ids.map(memberId => getMemberName(memberId)).join(', ')
             : 'unassigned'
           const actionDiv = document.createElement('div')
+          const undoActionButton = document.createElement('div')
           actionDiv.classList.add('action')
+          undoActionButton.classList.add('undo-action-button')
+          undoActionButton.innerHTML = '<button type="button">UNDO Action</button>'
           actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + estimateStoryPoints(story.estimate) + ' DMG'
+          undoActionButton.addEventListener('click', () => undoCompleteStory(story))
+          actionDiv.append(undoActionButton)
           battleLog.appendChild(actionDiv)
         })
       })

@@ -79,7 +79,7 @@ const revertCompleteStoriesAsync = async (storyId) => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/stories/${storyId}?token=${API_TOKEN}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ workflow_state_id: 50000008 })
+    body: JSON.stringify({ completed_at_override: null, workflow_state_id: 500000008 })
   })
   return res.json()
 }
