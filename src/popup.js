@@ -138,15 +138,23 @@ function selectTab (tabIndex) {
 }
 
 /**
- * Complete story onClick
+ * Complete story onClick (should only be available in myStories tab)
  *
  * @param {Story} story
  */
-function completeStory (story) {
+function completeStory (story, storyNode) {
   completeStoriesAsync(story.id)
     .then((data) => {
       console.log(data)
-      location.reload()
+      // remove from myStories tab
+      myStories.removeChild(storyNode)
+      // remove from allStories tab
+      const newNode = getStoryNodeFromContainer(allStories, story.name)
+      if (newNode) {
+        allStories.removeChild(newNode)
+      }
+
+      addToBattleLogTab(story)
     })
   console.log('complete story', story)
 }
@@ -155,11 +163,14 @@ function completeStory (story) {
  *
  * @param {Story} story
  */
-function undoCompleteStory (story) {
+function undoCompleteStory (story, storyNode) {
   revertCompleteStoriesAsync(story.id)
     .then((data) => {
-      alert(JSON.stringify(data))
-      location.reload()
+      // remove from battleLog tab
+      battleLog.removeChild(storyNode)
+
+      addToMyStoriesTab(story)
+      addToAllStoriesTab(story)
     })
   console.log('undo complete story', story)
 }
@@ -173,6 +184,87 @@ function undoCompleteStory (story) {
  */
 const estimateStoryPoints = storyPoints => {
   return storyPoints === null ? 0 : storyPoints
+}
+
+/**
+ * Return the node associated with the passed in story name
+ *
+ * @param {*} nodeContainer container of all stories associated with a specific
+ * tab in the DOM
+ * @param {*} storyName the name of the story of the node we want to retrieve
+ * @returns the node associated with the story name
+ */
+const getStoryNodeFromContainer = (nodeContainer, storyName) => {
+  for (const element of nodeContainer.children) {
+    if (element.innerHTML.includes(storyName)) {
+      return element
+    }
+  }
+  // should never reach this statement if function is invoked from proper context
+  return null
+}
+/**
+ * Adds the passed in story to the myStories tab
+ * @param {*} story the story to add to the myStories tab
+ */
+const addToMyStoriesTab = story => {
+  const storyDiv = document.createElement('div')
+  const storyButton = document.createElement('div')
+  storyDiv.classList.add('story')
+  storyButton.classList.add('story-button')
+  storyButton.innerHTML = '<img src="images/sword.png" >'
+  storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+  storyDiv.innerHTML += '<div class="points">' + estimateStoryPoints(story.estimate) + ' DMG</div>'
+  storyButton.addEventListener('click', () => completeStory(story, storyDiv))
+  storyDiv.prepend(storyButton)
+  myStories.appendChild(storyDiv)
+}
+/**
+ * Adds the passed in story to the allStories tab
+ * @param {*} story the story to add to the allStories tab
+ */
+const addToAllStoriesTab = story => {
+  const ownerNames = story.owner_ids.length > 0
+    ? story.owner_ids.map(memberId => getMemberName(memberId))
+    : ['Unassigned']
+
+  // console.log(ownerNames)
+  const storyDiv = document.createElement('div')
+  //  const storyButton = document.createElement('div')
+  storyDiv.classList.add('story')
+  //  storyButton.classList.add('story-button')
+  // storyButton.innerHTML = '<img src="images/sword.png" >'
+  storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+  storyDiv.innerHTML += '<div class="points">' + estimateStoryPoints(story.estimate) + ' DMG</div>'
+  const ownersDiv = document.createElement('div')
+  ownersDiv.classList.add('owners')
+  ownerNames.forEach(ownerName => {
+    const ownerDiv = document.createElement('div')
+    ownerDiv.innerHTML = ownerName
+    ownersDiv.append(ownerDiv)
+  })
+  // storyButton.addEventListener('click', () => completeStory(story, storyDiv))
+  //  storyDiv.prepend(storyButton)
+  storyDiv.append(ownersDiv)
+  allStories.appendChild(storyDiv)
+}
+/**
+ * Add the passed in story to the battleLog tab
+ * @param {*} story the story to add to the battleLog tab
+ */
+const addToBattleLogTab = story => {
+  const ownerNames = story.owner_ids.length > 0
+    ? story.owner_ids.map(memberId => getMemberName(memberId)).join(', ')
+    : 'unassigned'
+  const actionDiv = document.createElement('div')
+  const undoActionButton = document.createElement('div')
+  actionDiv.classList.add('action')
+  undoActionButton.classList.add('undo-action-button')
+  undoActionButton.innerHTML = '<button type="button">UNDO Action</button>'
+  actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + estimateStoryPoints(story.estimate) + ' DMG'
+  undoActionButton.addEventListener('click', () => undoCompleteStory(story, actionDiv))
+  actionDiv.append(undoActionButton)
+  battleLog.appendChild(actionDiv)
 }
 
 document.addEventListener(
@@ -211,57 +303,15 @@ document.addEventListener(
 
         // My Stories
         getMyIncompleteStories().map(story => {
-          const storyDiv = document.createElement('div')
-          const storyButton = document.createElement('div')
-          storyDiv.classList.add('story')
-          storyButton.classList.add('story-button')
-          storyButton.innerHTML = '<img src="images/sword.png" >'
-          storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
-          storyDiv.innerHTML += '<div class="points">' + estimateStoryPoints(story.estimate) + ' DMG</div>'
-          storyButton.addEventListener('click', () => completeStory(story))
-          storyDiv.prepend(storyButton)
-          myStories.appendChild(storyDiv)
+          addToMyStoriesTab(story)
         })
 
         getAllIncompleteStories().map(story => {
-          const ownerNames = story.owner_ids.length > 0
-            ? story.owner_ids.map(memberId => getMemberName(memberId))
-            : ['Unassigned']
-
-          // console.log(ownerNames)
-          const storyDiv = document.createElement('div')
-          const storyButton = document.createElement('div')
-          storyDiv.classList.add('story')
-          storyButton.classList.add('story-button')
-          storyButton.innerHTML = '<img src="images/sword.png" >'
-          storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
-          storyDiv.innerHTML += '<div class="points">' + estimateStoryPoints(story.estimate) + ' DMG</div>'
-          const ownersDiv = document.createElement('div')
-          ownersDiv.classList.add('owners')
-          ownerNames.forEach(ownerName => {
-            const ownerDiv = document.createElement('div')
-            ownerDiv.innerHTML = ownerName
-            ownersDiv.append(ownerDiv)
-          })
-          storyButton.addEventListener('click', () => completeStory(story))
-          storyDiv.prepend(storyButton)
-          storyDiv.append(ownersDiv)
-          allStories.appendChild(storyDiv)
+          addToAllStoriesTab(story)
         })
 
         getBattleLog().map(story => {
-          const ownerNames = story.owner_ids.length > 0
-            ? story.owner_ids.map(memberId => getMemberName(memberId)).join(', ')
-            : 'unassigned'
-          const actionDiv = document.createElement('div')
-          const undoActionButton = document.createElement('div')
-          actionDiv.classList.add('action')
-          undoActionButton.classList.add('undo-action-button')
-          undoActionButton.innerHTML = '<button type="button">UNDO Action</button>'
-          actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + estimateStoryPoints(story.estimate) + ' DMG'
-          undoActionButton.addEventListener('click', () => undoCompleteStory(story))
-          actionDiv.append(undoActionButton)
-          battleLog.appendChild(actionDiv)
+          addToBattleLogTab(story)
         })
       })
   },
