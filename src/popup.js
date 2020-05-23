@@ -138,42 +138,59 @@ function selectTab (tabIndex) {
 }
 
 /**
- * Complete story onClick (should only be available in myStories tab)
+ * Complete story onClick
  *
- * @param {Story} story
+ * @param {Story} story the story to be completed
+ * @param {*} storyNode the child story node to be removed from the myStories and allStories tabs
+ * @param {string} tabName the name of the tab from where the complete story button was clicked
  */
-function completeStory (story, storyNode) {
+function completeStory (story, storyNode, tabName) {
   completeStoriesAsync(story.id)
     .then((data) => {
       console.log(data)
-      // remove from myStories tab
-      myStories.removeChild(storyNode)
-      // remove from allStories tab
-      const newNode = getStoryNodeFromContainer(allStories, story.name)
-      if (newNode) {
-        allStories.removeChild(newNode)
+      try {
+        switch (tabName) {
+          case 'myStoriesTab': {
+            // remove from myStories tab
+            myStories.removeChild(storyNode)
+            // find the node that corresponds to the allStories container
+            const newNode = getStoryNodeFromContainer(allStories, story.name)
+            if (newNode) {
+              // remove from allStories tab
+              allStories.removeChild(newNode)
+            }
+            break
+          }
+          case 'allStoriesTab': {
+            // find the node that corresponds to the myStories container
+            const newNode = getStoryNodeFromContainer(myStories, story.name)
+            if (newNode) {
+              // remove from myStories tab
+              myStories.removeChild(newNode)
+            }
+            // remove from allStories tab
+            allStories.removeChild(newNode)
+            break
+          }
+          default: {
+            /*
+              This case should never be reached. The complete story button should
+              only be available in the myStories tab and the allStoriesTab
+            */
+            throw new Error(`Button error. I do not know which tab 
+              ${getMemberProfile().name} was under when completing the story 
+              ${story.name}`)
+          }
+        }
+      } catch (e) {
+        console.error(`${e.name}: ${e.message}`)
       }
-
+      // add the completed story to the battleLog tab
       addToBattleLogTab(story)
     })
   console.log('complete story', story)
 }
-/**
- * Undo complete story onClick
- *
- * @param {Story} story
- */
-function undoCompleteStory (story, storyNode) {
-  revertCompleteStoriesAsync(story.id)
-    .then((data) => {
-      // remove from battleLog tab
-      battleLog.removeChild(storyNode)
 
-      addToMyStoriesTab(story)
-      addToAllStoriesTab(story)
-    })
-  console.log('undo complete story', story)
-}
 /**
  * Estimate the amount of story points a story is worth
  * (ensure that the value is at least 0 instead of null)
@@ -215,7 +232,7 @@ const addToMyStoriesTab = story => {
   storyButton.innerHTML = '<img src="images/sword.png" >'
   storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
   storyDiv.innerHTML += '<div class="points">' + estimateStoryPoints(story.estimate) + ' DMG</div>'
-  storyButton.addEventListener('click', () => completeStory(story, storyDiv))
+  storyButton.addEventListener('click', () => completeStory(story, storyDiv, 'myStoriesTab'))
   storyDiv.prepend(storyButton)
   myStories.appendChild(storyDiv)
 }
@@ -228,14 +245,14 @@ const addToAllStoriesTab = story => {
     ? story.owner_ids.map(memberId => getMemberName(memberId))
     : ['Unassigned']
 
-  // console.log(ownerNames)
+  console.log(ownerNames)
   const storyDiv = document.createElement('div')
-  //  const storyButton = document.createElement('div')
+  const storyButton = document.createElement('div')
   storyDiv.classList.add('story')
-  //  storyButton.classList.add('story-button')
-  // storyButton.innerHTML = '<img src="images/sword.png" >'
+  storyButton.classList.add('story-button')
+  storyButton.innerHTML = '<img src="images/sword.png" >'
   storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
-  storyDiv.innerHTML += '<div class="points">' + estimateStoryPoints(story.estimate) + ' DMG</div>'
+  storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
   const ownersDiv = document.createElement('div')
   ownersDiv.classList.add('owners')
   ownerNames.forEach(ownerName => {
@@ -243,8 +260,8 @@ const addToAllStoriesTab = story => {
     ownerDiv.innerHTML = ownerName
     ownersDiv.append(ownerDiv)
   })
-  // storyButton.addEventListener('click', () => completeStory(story, storyDiv))
-  //  storyDiv.prepend(storyButton)
+  storyButton.addEventListener('click', () => completeStory(story, storyDiv, 'allStoriesTab'))
+  storyDiv.prepend(storyButton)
   storyDiv.append(ownersDiv)
   allStories.appendChild(storyDiv)
 }
@@ -257,13 +274,9 @@ const addToBattleLogTab = story => {
     ? story.owner_ids.map(memberId => getMemberName(memberId)).join(', ')
     : 'unassigned'
   const actionDiv = document.createElement('div')
-  const undoActionButton = document.createElement('div')
   actionDiv.classList.add('action')
-  undoActionButton.classList.add('undo-action-button')
-  undoActionButton.innerHTML = '<button type="button">UNDO Action</button>'
   actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + estimateStoryPoints(story.estimate) + ' DMG'
-  undoActionButton.addEventListener('click', () => undoCompleteStory(story, actionDiv))
-  actionDiv.append(undoActionButton)
+
   battleLog.appendChild(actionDiv)
 }
 
@@ -288,17 +301,7 @@ document.addEventListener(
         warrior2Points.innerText = `${topWarriors[1].points}` + ' DMG'
         warrior3Points.innerText = `${topWarriors[2].points}` + ' DMG'
 
-        /* Set progress bar values */
-        const { completed, total } = getProgress()
-        healthLeft.style.width = ((total - completed) / total) * 100 + '%'
-        healthText.appendChild(document.createTextNode(`${total - completed} / ${total}`))
-
-        /* Set progress bar color change */
-        const greenThreshold = (2 / 5) * total
-        const yellowThreshold = (1 / 5) * total
-        healthLeft.className += (total - completed > greenThreshold) ? 'healthBarGreenState'
-          : (total - completed > yellowThreshold) ? 'healthBarYellowState'
-            : 'healthBarRedState'
+        updateHealthBar()
         /* Populate tabs */
 
         // My Stories
@@ -317,3 +320,20 @@ document.addEventListener(
   },
   false
 ) // addEventListener()
+
+/**
+ * Calculate the amount of health the boss has left and display it as a health
+ * bar in the DOM
+ */
+function updateHealthBar () {
+  /* Set progress bar values */
+  const { completed, total } = getProgress()
+  healthLeft.style.width = ((total - completed) / total) * 100 + '%'
+  healthText.appendChild(document.createTextNode(`${total - completed} / ${total}`))
+  /* Set progress bar color change */
+  const greenThreshold = (2 / 5) * total
+  const yellowThreshold = (1 / 5) * total
+  healthLeft.className += (total - completed > greenThreshold) ? 'healthBarGreenState'
+    : (total - completed > yellowThreshold) ? 'healthBarYellowState'
+      : 'healthBarRedState'
+}
