@@ -6,26 +6,63 @@ const resolve = require("isomorphic-fetch").resolve;
 
 const myIncompleteCount = 2;
 const myIncompleteIDs = [56, 90];
+const allIncompleteIDs = [56, 90, 93];
 const myName = '_Test User_';
 const myIcon = 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png'
 
+
 /**
+ * Unit Test 3
  * Testing for api.getMyIncompleteStories()
  * Checks if the count of test stories are correct and that they are the correct ids
  */
-it('Test Incomplete Stories', done => {
+it('Test MY Incomplete Stories', done => {
     /* Need to setup the API variables first
-     * Chase mentioned that we need to set up a test method in api
-     * So I went ahead and defined a method called setupTest in api.js
-     */
+    * Chase mentioned that we need to set up a test method in api
+    * So I went ahead and defined a method called setupTest in api.js
+    */
     api.setupTest(testAPIToken, memberID, () => {
         // The only story that has been assigned to this test user as of right now is story 56
         incompleteStories = api.getMyIncompleteStories();
         expect(incompleteStories.length).toBe(myIncompleteCount);  // Make sure the number of incomplete is correct
         expect(myIncompleteIDs).toContain(incompleteStories[0]['id']);  // Then check if the values for these incomplete stories are also correct
+        expect(myIncompleteIDs).toContain(incompleteStories[1]['id']);  
         done();
     });
 });
+
+/**
+ * Unit Test 4
+ * Testing for api.getAllIncompleteStories()
+ * Checks if the count of test stories are correct and that they are the correct ids
+ */
+it('Test ALL Incomplete Stories', done => {
+    /* Need to setup the API variables first
+    * Chase mentioned that we need to set up a test method in api
+    * So I went ahead and defined a method called setupTest in api.js
+    */
+    api.setupTest(testAPIToken, memberID, () => {
+        // The only story that has been assigned to this test user as of right now is story 56
+        incompleteStories = api.getAllIncompleteStories();
+        
+        let allStories = [];
+
+        // Try to find all test stories
+        incompleteStories.forEach(element => {
+            allStories.push(element['id']);
+        });
+
+        // Now let's check if all of the stories of our test list is within this list
+        allIncompleteIDs.forEach(id => {
+            expect(allStories).toContain(id);
+        });
+
+        done();
+    });
+});
+
+/*Side node, I tried to place the above tests into the describe and it started to break things :/ */
+
 
 /**
  * Testing suite for api.js unit tests
@@ -59,7 +96,7 @@ describe('api simple unit tests', () => {
         var profile;
 
         api.setupTest(testAPIToken, memberID, () => {
-            profile = getMemberProfile();
+            profile = api.getMemberProfile();
             expect(profile.name).toMatch(myName);
             expect(profile.icon).toContain(myIcon);
             done();
@@ -67,4 +104,4 @@ describe('api simple unit tests', () => {
 
     });
 
-})
+});
