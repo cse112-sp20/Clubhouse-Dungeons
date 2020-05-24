@@ -18,13 +18,9 @@ jobs:
       run: npm install
     - name: Generate API Documentation
       run: npm run docs:build
-    - name: Updating Wiki
-      uses: Decathlon/wiki-page-creator-action@master
+    - name: Upload Documentation to Wiki
+      uses: SwiftDocOrg/github-wiki-publish-action@v1
+      with:
+        path: "docs"
       env:
-        GH_PAT: ${{ secrets.GH_WIKI_TOKEN }}
-        MD_FOLDER: docs
-        ACTION_MAIL: cmaytom@ucsd.edu
-        ACTION_NAME: cmaytom
-        OWNER: cse112-sp20
-        REPO_NAME: Quaranteam-8
-        TRANSLATE_UNDERSCORE_TO_SPACE: "true"
+        GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_WIKI_TOKEN }}
