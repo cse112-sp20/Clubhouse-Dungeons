@@ -3,7 +3,7 @@ import {
   getMyIncompleteStories,
   getAllIncompleteStories,
   completeStoriesAsync,
-  revertCompleteStoriesAsync,
+  //  revertCompleteStoriesAsync,
   getBattleLog,
   getTopWarriors,
   getMemberName,
