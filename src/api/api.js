@@ -1,4 +1,5 @@
 var API_TOKEN
+var WORKSPACE // Workspace URL slug
 var MEMBER_ID
 var MEMBER_MAP // Maps member ID -> member
 var STORIES // Array of story objects
@@ -209,16 +210,19 @@ const getBattleLog = () => {
 const getMemberName = (memberId) => {
   return MEMBER_MAP[memberId].profile.name
 }
+
 const getMemberProfile = () => {
   // Relevant user profile details
   if (MEMBER_MAP[MEMBER_ID].profile.display_icon) {
     return {
+      workspace: WORKSPACE,
       name: MEMBER_MAP[MEMBER_ID].profile.name,
       icon: MEMBER_MAP[MEMBER_ID].profile.display_icon.url,
       role: MEMBER_MAP[MEMBER_ID].role
     }
   } else {
     return {
+      workspace: WORKSPACE,
       name: MEMBER_MAP[MEMBER_ID].profile.name,
       icon: 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png',
       role: MEMBER_MAP[MEMBER_ID].role
@@ -247,10 +251,11 @@ const getProgress = () => {
   return { completed, total }
 }
 
-const onLogin = (apiToken, memberId) => {
+const onLogin = (apiToken, memberId, workspace) => {
   // Init global vars that don't require fetching
   API_TOKEN = apiToken
   MEMBER_ID = memberId
+  WORKSPACE = workspace
 
   // Init global vars that require fetching
   setup()
@@ -259,9 +264,10 @@ const onLogin = (apiToken, memberId) => {
 const setup = () => {
   if (!SETUP) {
     SETUP = new Promise((resolve, reject) => {
-      chrome.storage.sync.get(['api_token', 'member_id'], store => {
+      chrome.storage.sync.get(['api_token', 'member_id', 'workspace'], store => {
         API_TOKEN = store.api_token
         MEMBER_ID = store.member_id
+        WORKSPACE = store.workspace
         Promise.all([
           fetchStoriesAsync()
             .then(stories => {

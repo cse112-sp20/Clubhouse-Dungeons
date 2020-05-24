@@ -296,6 +296,10 @@ document.addEventListener(
         warrior1Name.innerText = `${topWarriors[0].name}`
         warrior2Name.innerText = `${topWarriors[1].name}`
         warrior3Name.innerText = `${topWarriors[2].name}`
+        
+        memberIcon.src = memberProfile.icon
+        memberName.innerHTML = memberProfile.name
+        memberTeam.innerHTML = memberProfile.workspace
 
         warrior1Points.innerText = `${topWarriors[0].points}` + ' DMG'
         warrior2Points.innerText = `${topWarriors[1].points}` + ' DMG'
