@@ -1,30 +1,48 @@
 # Quaranteam-8 Chrome Extension
 
-## Getting setup:
+## Prerequisites
 
-1. First clone this repository by entering <code>git clone https://github.com/cse112-sp20/Quaranteam-8.git</code> into terminal
-2. If you don't have node installed on your computer, install it from https://nodejs.org/en/download/. Once you have node installed, go to the root of the repository and run <code>npm install</code>
+### Windows
 
-## How to lint:
++ [Git for Windows](https://gitforwindows.org/)
++ [Node.js](https://nodejs.org/en/)
 
-1. First setup the project using the instructions above
-2. Then to lint all js files in <code>src/</code> run the command <code>npm run lint</code>. 
-3. If you want to remove the npm errors caused by linting errors, run the command <code>npm run lint -s</code>
+### Linux
 
-## How to run tests:
+?
 
-1. First setup the project using the instructions above
-2. Then to run all jest tests in <code>test/</code> run the command <code>npm run test</code>. 
-3. If you want to remove the npm errors caused by jest errors, run the command <code>npm run test -s</code>
+### Mac
 
-## How to test extension in Chrome:
+?
 
-1. `npm run build`
-2. In Chrome go to URL <code>chrome://extensions</code>
-3. Toggle on Developer mode
-4. Click Load unpacked
-5. Select the dist folder from the repository
+## Creating the Repository
 
-## How to clean your build
+1. Open the terminal (CMD for Windows), and navigate to your working directory
+2. Create the repository by entering
 
-1. `npm run clean`
+```shell
+> git clone https://github.com/cse112-sp20/Quaranteam-8.git
+```
+
+3. Navigate into the newly created directory
+4. [Puppeteer](https://developers.google.com/web/tools/puppeteer/) and [Jest](https://jestjs.io/) are needed to test the program. Download and install them by entering
+
+```shell
+> npm install puppeteer jest
+```
+
+## Running Tests
+
+Switch to the testing branch by entering
+
+```shell
+> git checkout puppeteerTest
+```
+
+Run all tests by entering
+
+```shell
+> npm run test
+```
+
+TODO: Add more instructions when new tests are written
