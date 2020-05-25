@@ -47,7 +47,7 @@ firebase.initializeApp(firebaseConfig)
 const database = firebase.database()
 
 /**
- * Write the user's data to our extension's database
+ * (Over)write the user's data to our extension's database
  *
  * @param {string} userId - the id of the user whose data we are storing
  * @param {string} name - the user's name
@@ -69,4 +69,5 @@ const writeUserData = (userId, name, honored, timesHonored) => {
     }
   })
 }
+
 export { writeUserData }
