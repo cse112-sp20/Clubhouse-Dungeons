@@ -15,5 +15,10 @@
   },
   "permissions": [
     "storage"
-  ]
+  ],  
+  "web_accessible_resources": [
+    "./sound/normal_hit.mp3",
+    "./sound/critical_hit.mp3",
+    "./sound/killed_boss.mp3"
+  ] 
 }

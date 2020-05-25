@@ -53,6 +53,8 @@ myStoriesTab.addEventListener('click', () => selectTab(0))
 allStoriesTab.addEventListener('click', () => selectTab(1))
 battleLogTab.addEventListener('click', () => selectTab(2))
 
+//sounds
+const normal_hit = document.getElementById('sound_normal_hit')
 /**
  * Signout by removing all items from StorageArea storage.sync
  */
@@ -187,6 +189,13 @@ function completeStory (story, storyNode, tabName) {
       }
       // add the completed story to the battleLog tab
       addToBattleLogTab(story)
+
+      //play audio sound 
+      /*
+      var audio = new Audio()
+      audio.src = "./sound/normal_hit.mp3"
+      audio.play() */
+      normal_hit.play()
     })
   console.log('complete story', story)
 }
