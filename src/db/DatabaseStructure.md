@@ -2,6 +2,7 @@
 ##	'quaranteam8':
 	{
 		'projects': {
+			// in our extension, the projects key will be the Clubhouse project id
 			'avengersInitiative': {
 				'name': 'The Avengers Initiative',
 				'members': {
@@ -29,6 +30,7 @@
 			...
 		},
 		'users': {
+			// in our extension, the users key will be the Clubhouse member id
 			'tStark': {
 				'name': 'Tony Stark',
 				'projects': {
