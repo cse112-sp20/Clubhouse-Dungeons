@@ -157,6 +157,9 @@ document.addEventListener(
 
         /* Get top warraiors and update text */
         const topWarriors = getTopWarriors()
+        while (topWarriors.length < 3) {
+          topWarriors.push({ name: 'Empty', points: 0 })
+        }
         document.getElementById('warrior1Name').innerText = (topWarriors) ? `${topWarriors[0].name}` : 'Kevin'
         document.getElementById('warrior2Name').innerText = (topWarriors) ? `${topWarriors[1].name}` : 'Chris'
         document.getElementById('warrior3Name').innerText = (topWarriors) ? `${topWarriors[2].name}` : 'Jedd'
