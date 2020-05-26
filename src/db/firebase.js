@@ -6,8 +6,17 @@ import 'firebase/database'
  *
  * @typedef Database
  * @type {Object}
- * @property {Object} app The app assoiated with the Database service instance
+ * @property {Object} app - The app assoiated with the Database service instance
  * @see https://firebase.google.com/docs/reference/js/firebase.database.Database
+ *
+ *
+ * @typedef Reference
+ * @type {Object}
+ * @property {string | null} key - The last part of the Reference's path (key of a root Reference is null)
+ * @property {Object | null} parent - The parent location of a Reference (parent of a root Reference is null)
+ * @property {Object} ref - Returns a Reference to the Query's location
+ * @property {Object} root - The root Reference of the Database
+ * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference
  */
 
 /**
@@ -47,6 +56,32 @@ firebase.initializeApp(firebaseConfig)
 const database = firebase.database()
 
 /**
+ * The root Reference of our Database
+ *
+ * @const {Reference}
+ */
+const databaseRef = database.ref()
+
+/**
+ * The Reference to all the workspaces in our Database
+ *
+ * @const {Reference}
+ */
+const workspacesRef = database.ref('/organizations')
+
+/**
+ * The Reference to all the users in our Database
+ *
+ * @const {Reference}
+ */
+const allUsersRef = database.ref('/allUsers')
+
+/**
+ * The Reference to the workspace associated with the user's api token
+ */
+var workspaceRef = null
+
+/**
  * (Over)write the user's data to our extension's database
  *
  * @param {string} userId - the id of the user whose data we are storing
@@ -70,4 +105,51 @@ const writeUserData = (userId, name, honored, timesHonored) => {
   })
 }
 
-export { writeUserData }
+const turnOffListeners = () => {
+  // called when user signs out
+}
+
+const addMember = (memberId, name, workspace, honored, timesHonored) => {
+  var member = {
+    [memberId]: {
+      name: name,
+      workspace: workspace,
+      honored: honored,
+      timesHonored: timesHonored
+    }
+  }
+  if (checkIfExists(allUsersRef, memberId)) {
+    allUsersRef.child(memberId).once('value')
+      .then((dataSnapshot) => {
+        // check if values changed
+        if (!dataSnapshot.child('honored').val()) {
+
+        } else {
+          
+        }
+      })
+  }
+}
+
+/**
+ * Check to see if the passed in key already exists within the passed in reference
+ *
+ * @param {Reference} nodeRef - The Reference where the key might exist
+ * @param {string} key - The key whose existence we are checking
+ * @returns true if the key already exists, false otherwise
+ */
+const checkIfExists = (nodeRef, key) => {
+  var ref = nodeRef.child(key)
+
+  ref.once('value', (snapshot) => {
+    if (snapshot === null) {
+      /* does not exist */
+      return false
+    } else {
+      /* does exist */
+      return true
+    }
+  })
+}
+
+export { writeUserData, addMember, turnOffListeners }

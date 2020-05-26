@@ -1,8 +1,8 @@
 # Quaranteam8 Database
 ##	'quaranteam8':
 	{
-		// all Clubhouse organizations that are using our extension
-		'organizations': {
+		// all Clubhouse workspaces that are using our extension
+		'workspaces': {
 			'marvel': {
 				'members': {
 					'tStark': true,
@@ -39,27 +39,32 @@
 			// in our extension, the user keys will be their Clubhouse member id
 			'tStark': {
 				'name': 'Tony Stark',
-				'organizations': {
+				'workspaces': {
 					'marvel': true
 				}
 			},
 			'sRodgers': {
 				'name': 'Steve Rodgers',
-				'organizations': {
+				'workspaces': {
 					'marvel': true
 				},
 				'honored': true,
-				'timesHonored': 2
+				'timesHonored': 2,
+				// users that have honored Steve Rodgers
+				'honoredBy': {
+					'nFury': true,
+					'sLee': true
+				}
 			},
 			'bWayne': {
 				'name': 'Bruce Wayne',
-				'organizations': {
+				'workspaces': {
 					'dc': true
 				}
 			},
 			'cKent': {
 				'name': 'Clark Kent',
-				'organizations': {
+				'workspaces': {
 					'dc': true
 				},
 				...
@@ -74,3 +79,4 @@
 * if using VS Code to view this file, you can view the Markdown preview by either:
 	* right-clicking the tab of the file and select 'Open Preview'
 	* (Ctrl/Cmd) - Shift - V
+* structure guide referenced: [Structure Your Database](https://firebase.google.com/docs/database/web/structure-data)
