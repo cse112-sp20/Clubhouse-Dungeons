@@ -12,6 +12,10 @@ import {
   removeApiToken
 } from './api/api'
 
+// Story values for health bar
+var COMPLETED
+var TOTAL
+
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
 // const memberProfile = document.getElementById('memberProfile')
@@ -151,6 +155,12 @@ function completeStory (story, storyNode, tabName) {
       try {
         switch (tabName) {
           case 'myStoriesTab': {
+            // update the health bar values and color
+            COMPLETED += story.estimate
+            healthLeft.style.width = ((TOTAL - COMPLETED) / TOTAL) * 100 + '%'
+            healthText.innerText = `${TOTAL - COMPLETED} / ${TOTAL}`
+            updateHealthBarColor()
+
             // remove from myStories tab
             myStories.removeChild(storyNode)
             // find the node that corresponds to the allStories container
@@ -232,9 +242,37 @@ const addToMyStoriesTab = story => {
   storyButton.innerHTML = '<img src="images/sword.png" >'
   storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
   storyDiv.innerHTML += '<div class="points">' + estimateStoryPoints(story.estimate) + ' DMG</div>'
-  storyButton.addEventListener('click', () => completeStory(story, storyDiv, 'myStoriesTab'))
   storyDiv.prepend(storyButton)
   myStories.appendChild(storyDiv)
+
+  var counter = 0
+  var pressHoldEvent = new CustomEvent('pressHold')
+  var pressHoldDuration = 50
+  var timerID
+  storyButton.addEventListener('mousedown', pressingDown, false)
+  storyButton.addEventListener('mouseup', notPressingDown, false)
+  storyButton.addEventListener('pressHold', finishHold, false)
+
+  function pressingDown () {
+    // Start the timer
+    requestAnimationFrame(timer)
+  }
+  function notPressingDown () {
+    // Stop the timer
+    cancelAnimationFrame(timerID)
+    counter = 0
+  }
+  function timer () {
+    if (counter < pressHoldDuration) {
+      timerID = requestAnimationFrame(timer)
+      counter++
+    } else {
+      storyButton.dispatchEvent(pressHoldEvent)
+    }
+  }
+  function finishHold () {
+    completeStory(story, storyDiv, 'myStoriesTab')
+  }
 }
 /**
  * Adds the passed in story to the allStories tab
@@ -296,7 +334,7 @@ document.addEventListener(
         warrior1Name.innerText = `${topWarriors[0].name}`
         warrior2Name.innerText = `${topWarriors[1].name}`
         warrior3Name.innerText = `${topWarriors[2].name}`
-        
+
         memberIcon.src = memberProfile.icon
         memberName.innerHTML = memberProfile.name
         memberTeam.innerHTML = memberProfile.workspace
@@ -332,12 +370,21 @@ document.addEventListener(
 function updateHealthBar () {
   /* Set progress bar values */
   const { completed, total } = getProgress()
+  COMPLETED = completed
+  TOTAL = total
   healthLeft.style.width = ((total - completed) / total) * 100 + '%'
-  healthText.appendChild(document.createTextNode(`${total - completed} / ${total}`))
+  healthText.innerText = `${total - completed} / ${total}`
+  updateHealthBarColor()
+}
+
+/**
+ * Update the color of the health bar display depending on how much health left
+ */
+function updateHealthBarColor () {
   /* Set progress bar color change */
-  const greenThreshold = (2 / 5) * total
-  const yellowThreshold = (1 / 5) * total
-  healthLeft.className += (total - completed > greenThreshold) ? 'healthBarGreenState'
-    : (total - completed > yellowThreshold) ? 'healthBarYellowState'
+  const greenThreshold = (2 / 5) * TOTAL
+  const yellowThreshold = (1 / 5) * TOTAL
+  healthLeft.className = (TOTAL - COMPLETED > greenThreshold) ? 'healthBarGreenState'
+    : (TOTAL - COMPLETED > yellowThreshold) ? 'healthBarYellowState'
       : 'healthBarRedState'
 }
