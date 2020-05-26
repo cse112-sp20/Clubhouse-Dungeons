@@ -13,6 +13,7 @@ let browser = null;
  * Calling the testing function here.  It is an async method.
  * We are defining the async function and immediately calling it
  */
+/*
 (async () => {
 
   // Open a new browser with puppeteer and load the extension
@@ -29,3 +30,4 @@ let browser = null;
   extensionPage = await browser.newPage();
   await extensionPage.goto(`chrome-extension://${extensionID}/${extensionPopupHtml}`);
 })();
+*/

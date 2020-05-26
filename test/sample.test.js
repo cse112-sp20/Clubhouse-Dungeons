@@ -9,7 +9,7 @@ myMock.mockReturnValueOnce(true).mockReturnValueOnce(false);
 const expectPuppeteer = require('expect-puppeteer');
 const puppeteer = require('puppeteer');
 var browser;
-
+/*
 describe('extension', () => {
     beforeAll(async () => {
         // describe path to our extension
@@ -46,6 +46,7 @@ describe('extension', () => {
         browser.close();
     });
 })
+*/
 
 //test('clicks the button', () => {
 //    buttonClick(myMock);
