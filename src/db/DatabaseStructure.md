@@ -1,69 +1,69 @@
 # Quaranteam8 Database
 ##	'quaranteam8':
 	{
-		'projects': {
-			// in our extension, the projects key will be the Clubhouse project id
-			'avengersInitiative': {
-				'name': 'The Avengers Initiative',
+		// all Clubhouse organizations that are using our extension
+		'organizations': {
+			'marvel': {
 				'members': {
 					'tStark': true,
 					'sRodgers': true,
+					'pParker': true,
 					...
 				},
 				'honoredMembers': {
 					'sRodgers': true,
 					...
-				}
-			},
-			'justiceLeague': {
-				'name': 'The Justice League',
+				},
+				'iterationLength': 365,
+				'iterationStart': '1939-1-1T0:0:0Z',
+				'iterationEnd': '1939-12-31T23:59:59Z'
+			}, 
+			'dc': {
 				'members': {
 					'bWayne': true,
 					'cKent': true,
+					'hJordan': true,
 					...
 				},
 				'honoredMembers': {
 					'cKent': true,
 					...
-				}
+				},
+				'iterationLength': 365,
+				'iterationStart': '1934-1-1T0:0:0Z',
+				'iterationEnd': '1934-12-31T23:59:59Z'
 			},
 			...
 		},
-		'users': {
-			// in our extension, the users key will be the Clubhouse member id
+		'allUsers': {
+			// in our extension, the user keys will be their Clubhouse member id
 			'tStark': {
 				'name': 'Tony Stark',
-				'projects': {
-					'avengersInitiative': true
+				'organizations': {
+					'marvel': true
 				}
 			},
 			'sRodgers': {
 				'name': 'Steve Rodgers',
-				'projects': {
-					'avengersInitiative': true
+				'organizations': {
+					'marvel': true
 				},
 				'honored': true,
 				'timesHonored': 2
 			},
 			'bWayne': {
 				'name': 'Bruce Wayne',
-				'projects': {
-					'justiceLeague': true
-				},
-				...
+				'organizations': {
+					'dc': true
+				}
 			},
 			'cKent': {
 				'name': 'Clark Kent',
-				'projects': {
-					'justiceLeague': true
+				'organizations': {
+					'dc': true
 				},
 				...
 			}
-			...
-		},
-		'honoredUsers': {
-			'sRodgers': true,
-			'cKent': true,
 			...
 		}
 	}
