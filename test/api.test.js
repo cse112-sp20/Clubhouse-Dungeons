@@ -12,7 +12,7 @@ const myIcon = 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.p
 
 
 /**
- * Unit Test 3
+ * Unit Test 1
  * Testing for api.getMyIncompleteStories()
  * Checks if the count of test stories are correct and that they are the correct ids
  */
@@ -32,7 +32,7 @@ it('Test MY Incomplete Stories', done => {
 });
 
 /**
- * Unit Test 4
+ * Unit Test 2
  * Testing for api.getAllIncompleteStories()
  * Checks if the count of test stories are correct and that they are the correct ids
  */
@@ -61,8 +61,6 @@ it('Test ALL Incomplete Stories', done => {
     });
 });
 
-/*Side node, I tried to place the above tests into the describe and it started to break things :/ */
-
 
 /**
  * Testing suite for api.js unit tests
@@ -72,7 +70,7 @@ it('Test ALL Incomplete Stories', done => {
 describe('api simple unit tests', () => {
 
     /**
-     * Unit Test 1:
+     * Unit Test 3:
      * Checks if getMemberName returns correct name
      */
     it('Testing getMemberName', () => {
@@ -87,7 +85,7 @@ describe('api simple unit tests', () => {
     });
 
     /**
-     * Unit Test 2:
+     * Unit Test 4:
      * Checks if getMemberProfile returns a correct default profile
      */
     it('Testing default getMemberProfile', () => {
