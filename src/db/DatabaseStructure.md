@@ -4,74 +4,43 @@
 		// all Clubhouse workspaces that are using our extension
 		'workspaces': {
 			'marvel': {
-				'members': {
-					'tStark': true,
-					'sRodgers': true,
-					'pParker': true,
-					...
+				'tStark': {
+					'honored': 0
 				},
-				'honoredMembers': {
-					'sRodgers': true,
-					...
+				'sRodgers': {
+					'honored': 2,
+					'honoredBy': {
+						'nFury': true,
+						'sLee': true
+					}
 				},
+				'nFury': {
+					'honored': 0
+				},
+				... ,
 				'iterationLength': 365,
 				'iterationStart': '1939-1-1T0:0:0Z',
 				'iterationEnd': '1939-12-31T23:59:59Z'
 			}, 
 			'dc': {
-				'members': {
-					'bWayne': true,
-					'cKent': true,
-					'hJordan': true,
-					...
+				'bWayne': {
+					'honored': 0
 				},
-				'honoredMembers': {
-					'cKent': true,
-					...
+				'cKent': {
+					'honored': 1,
+					'honoredBy': {
+						'lLane': true
+					}
 				},
+				... ,
 				'iterationLength': 365,
 				'iterationStart': '1934-1-1T0:0:0Z',
 				'iterationEnd': '1934-12-31T23:59:59Z'
 			},
 			...
-		},
-		'allUsers': {
-			// in our extension, the user keys will be their Clubhouse member id
-			'tStark': {
-				'name': 'Tony Stark',
-				'workspaces': {
-					'marvel': true
-				}
-			},
-			'sRodgers': {
-				'name': 'Steve Rodgers',
-				'workspaces': {
-					'marvel': true
-				},
-				'honored': true,
-				'timesHonored': 2,
-				// users that have honored Steve Rodgers
-				'honoredBy': {
-					'nFury': true,
-					'sLee': true
-				}
-			},
-			'bWayne': {
-				'name': 'Bruce Wayne',
-				'workspaces': {
-					'dc': true
-				}
-			},
-			'cKent': {
-				'name': 'Clark Kent',
-				'workspaces': {
-					'dc': true
-				},
-				...
-			}
-			...
 		}
 	}
+		
 ## Notes
 * '...' is used to show that there is additional information that is not shown
 	* the information it is hiding is in the same format as shown in previous examples
