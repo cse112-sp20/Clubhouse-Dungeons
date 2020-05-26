@@ -291,8 +291,11 @@ document.addEventListener(
         memberIcon.src = memberProfile.icon
         memberTeam.innerHTML = memberProfile.role /* sets role of member not organization/team */
 
-        /* Get top warraiors and update text */
+        /* Get top warriors and update text */
         const topWarriors = getTopWarriors()
+        while (topWarriors.length < 3) {
+          topWarriors.push({ name: 'Empty', points: 0 })
+        }
         warrior1Name.innerText = `${topWarriors[0].name}`
         warrior2Name.innerText = `${topWarriors[1].name}`
         warrior3Name.innerText = `${topWarriors[2].name}`
@@ -306,6 +309,7 @@ document.addEventListener(
         warrior3Points.innerText = `${topWarriors[2].points}` + ' DMG'
 
         updateHealthBar()
+      
         /* Populate tabs */
 
         // My Stories

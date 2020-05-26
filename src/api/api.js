@@ -42,6 +42,12 @@
  * @property {string} icon - URL of the member's display icon
  *
  *
+ * @typedef TopContributor - Sub-object of Member, with simplified structure
+ * @type {Object}
+ * @private {string} name - Name of the topContributor (member)
+ * @private {string} points - Total story points completed by the member
+ *
+ *
  * @typedef MemberInfo - Member object, containing workspace info (but less
  *                       member info than BasicMember), fetched from Clubhouse
  * @type {Object}
@@ -281,24 +287,30 @@ const getAllIncompleteStories = () => {
 }
 
 /**
- * Gets top 3 point contributors from completed stories
- *  @returns {Array}
+ * Get up to top 3 point contributors. If less than 3 members have completed any
+ * stories (and have more than 0 points), only return those that do.
+ *
+ * @returns {Array<TopContributor>} The top contributors (max 3). If less than
+ *                                  3 top contributors exist, only those, the
+ *                                  returned array will have length less than 3.
  */
 const getTopWarriors = () => {
   // Map to hold member ID as key and member object as value
-  var map = new Map()
+  const map = new Map()
   for (const [memberId, memberObj] of Object.entries(MEMBER_MAP)) {
     map.set(memberId, memberObj)
   }
+
   /**
-   * Finds top warrior by points and removes from map
-   * @returns {Object}
+   * Finds top warrior by points and removes from map. If a top warrior doesn't
+   * exist, return null.
+   *
+   * @returns {?TopContributor} Top contributor in map or null if none exists
    */
   const removeTopWarrior = () => {
-    // Set default top warrior values
-    var memberName = 'Empty'
-    var memberPoints = 0
-    var memId
+    let memberName = null
+    let memberPoints = null
+    let memId = null
     // Iterate through map and find greatest value
     for (const [memberId, memberObj] of map) {
       if (memberObj.points > memberPoints) {
@@ -307,33 +319,33 @@ const getTopWarriors = () => {
         memId = memberId
       }
     }
-    // If top warrior found, remove from map
-    if (memberName !== 'Empty') {
+
+    if (memberName) {
+      // If top warrior found, remove from map
       map.delete(memId)
-    }
-    return {
-      name: memberName,
-      points: memberPoints
+
+      return {
+        name: memberName,
+        points: memberPoints
+      }
+    } else {
+      return null
     }
   }
-  // Finds top three warriors and push to returned list
-  var warriorList = []
-  var firstPair = removeTopWarrior()
-  var secondPair = removeTopWarrior()
-  var thirdPair = removeTopWarrior()
-  // if (firstPair.member !== 'Empty') {
-  warriorList.push(firstPair)
-  //  }
-  // if (secondPair.member !== 'Empty') {
-  warriorList.push(secondPair)
-  //  }
-  // if (thirdPair.member !== 'Empty') {
-  warriorList.push(thirdPair)
-  // }
-  return warriorList
+
+  const warriors = []
+  while (warriors.length < 3) {
+    const topWarrior = removeTopWarrior()
+    if (topWarrior) {
+      warriors.push(topWarrior)
+    } else {
+      break
+    }
+  }
+  return warriors
 }
 
-/**
+/** Returns stories in sorted by most recently completed
  * Get stories to show in the battle log - all completed stories sorted by most
  * recently completed.
  *
