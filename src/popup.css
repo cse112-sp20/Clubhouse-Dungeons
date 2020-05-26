@@ -296,11 +296,20 @@ body {
   margin: 1px;
   border-radius: 100px;
   text-align: right;
-  background: linear-gradient(-180deg, #e74c3c 0%, #c0392b 100%);
   box-shadow: 0 0 4px rgba(0,0,0,0.3),
               0 2px 2px rgba(255,255,255,0.3) inset,
               0 -2px 2px rgba(0,0,0,0.3) inset;
   transition: width 1s ease-out;
+}
+
+.healthBarGreenState {
+  background: linear-gradient(-180deg, #00ff00 0%, #00cc00 100%)
+}
+.healthBarYellowState {
+  background: linear-gradient(-180deg, #ffff00 0%, #e6e600 100%)
+}
+.healthBarRedState {
+  background: linear-gradient(-180deg, #e74c3c 0%, #c0392b 100%)
 }
 
 .top-warriors {

@@ -3,6 +3,7 @@ import {
   getMyIncompleteStories,
   getAllIncompleteStories,
   getBattleLog,
+  getTopWarriors,
   getMemberName,
   getMemberProfile,
   getProgress,
@@ -154,11 +155,30 @@ document.addEventListener(
         memberName.innerHTML = memberProfile.name
         memberTeam.innerHTML = memberProfile.workspace
 
+        /* Get top warraiors and update text */
+        const topWarriors = getTopWarriors()
+        while (topWarriors.length < 3) {
+          topWarriors.push({ name: 'Empty', points: 0 })
+        }
+        document.getElementById('warrior1Name').innerText = (topWarriors) ? `${topWarriors[0].name}` : 'Kevin'
+        document.getElementById('warrior2Name').innerText = (topWarriors) ? `${topWarriors[1].name}` : 'Chris'
+        document.getElementById('warrior3Name').innerText = (topWarriors) ? `${topWarriors[2].name}` : 'Jedd'
+
+        document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
+        document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
+        document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
+
         /* Set progress bar values */
         const { completed, total } = getProgress()
         healthLeft.style.width = (completed / total) * 100 + '%'
         healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
 
+        /* Set progress bar color change */
+        const greenThreshold = (2 / 5) * total
+        const yellowThreshold = (1 / 5) * total
+        healthLeft.className += (total - completed > greenThreshold) ? 'healthBarGreenState'
+          : (total - completed > yellowThreshold) ? 'healthBarYellowState'
+            : 'healthBarRedState'
         /* Populate tabs */
 
         // My Stories
