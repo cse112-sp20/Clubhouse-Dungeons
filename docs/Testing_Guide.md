@@ -17,7 +17,11 @@ After cloning our repository, run the command:
 Jest is a JavaScript Testing Framework with a focus on simplicity.
 
 ### Jest Example
-
+```
+test('1 is 1', () => {
+	expect(1).toBe(1);
+});
+```
 ### Command to run all unit tests
 We set it up to run all 
 ```npm run test```
