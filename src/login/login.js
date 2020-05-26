@@ -19,7 +19,7 @@ document.addEventListener(
     /**
      * Function to handle onClick event
      */
-    function onClick () {
+    function onClick() {
       var apiKey = document.getElementById('apiEntry').value
 
       console.log(document.getElementById('apiEntry').value)
@@ -37,7 +37,7 @@ document.addEventListener(
               workspace: res.workspace2.url_slug
             }, () => {
               console.log('storing member info')
-              onLogin(apiKey, res.name, res.workspace2.url_slug)
+              onLogin(apiKey, res.id, res.workspace2.url_slug)
               window.location.href = '../popup.html'
             })
           }
