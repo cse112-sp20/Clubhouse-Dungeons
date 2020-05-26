@@ -1,5 +1,5 @@
 # Quaranteam8 Database
-##	'quaranteam8':
+##	'quaranteam-08':
 	{
 		// all Clubhouse workspaces that are using our extension
 		'workspaces': {

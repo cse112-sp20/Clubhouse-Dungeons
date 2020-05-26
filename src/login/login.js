@@ -2,14 +2,18 @@ import {
   onLogin,
   fetchMemberInfoAsync
 } from '../api/api'
+import {
+  memberLogin
+} from '../db/firebase'
 
-chrome.storage.sync.get(['api_token', 'member_id', 'workspace'], store => {
+chrome.storage.sync.get(['api_token', 'member_id', 'member_name', 'workspace'], store => {
   const errorExists = chrome.runtime.lastError !== undefined
   const tokenExists = Object.prototype.hasOwnProperty.call(store, 'api_token')
   if (!errorExists && tokenExists) {
     console.log(store)
     onLogin(store.api_token, store.member_id, store.workspace)
-    window.location.href = '../popup.html'
+    memberLogin(store.member_id, store.member_name, store.workspace)
+    // window.location.href = '../popup.html'
   }
 })
 
@@ -38,7 +42,8 @@ document.addEventListener(
             }, () => {
               console.log('storing member info')
               onLogin(apiKey, res.name, res.workspace2.url_slug)
-              window.location.href = '../popup.html'
+              memberLogin(res.id, res.name, res.workspace2.url_slug)
+              // window.location.href = '../popup.html'
             })
           }
         })
