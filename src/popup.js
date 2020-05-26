@@ -148,42 +148,39 @@ function completeStory (story, storyNode, tabName) {
   completeStoriesAsync(story.id)
     .then((data) => {
       console.log(data)
-      try {
-        switch (tabName) {
-          case 'myStoriesTab': {
-            // remove from myStories tab
-            myStories.removeChild(storyNode)
-            // find the node that corresponds to the allStories container
-            const newNode = getStoryNodeFromContainer(allStories, story.name)
-            if (newNode) {
-              // remove from allStories tab
-              allStories.removeChild(newNode)
-            }
-            break
-          }
-          case 'allStoriesTab': {
-            // find the node that corresponds to the myStories container
-            const newNode = getStoryNodeFromContainer(myStories, story.name)
-            if (newNode) {
-              // remove from myStories tab
-              myStories.removeChild(newNode)
-            }
+      switch (tabName) {
+        case 'myStoriesTab': {
+          // remove from myStories tab
+          myStories.removeChild(storyNode)
+          // find the node that corresponds to the allStories container
+          const newNode = getStoryNodeFromContainer(allStories, story.name)
+          if (newNode) {
             // remove from allStories tab
             allStories.removeChild(newNode)
-            break
           }
-          default: {
-            /*
-              This case should never be reached. The complete story button should
-              only be available in the myStories tab and the allStoriesTab
-            */
-            throw new Error(`Button error. I do not know which tab 
-              ${getMemberProfile().name} was under when completing the story 
-              ${story.name}`)
-          }
+          break
         }
-      } catch (e) {
-        console.error(`${e.name}: ${e.message}`)
+        case 'allStoriesTab': {
+          // find the node that corresponds to the myStories container
+          const newNode = getStoryNodeFromContainer(myStories, story.name)
+          if (newNode) {
+            // remove from myStories tab
+            myStories.removeChild(newNode)
+          }
+          // remove from allStories tab
+          allStories.removeChild(newNode)
+          break
+        }
+        default: {
+          /*
+            This case should never be reached. The complete story button should
+            only be available in the myStories tab and the allStoriesTab
+          */
+          console.log(`Button error. I do not know which tab 
+            ${getMemberProfile().name} was under when completing the story 
+            ${story.name}`)
+          break
+        }
       }
       // add the completed story to the battleLog tab
       addToBattleLogTab(story)
@@ -220,6 +217,7 @@ const getStoryNodeFromContainer = (nodeContainer, storyName) => {
   // should never reach this statement if function is invoked from proper context
   return null
 }
+
 /**
  * Adds the passed in story to the myStories tab
  * @param {*} story the story to add to the myStories tab
@@ -236,6 +234,7 @@ const addToMyStoriesTab = story => {
   storyDiv.prepend(storyButton)
   myStories.appendChild(storyDiv)
 }
+
 /**
  * Adds the passed in story to the allStories tab
  * @param {*} story the story to add to the allStories tab
@@ -265,6 +264,7 @@ const addToAllStoriesTab = story => {
   storyDiv.append(ownersDiv)
   allStories.appendChild(storyDiv)
 }
+
 /**
  * Add the passed in story to the battleLog tab
  * @param {*} story the story to add to the battleLog tab
@@ -299,7 +299,7 @@ document.addEventListener(
         warrior1Name.innerText = `${topWarriors[0].name}`
         warrior2Name.innerText = `${topWarriors[1].name}`
         warrior3Name.innerText = `${topWarriors[2].name}`
-        
+
         memberIcon.src = memberProfile.icon
         memberName.innerHTML = memberProfile.name
         memberTeam.innerHTML = memberProfile.workspace
@@ -309,7 +309,7 @@ document.addEventListener(
         warrior3Points.innerText = `${topWarriors[2].points}` + ' DMG'
 
         updateHealthBar()
-      
+
         /* Populate tabs */
 
         // My Stories
