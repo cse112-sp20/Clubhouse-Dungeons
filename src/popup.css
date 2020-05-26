@@ -361,6 +361,24 @@ body {
   color: rgba(255,255,255,.5);
   text-transform: uppercase;
 }
+#openTeamButton {
+  position: absolute;
+  right: 0;
+  bottom: 50%;
+  transform: translateY(50%);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255,255,255,.2);
+  color: #ffffff;
+  height: 24px;
+  width: 24px;
+  border-radius: 100px;
+}
+#openTeamButton:hover {
+  background: rgba(255,255,255,.3);
+}
 
 .panel {
   height: 50%;
