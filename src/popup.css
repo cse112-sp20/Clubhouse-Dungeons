@@ -361,7 +361,7 @@ body {
   color: rgba(255,255,255,.5);
   text-transform: uppercase;
 }
-#membersListButton {
+#membersListContainer #membersListButton {
   position: absolute;
   right: -32px;
   bottom: 50%;
@@ -377,11 +377,20 @@ body {
   border-radius: 100px;
   transition: all .2s linear;
 }
-#membersListButton:hover {
+#membersListContainer #membersListButton div {
+  display: none;
+}
+#membersListContainer.show #membersListButton span {
+  display: none;
+}
+#membersListContainer.show #membersListButton div {
+  display: block;
+}
+#membersListContainer #membersListButton:hover {
   background: rgba(255,255,255,.35);
 }
 
-#membersList {
+#membersListContainer #membersList {
   visibility: hidden;
   position: absolute;
   bottom: 32px;
@@ -399,7 +408,7 @@ body {
   padding: 8px;
   transition: all .2s ease-in-out;
 }
-#membersList.show {
+#membersListContainer.show #membersList {
   visibility: visible;
   height: 200px;
 }

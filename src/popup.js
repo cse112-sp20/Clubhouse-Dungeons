@@ -18,8 +18,6 @@ const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
 const memberTeam = document.getElementById('memberTeam')
 
-const membersList = document.getElementById('membersList')
-
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
 
@@ -50,6 +48,8 @@ const battleLog = document.getElementById('battleLog')
 // const warrior3Points = document.getElementById('warrior3Points')
 
 // Event listener for open honor menu
+const membersList = document.getElementById('membersList')
+const membersListContainer = document.getElementById('membersListContainer')
 const membersListButton = document.getElementById('membersListButton')
 membersListButton.addEventListener('click', () => toggleMembersList())
 
@@ -148,10 +148,10 @@ function selectTab (tabIndex) {
  * Toggle members list for honors
  */
 function toggleMembersList() {
-  if (membersList.classList.contains('show')) {
-    membersList.classList.remove('show')
+  if (membersListContainer.classList.contains('show')) {
+    membersListContainer.classList.remove('show')
   } else {
-    membersList.classList.add('show')
+    membersListContainer.classList.add('show')
   }
 }
 
