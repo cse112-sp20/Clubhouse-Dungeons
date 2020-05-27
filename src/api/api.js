@@ -479,6 +479,32 @@ const setup = () => {
   return SETUP
 }
 
+/** Used for testing only.  Does the same thing as setup, but does not use chrome storage
+ * @param apiToken the token to set the API_TOKEN var to
+ * @param memberID the id to set MEMBER_ID var to
+ */
+const setupTest = (apiToken, memberID, cb) => {
+  API_TOKEN = apiToken
+  MEMBER_ID = memberID
+
+  Promise.all([
+    fetchStoriesAsync()
+      .then(stories => {
+        STORIES = stories
+      }),
+    fetchMembersAsync()
+      .then(members => {
+        MEMBER_MAP = {}
+        members.map(member => {
+          MEMBER_MAP[member.id] = member
+        })
+      })
+  ])
+    .then(() => {
+      cb()
+    })
+}
+
 module.exports = {
   fetchMemberInfoAsync,
   getMyIncompleteStories,
@@ -490,5 +516,6 @@ module.exports = {
   getProgress,
   onLogin,
   setup,
-  removeApiToken
+  removeApiToken,
+  setupTest
 }
