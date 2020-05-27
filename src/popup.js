@@ -253,15 +253,24 @@ const addToMyStoriesTab = story => {
   storyButton.addEventListener('mouseup', notPressingDown, false)
   storyButton.addEventListener('pressHold', finishHold, false)
 
+  /**
+   * Sets timer for story completion mousedown event
+   */
   function pressingDown () {
     // Start the timer
     requestAnimationFrame(timer)
   }
+  /**
+   * Resets timer for sotry completion mouseup event
+   */
   function notPressingDown () {
     // Stop the timer
     cancelAnimationFrame(timerID)
     counter = 0
   }
+  /**
+   * Estabilishs timer action during story completion mousedown event
+   */
   function timer () {
     if (counter < pressHoldDuration) {
       timerID = requestAnimationFrame(timer)
@@ -270,6 +279,9 @@ const addToMyStoriesTab = story => {
       storyButton.dispatchEvent(pressHoldEvent)
     }
   }
+  /**
+   * Completes story when pressHoldDuration threshold is met
+   */
   function finishHold () {
     completeStory(story, storyDiv, 'myStoriesTab')
   }
@@ -315,7 +327,7 @@ const addToBattleLogTab = story => {
   actionDiv.classList.add('action')
   actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + estimateStoryPoints(story.estimate) + ' DMG'
 
-  battleLog.appendChild(actionDiv)
+  battleLog.prepend(actionDiv)
 }
 
 document.addEventListener(
@@ -384,7 +396,7 @@ function updateHealthBarColor () {
   /* Set progress bar color change */
   const greenThreshold = (2 / 5) * TOTAL
   const yellowThreshold = (1 / 5) * TOTAL
-  healthLeft.className = (TOTAL - COMPLETED > greenThreshold) ? 'healthBarGreenState'
+  healthLeft.classList.add((TOTAL - COMPLETED > greenThreshold) ? 'healthBarGreenState'
     : (TOTAL - COMPLETED > yellowThreshold) ? 'healthBarYellowState'
-      : 'healthBarRedState'
+      : 'healthBarRedState')
 }
