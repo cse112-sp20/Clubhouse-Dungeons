@@ -9,7 +9,7 @@
 
 1. First setup the project using the instructions above
 2. Then to lint all js files in <code>src/</code> run the command <code>npm run lint</code>. 
-3. If you want to remove the npm errors cause by linting errors, run the command <code>npm run lint -s</code>
+3. If you want to remove the npm errors caused by linting errors, run the command <code>npm run lint -s</code>
 
 ## How to run tests:
 
@@ -19,7 +19,12 @@
 
 ## How to test extension in Chrome:
 
-1. In Chrome go to URL <code>chrome://extensions</code>
-2. Toggle on Developer mode
-3. Click Load unpacked
-4. Select the src folder from the repository
+1. `npm run build`
+2. In Chrome go to URL <code>chrome://extensions</code>
+3. Toggle on Developer mode
+4. Click Load unpacked
+5. Select the dist folder from the repository
+
+## How to clean your build
+
+1. `npm run clean`
