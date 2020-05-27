@@ -317,13 +317,7 @@ const getTopWarriors = () => {
  *
  * @returns {Array<Member>} Array of all members.
  */
-const getAllMembers = () => {
-  const members = []
-  for (const [memberId, memberObj] of Object.entries(MEMBER_MAP)) {
-    members.push(memberObj);
-  }
-  return members;
-}
+const getAllMembers = () => Object.values(MEMBER_MAP)
 
 /** Returns stories in sorted by most recently completed
  * Get stories to show in the battle log - all completed stories sorted by most
