@@ -440,6 +440,11 @@ const setup = () => {
   if (!SETUP) {
     SETUP = new Promise((resolve, reject) => {
       chrome.storage.sync.get(['api_token', 'member_id', 'workspace'], store => {
+        if (chrome.runtime.lastError) {
+          console.log('error: failed to read from storage')
+          alert('error')
+          reject(new Error('error'))
+        }
         API_TOKEN = store.api_token
         MEMBER_ID = store.member_id
         WORKSPACE = store.workspace
@@ -457,7 +462,11 @@ const setup = () => {
               })
             })
         ])
-
+          .catch((e) => {
+            console.log('error', e)
+            alert('error')
+            reject(new Error('error'))
+          })
           .then(() => {
             // Initalize member map points to 0
             for (const memberObj of Object.values(MEMBER_MAP)) {

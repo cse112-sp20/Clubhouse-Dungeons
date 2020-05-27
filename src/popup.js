@@ -148,6 +148,10 @@ document.addEventListener(
   'DOMContentLoaded',
   () => {
     setup()
+      .catch((e) => {
+        console.log('error: setup failed', e)
+        alert('error: setup failed')
+      })
       .then(() => {
         /* Get member info for profile button */
         const memberProfile = getMemberProfile()
