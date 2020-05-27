@@ -28,7 +28,7 @@
 4. [Puppeteer](https://developers.google.com/web/tools/puppeteer/) and [Jest](https://jestjs.io/) are needed to test the program. Download and install them by entering
 
 ```shell
-> npm install puppeteer jest
+> npm install
 ```
 
 ## Running Tests
