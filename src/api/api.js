@@ -312,6 +312,19 @@ const getTopWarriors = () => {
   return warriors
 }
 
+/**
+ * Get all team members.
+ *
+ * @returns {Array<Member>} Array of all members.
+ */
+const getAllMembers = () => {
+  const members = []
+  for (const [memberId, memberObj] of Object.entries(MEMBER_MAP)) {
+    members.push(memberObj);
+  }
+  return members;
+}
+
 /** Returns stories in sorted by most recently completed
  * Get stories to show in the battle log - all completed stories sorted by most
  * recently completed.
@@ -485,6 +498,7 @@ module.exports = {
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
+  getAllMembers,
   getMemberName,
   getMemberProfile,
   getProgress,

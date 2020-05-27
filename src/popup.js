@@ -4,6 +4,7 @@ import {
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
+  getAllMembers,
   getMemberName,
   getMemberProfile,
   getProgress,
@@ -16,6 +17,8 @@ const profileContainer = document.getElementById('profileContainer')
 const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
 const memberTeam = document.getElementById('memberTeam')
+
+const membersList = document.getElementById('membersList')
 
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
@@ -45,6 +48,11 @@ const battleLog = document.getElementById('battleLog')
 // const warrior2Points = document.getElementById('warrior2Points')
 // const warrior3Name = document.getElementById('warrior3Name')
 // const warrior3Points = document.getElementById('warrior3Points')
+
+// Event listener for open honor menu
+const membersListButton = document.getElementById('membersListButton')
+membersListButton.addEventListener('click', () => toggleMembersList())
+
 
 // Click event listeners for tabs
 myStoriesTab.addEventListener('click', () => selectTab(0))
@@ -133,6 +141,27 @@ function selectTab (tabIndex) {
 
     default:
   }
+}
+
+
+/**
+ * Toggle members list for honors
+ */
+function toggleMembersList() {
+  if (membersList.classList.contains('show')) {
+    membersList.classList.remove('show')
+  } else {
+    membersList.classList.add('show')
+  }
+}
+
+/**
+ * TODO: Record honoring of member in database
+ * 
+ * @param {Member} member 
+ */
+function honorMember(member) {
+  const memberId = member.id;
 }
 
 /**
@@ -230,6 +259,21 @@ document.addEventListener(
           actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + story.estimate + ' DMG'
           battleLog.appendChild(actionDiv)
         })
+
+        const allMembers = getAllMembers();
+        allMembers.forEach(member => {
+          const memberDiv = document.createElement('div')
+          memberDiv.classList.add('member')
+          const memberName = document.createElement('div')
+          memberName.innerHTML = member.profile.name
+          const honorButton = document.createElement('div')
+          honorButton.classList.add('honor')
+          honorButton.innerHTML = 'Honor'
+          honorButton.addEventListener('click', () => honorMember(member))
+          memberDiv.appendChild(memberName)
+          memberDiv.appendChild(honorButton)
+          membersList.appendChild(memberDiv)          
+        });
       })
   },
   false
