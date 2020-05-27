@@ -401,14 +401,13 @@ const setup = () => {
   return SETUP
 }
 
-
 /** Used for testing only.  Does the same thing as setup, but does not use chrome storage
- * @param apiToken the token to set the API_TOKEN var to 
+ * @param apiToken the token to set the API_TOKEN var to
  * @param memberID the id to set MEMBER_ID var to
  */
-const setupTest = (apiToken, memberID, cb) =>{
-  API_TOKEN = apiToken;
-  MEMBER_ID = memberID;
+const setupTest = (apiToken, memberID, cb) => {
+  API_TOKEN = apiToken
+  MEMBER_ID = memberID
 
   Promise.all([
     fetchStoriesAsync()
@@ -424,7 +423,7 @@ const setupTest = (apiToken, memberID, cb) =>{
       })
   ])
     .then(() => {
-      cb();
+      cb()
     })
 }
 
