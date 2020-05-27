@@ -4,7 +4,6 @@ import {
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
-  getAllMembers,
   getMemberName,
   getMemberProfile,
   getProgress,
@@ -46,12 +45,6 @@ const battleLog = document.getElementById('battleLog')
 // const warrior2Points = document.getElementById('warrior2Points')
 // const warrior3Name = document.getElementById('warrior3Name')
 // const warrior3Points = document.getElementById('warrior3Points')
-
-// Event listener for open honor menu
-const membersList = document.getElementById('membersList')
-const membersListContainer = document.getElementById('membersListContainer')
-const membersListButton = document.getElementById('membersListButton')
-membersListButton.addEventListener('click', () => toggleMembersList())
 
 // Click event listeners for tabs
 myStoriesTab.addEventListener('click', () => selectTab(0))
@@ -140,27 +133,6 @@ function selectTab (tabIndex) {
 
     default:
   }
-}
-
-/**
- * Toggle members list for honors
- */
-function toggleMembersList () {
-  if (membersListContainer.classList.contains('show')) {
-    membersListContainer.classList.remove('show')
-  } else {
-    membersListContainer.classList.add('show')
-  }
-}
-
-/**
- * TODO: Record honoring of member in database
- *
- * @param {Member} member
- */
-function honorMember (member) {
-  const memberId = member.id
-  console.log('honor member', memberId)
 }
 
 /**
@@ -257,21 +229,6 @@ document.addEventListener(
           actionDiv.classList.add('action')
           actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + story.estimate + ' DMG'
           battleLog.appendChild(actionDiv)
-        })
-
-        const allMembers = getAllMembers()
-        allMembers.forEach(member => {
-          const memberDiv = document.createElement('div')
-          memberDiv.classList.add('member')
-          const memberName = document.createElement('div')
-          memberName.innerHTML = member.profile.name
-          const honorButton = document.createElement('div')
-          honorButton.classList.add('honor')
-          honorButton.innerHTML = 'Honor'
-          honorButton.addEventListener('click', () => honorMember(member))
-          memberDiv.appendChild(memberName)
-          memberDiv.appendChild(honorButton)
-          membersList.appendChild(memberDiv)
         })
       })
   },
