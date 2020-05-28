@@ -1,5 +1,8 @@
 # Quaranteam8 Database
-##	'quaranteam-08':
+
+## This is an example documenting how data is structured inside the Database
+
+###	'quaranteam-08':
 	{
 		// all Clubhouse workspaces that are using our extension
 		'workspaces': {

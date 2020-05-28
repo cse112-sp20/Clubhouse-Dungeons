@@ -172,19 +172,6 @@ const completeStoriesAsync = async (storyId) => {
 }
 
 /**
- * Request undo completion of story info using workflow_state_id
- * @param {string} storyId - public id of the story
- */
-const revertCompleteStoriesAsync = async (storyId) => {
-  const res = await fetch(`https://api.clubhouse.io/api/v3/stories/${storyId}?token=${API_TOKEN}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ completed_at_override: null, workflow_state_id: 500000008 })
-  })
-  return res.json()
-}
-
-/**
  * Fetch info about a member
  *
  * @async
@@ -504,7 +491,6 @@ const setup = () => {
 module.exports = {
   fetchMemberInfoAsync,
   completeStoriesAsync,
-  revertCompleteStoriesAsync,
   getMyIncompleteStories,
   getAllIncompleteStories,
   getBattleLog,
