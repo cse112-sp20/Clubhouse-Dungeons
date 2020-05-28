@@ -1,12 +1,6 @@
 import {
-  onLogin,
   fetchMemberInfoAsync,
-  getAllMembers,
-  setup
 } from '../api/api'
-import {
-  memberLogin
-} from '../db/firebase'
 
 chrome.storage.sync.get(['api_token', 'member_id', 'member_name', 'workspace'], store => {
   const errorExists = chrome.runtime.lastError !== undefined

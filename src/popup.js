@@ -11,7 +11,6 @@ import {
   getMemberProfile,
   getProgress,
   removeApiToken,
-  fetchMemberInfoAsync,
   onLogin
 } from './api/api'
 import {
