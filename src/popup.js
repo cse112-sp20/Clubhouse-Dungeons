@@ -39,15 +39,6 @@ const myStories = document.getElementById('myStories')
 const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
 
-// Top 3 point earners
-
-const warrior1Name = document.getElementById('warrior1Name')
-const warrior1Points = document.getElementById('warrior1Points')
-const warrior2Name = document.getElementById('warrior2Name')
-const warrior2Points = document.getElementById('warrior2Points')
-const warrior3Name = document.getElementById('warrior3Name')
-const warrior3Points = document.getElementById('warrior3Points')
-
 // Event listener for open honor menu
 const membersList = document.getElementById('membersList')
 const membersListContainer = document.getElementById('membersListContainer')
@@ -333,7 +324,7 @@ document.addEventListener(
         document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
 
         updateHealthBar()
-      
+
         /* Populate tabs */
 
         // My Stories
@@ -377,7 +368,7 @@ function updateHealthBar () {
   const { completed, total } = getProgress()
   healthLeft.style.width = (completed / total) * 100 + '%'
   healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
-  
+
   /* Set progress bar color change */
   const greenThreshold = (2 / 5) * total
   const yellowThreshold = (1 / 5) * total
