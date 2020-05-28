@@ -12,17 +12,7 @@ chrome.storage.sync.get(['api_token', 'member_id', 'member_name', 'workspace'], 
   const errorExists = chrome.runtime.lastError !== undefined
   const tokenExists = Object.prototype.hasOwnProperty.call(store, 'api_token')
   if (!errorExists && tokenExists) {
-    console.log(store)
-    onLogin(store.api_token, store.member_id, store.workspace)
-    setup()
-      .then(() => {
-        const allMemberIds = getAllMembers().map(member => member.id)
-        return memberLogin(store.member_id, allMemberIds, store.workspace)
-      })
-      .then(() => {
-        // TODO: this should run if memberLogin had no errors
-        window.location.href = '../popup.html'
-      })
+    window.location.href = '../popup.html'
   }
 })
 
@@ -48,19 +38,8 @@ document.addEventListener(
               member_id: res.id,
               member_name: res.name,
               workspace: res.workspace2.url_slug
-            }, () => {
-              console.log('storing member info')
-              onLogin(apiKey, res.name, res.workspace2.url_slug)
-              setup()
-                .then(() => {
-                  const allMemberIds = getAllMembers().map(member => member.id)
-                  return memberLogin(res.id, allMemberIds, res.workspace2.url_slug)
-                })
-                .then(() => {
-                  // TODO: this should run if memberLogin had no errors
-                  window.location.href = '../popup.html'
-                })
-            })
+            }, () => window.location.href = '../popup.html'
+            )
           }
         })
         .catch((e) => {

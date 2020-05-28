@@ -10,9 +10,34 @@ import {
   getMemberName,
   getMemberProfile,
   getProgress,
-  removeApiToken
+  removeApiToken,
+  fetchMemberInfoAsync,
+  onLogin
 } from './api/api'
-import { honorDatabaseMember } from './db/firebase'
+import {
+  memberLogin,
+  honorDatabaseMember
+} from './db/firebase'
+
+/* Get user info from chrome sync storage. If token exists and there is no error,
+ * log the user in. Else, link the user back to the login page.
+ */
+
+chrome.storage.sync.get(['api_token', 'member_id', 'member_name', 'workspace'], store => {
+  const errorExists = chrome.runtime.lastError !== undefined
+  const tokenExists = Object.prototype.hasOwnProperty.call(store, 'api_token')
+  if (!errorExists && tokenExists) {
+    console.log(store)
+    onLogin(store.api_token, store.member_id, store.workspace)
+    setup()
+      .then(() => {
+        const allMemberIds = getAllMembers().map(member => member.id)
+        return memberLogin(store.member_id, allMemberIds, store.workspace)
+      })
+  } else {
+    window.location.href = '../login.html'
+  }
+})
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
@@ -153,7 +178,10 @@ function toggleMembersList () {
  * @param {Member} honoredMember
  */
 function honorMember (honoredMember) {
+  //const allMemberIds = getAllMembers().map(member => member.id)
+  //memberLogin(getSignedInMember().id, allMemberIds, )
   honorDatabaseMember(getSignedInMember().id, honoredMember.id)
+
 }
 
 /**
