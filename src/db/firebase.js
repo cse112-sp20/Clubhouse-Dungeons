@@ -128,11 +128,15 @@ var member = null
  */
 const honorDatabaseMember = (memberId, honoredMemberId) => {
   if (memberId !== honoredMemberId) {
-    const honoredMemberRef = WORKSPACES_REF.child(currentIterationId).child(honoredMemberId)
+    const honoredMemberRef = workspaceRef.child(currentIterationId).child(honoredMemberId)
     honoredMemberRef.once('value')
       .then(dataSnapshot => {
-        const honoredBy = dataSnapshot.val().honored_by
-        honoredBy.push(memberId)
+        let honoredBy = dataSnapshot.val().honored_by
+        if (honoredBy === false) {
+          honoredBy = [memberId]
+        } else {
+          honoredBy.push(memberId)
+        }
         honoredMemberRef.update({ honored_by: honoredBy })
       })
   }

@@ -333,6 +333,13 @@ const getTopWarriors = () => {
 }
 
 /**
+ * Get the signed-in member
+ *
+ * @returns {Member} The signed-in member
+ */
+const getSignedInMember = () => MEMBER_MAP[MEMBER_ID]
+
+/**
  * Get a member
  *
  * @param {string} memberId - Member ID of the member to get
@@ -549,6 +556,7 @@ module.exports = {
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
+  getSignedInMember,
   getMember,
   getAllMembers,
   getMemberName,

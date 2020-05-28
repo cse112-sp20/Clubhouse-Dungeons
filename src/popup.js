@@ -5,12 +5,14 @@ import {
   completeStoriesAsync,
   getBattleLog,
   getTopWarriors,
+  getSignedInMember,
   getAllMembers,
   getMemberName,
   getMemberProfile,
   getProgress,
   removeApiToken
 } from './api/api'
+import { honorDatabaseMember } from './db/firebase'
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
@@ -146,13 +148,12 @@ function toggleMembersList () {
 }
 
 /**
- * TODO: Record honoring of member in database
+ * Record honoring of member in database
  *
- * @param {Member} member
+ * @param {Member} honoredMember
  */
-function honorMember (member) {
-  const memberId = member.id
-  console.log('honor member', memberId)
+function honorMember (honoredMember) {
+  honorDatabaseMember(getSignedInMember().id, honoredMember.id)
 }
 
 /**
