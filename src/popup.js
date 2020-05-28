@@ -177,10 +177,7 @@ function toggleMembersList () {
  * @param {Member} honoredMember
  */
 function honorMember (honoredMember) {
-  //const allMemberIds = getAllMembers().map(member => member.id)
-  //memberLogin(getSignedInMember().id, allMemberIds, )
   honorDatabaseMember(getSignedInMember().id, honoredMember.id)
-
 }
 
 /**

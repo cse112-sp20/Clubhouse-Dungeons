@@ -1,5 +1,5 @@
 import {
-  fetchMemberInfoAsync,
+  fetchMemberInfoAsync
 } from '../api/api'
 
 chrome.storage.sync.get(['api_token', 'member_id', 'member_name', 'workspace'], store => {
