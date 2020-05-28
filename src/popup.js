@@ -5,6 +5,7 @@ import {
   completeStoriesAsync,
   getBattleLog,
   getTopWarriors,
+  getAllMembers,
   getMemberName,
   getMemberProfile,
   getProgress,
@@ -46,6 +47,12 @@ const warrior2Name = document.getElementById('warrior2Name')
 const warrior2Points = document.getElementById('warrior2Points')
 const warrior3Name = document.getElementById('warrior3Name')
 const warrior3Points = document.getElementById('warrior3Points')
+
+// Event listener for open honor menu
+const membersList = document.getElementById('membersList')
+const membersListContainer = document.getElementById('membersListContainer')
+const membersListButton = document.getElementById('membersListButton')
+membersListButton.addEventListener('click', () => toggleMembersList())
 
 // Click event listeners for tabs
 myStoriesTab.addEventListener('click', () => selectTab(0))
@@ -137,7 +144,28 @@ function selectTab (tabIndex) {
 }
 
 /**
- * Complete story onClick
+ * Toggle members list for honors
+ */
+function toggleMembersList () {
+  if (membersListContainer.classList.contains('show')) {
+    membersListContainer.classList.remove('show')
+  } else {
+    membersListContainer.classList.add('show')
+  }
+}
+
+/**
+ * TODO: Record honoring of member in database
+ *
+ * @param {Member} member
+ */
+function honorMember (member) {
+  const memberId = member.id
+  console.log('honor member', memberId)
+}
+
+/**
+ * TODO: Complete story
  *
  * @param {Story} story the story to be completed
  * @param {*} storyNode the child story node to be removed from the myStories and allStories tabs
@@ -295,20 +323,17 @@ document.addEventListener(
         while (topWarriors.length < 3) {
           topWarriors.push({ name: 'Empty', points: 0 })
         }
-        warrior1Name.innerText = `${topWarriors[0].name}`
-        warrior2Name.innerText = `${topWarriors[1].name}`
-        warrior3Name.innerText = `${topWarriors[2].name}`
 
-        memberIcon.src = memberProfile.icon
-        memberName.innerHTML = memberProfile.name
-        memberTeam.innerHTML = memberProfile.workspace
+        document.getElementById('warrior1Name').innerText = (topWarriors) ? `${topWarriors[0].name.split(' ')[0]}` : 'Kevin'
+        document.getElementById('warrior2Name').innerText = (topWarriors) ? `${topWarriors[1].name.split(' ')[0]}` : 'Chris'
+        document.getElementById('warrior3Name').innerText = (topWarriors) ? `${topWarriors[2].name.split(' ')[0]}` : 'Jedd'
 
-        warrior1Points.innerText = `${topWarriors[0].points}` + ' DMG'
-        warrior2Points.innerText = `${topWarriors[1].points}` + ' DMG'
-        warrior3Points.innerText = `${topWarriors[2].points}` + ' DMG'
+        document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
+        document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
+        document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
 
         updateHealthBar()
-
+      
         /* Populate tabs */
 
         // My Stories
@@ -323,6 +348,21 @@ document.addEventListener(
         getBattleLog().map(story => {
           addToBattleLogTab(story)
         })
+
+        const allMembers = getAllMembers()
+        allMembers.forEach(member => {
+          const memberDiv = document.createElement('div')
+          memberDiv.classList.add('member')
+          const memberName = document.createElement('div')
+          memberName.innerHTML = member.profile.name
+          const honorButton = document.createElement('div')
+          honorButton.classList.add('honor')
+          honorButton.innerHTML = 'Honor'
+          honorButton.addEventListener('click', () => honorMember(member))
+          memberDiv.appendChild(memberName)
+          memberDiv.appendChild(honorButton)
+          membersList.appendChild(memberDiv)
+        })
       })
   },
   false
@@ -335,8 +375,9 @@ document.addEventListener(
 function updateHealthBar () {
   /* Set progress bar values */
   const { completed, total } = getProgress()
-  healthLeft.style.width = ((total - completed) / total) * 100 + '%'
-  healthText.appendChild(document.createTextNode(`${total - completed} / ${total}`))
+  healthLeft.style.width = (completed / total) * 100 + '%'
+  healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
+  
   /* Set progress bar color change */
   const greenThreshold = (2 / 5) * total
   const yellowThreshold = (1 / 5) * total
