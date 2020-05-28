@@ -32,7 +32,7 @@ document.addEventListener(
               member_id: res.id,
               member_name: res.name,
               workspace: res.workspace2.url_slug
-            }, () => window.location.href = '../popup.html'
+            }, () => (window.location.href = '../popup.html')
             )
           }
         })
