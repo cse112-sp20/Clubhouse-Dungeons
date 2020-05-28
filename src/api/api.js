@@ -333,6 +333,14 @@ const getTopWarriors = () => {
 }
 
 /**
+ * Get a member
+ *
+ * @param {string} memberId - Member ID of the member to get
+ * @returns {Member} The member
+ */
+const getMember = (memberId) => MEMBER_MAP[memberId]
+
+/**
  * Get all team members.
  *
  * @returns {Array<Member>} Array of all members.
@@ -487,9 +495,10 @@ const setup = () => {
         ])
 
           .then(() => {
-            // Initalize member map points to 0
+            // Initalize member map points to 0 and honored_by to an empty array
             for (const memberObj of Object.values(MEMBER_MAP)) {
               memberObj.points = 0
+              memberObj.honoredBy = []
             }
             // Set total contributed points to each member
             getStories({ completeOnly: true }).map((story) => {
@@ -540,6 +549,7 @@ module.exports = {
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
+  getMember,
   getAllMembers,
   getMemberName,
   getMemberProfile,
