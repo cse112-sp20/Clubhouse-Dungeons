@@ -12,8 +12,8 @@ chrome.storage.sync.get(['api_token', 'member_id', 'member_name', 'workspace'], 
   if (!errorExists && tokenExists) {
     console.log(store)
     onLogin(store.api_token, store.member_id, store.workspace)
-    memberLogin(store.member_id, store.member_name, store.workspace)
-    // window.location.href = '../popup.html'
+    memberLogin(store.member_id, store.workspace /* { start: 'today', end: 'tomorrow', length: 1 } */)
+    window.location.href = '../popup.html'
   }
 })
 
@@ -42,8 +42,8 @@ document.addEventListener(
             }, () => {
               console.log('storing member info')
               onLogin(apiKey, res.name, res.workspace2.url_slug)
-              memberLogin(res.id, res.name, res.workspace2.url_slug)
-              // window.location.href = '../popup.html'
+              memberLogin(res.id, res.workspace2.url_slug /* { start: 'today', end: 'tomorrow', length: 1 } */)
+              window.location.href = '../popup.html'
             })
           }
         })

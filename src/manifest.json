@@ -15,5 +15,6 @@
   },
   "permissions": [
     "storage"
-  ]
+  ],
+  "content_security_policy": "script-src 'self' https://*.quaranteam-08.firebaseio.com; object-src 'self'"
 }
