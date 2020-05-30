@@ -1,10 +1,9 @@
 import {
-  onLogin,
   fetchMemberInfoAsync
 } from '../api/api'
 
 /**
- * validate membet
+ * validate member
  *
  * @async
  * @returns {}
@@ -12,10 +11,8 @@ import {
 const validateMember = (apiKey) => {
   fetchMemberInfoAsync(apiKey)
     .then((res) => {
-      if (res.message === 'Unauthorized') {
-        alert('Invalid key!')
-      } else {
-      // store user info into the StorageArea storage.sync
+      if (!res.message && !res.tag) {
+        // store user info into the StorageArea storage.sync
         chrome.storage.sync.set({
           api_token: apiKey,
           member_id: res.id,
@@ -23,14 +20,16 @@ const validateMember = (apiKey) => {
           workspace: res.workspace2.url_slug
         }, () => {
           console.log('storing member info')
-          onLogin(apiKey, res.id, res.workspace2.url_slug)
           window.location.href = '../popup.html'
         })
+      } else {
+        throw new Error('Invalid API token')
       }
     })
     .catch((e) => {
-      console.log('error: invalid API token', e)
-      alert('invalid API token')
+      console.log(e)
+      /* TODO: Nedd to change alerts */
+      alert(e)
     })
 }
 
@@ -48,7 +47,7 @@ document.addEventListener(
     /**
      * Function to handle onClick event
      */
-    function onClick() {
+    function onClick () {
       var apiKey = document.getElementById('apiEntry').value
 
       console.log(document.getElementById('apiEntry').value)
@@ -59,4 +58,3 @@ document.addEventListener(
   },
   false
 ) // addEventListener()
-

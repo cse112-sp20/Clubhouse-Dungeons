@@ -111,16 +111,79 @@ var STORIES = null
 var SETUP = null
 
 /**
+ *
+ *
+ *
+ *
+ * @type
+ */
+const ERR_MSG_INTERNET = 'internet-error'
+
+/**
+ *
+ *
+ *
+ *
+ * @type
+ */
+const ERR_MSG_INVALID_API_TOKEN = 'invalid-api-token-error'
+
+/**
+ *
+ *
+ *
+ *
+ * @type
+ */
+const ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED = 'clubhouse-api-quota-exceeded-error'
+
+/**
+ *
+ *
+ *
+ *
+ * @type
+ */
+const ERR_MSG_UNKOWN = 'unkown-error'
+
+/**
+ * Fetch from Clubhouse
+ *
+ * @async
+ * @returns
+ */
+const fetchFromClubhouse = async (url, params) => {
+  return fetch(url, params)
+    .then(res => {
+      switch (res.status) {
+        case 200:
+          return res.json() // Resolve, with value res.json()
+        case 401:
+          throw new Error(ERR_MSG_INVALID_API_TOKEN) // Reject, with value 'invalid-api-token-error'
+        case 429:
+          throw new Error(ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED) // Reject, with value 'clubhouse-api-quota-exceeded-error'
+        default:
+          throw new Error(ERR_MSG_UNKOWN) // Reject, with value 'unkown-error'
+      }
+    })
+    // .catch(e => {
+    //   // If the fetch call rejects, then there must've been an error in the network call
+    //   console.log(`Caught ${e.name} in fetchFromClubhouse. Throwing internet error`)
+    //   throw new Error(e) // Reject, with value 'internet-error'
+    // })
+}
+
+/**
  * Fetch all projects
  *
  * @async
  * @returns {Promise<Array<Project>>} A promise to all projects in the workspace
  */
+/* Fetch all projects. Returns a promise */
 const fetchProjectsAsync = async () => {
-  const res = await fetch(`https://api.clubhouse.io/api/v3/projects?token=${API_TOKEN}`, {
+  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/projects?token=${API_TOKEN}`, {
     headers: { 'Content-Type': 'application/json' }
   })
-  return res.json()
 }
 
 /**
@@ -130,11 +193,11 @@ const fetchProjectsAsync = async () => {
  * @param {string} projectId - ID of the project
  * @returns {Promise<Array<Story>>} A promise to all stories in the project
  */
+/* Fetch all stories in a project. Returns a promise */
 const fetchProjectStoriesAsync = async (projectId) => {
-  const res = await fetch(`https://api.clubhouse.io/api/v3/projects/${projectId}/stories?token=${API_TOKEN}`, {
+  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/projects/${projectId}/stories?token=${API_TOKEN}`, {
     headers: { 'Content-Type': 'application/json' }
   })
-  return res.json()
 }
 
 /**
@@ -143,10 +206,11 @@ const fetchProjectStoriesAsync = async (projectId) => {
  * @async
  * @returns {Promise<Array<Story>>} A promise to all stories in the workspace
  */
+/* Fetch all stories in all projects. Returns a promise */
 const fetchStoriesAsync = async () => {
-  return await fetchProjectsAsync()
+  return fetchProjectsAsync()
     .then(projects => {
-      return Promise.all(projects.map(project => fetchProjectStoriesAsync(project.id)))
+      return Promise.all(projects.map(project => fetchProjectStoriesAsync(project.id)));
     })
     .then(allProjectsStories => {
       // Remove projects that have no stories
@@ -154,6 +218,10 @@ const fetchStoriesAsync = async () => {
       return allProjectsStories
         .filter(projectStories => projectStories.length > 0)
         .flat()
+    })
+    .catch(e => {
+      console.log(`Caught ${e.message} in fetchStoriesAsync. Rethrowing it`)
+      throw e
     })
 }
 
@@ -165,10 +233,9 @@ const fetchStoriesAsync = async () => {
  * @returns {Promise<MemberInfo>} A promise to the member info object
  */
 const fetchMemberInfoAsync = async (apiToken) => {
-  const res = await fetch(`https://api.clubhouse.io/api/v3/member?token=${apiToken}`, {
+  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/member?token=${apiToken}`, {
     headers: { 'Content-Type': 'application/json' }
   })
-  return res.json()
 }
 
 /**
@@ -178,10 +245,9 @@ const fetchMemberInfoAsync = async (apiToken) => {
  * @returns {Promise<Array<BasicMember>>} A promise to the array of member objects
  */
 const fetchMembersAsync = async () => {
-  const res = await fetch(`https://api.clubhouse.io/api/v3/members?token=${API_TOKEN}`, {
+  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/members?token=${API_TOKEN}`, {
     headers: { 'Content-Type': 'application/json' }
   })
-  return res.json()
 }
 
 /**
@@ -406,27 +472,6 @@ const getProgress = () => {
 }
 
 /**
- * Method to be called during the sign-in process once the member's API token,
- * ID, and workspace are known. Initializes global variables that are known, and
- * triggers the initialization of all other global variables (by calling setup).
- *
- * @param {string} apiToken - API token of the member signing in
- * @param {string} memberId - Member ID of the member signing in
- * @param {string} workspace - Workspace of the member signing in
- *
- * @see setup
- */
-const onLogin = (apiToken, memberId, workspace) => {
-  // Init global vars that don't require fetching
-  API_TOKEN = apiToken
-  MEMBER_ID = memberId
-  WORKSPACE = workspace
-
-  // Init global vars that require fetching
-  setup()
-}
-
-/**
  * Get the SETUP promise. If SETUP hasn't been initialized yet, create it.
  * Otherwise, return the existing promise - do not recreate/restart it.
  *
@@ -441,9 +486,7 @@ const setup = () => {
     SETUP = new Promise((resolve, reject) => {
       chrome.storage.sync.get(['api_token', 'member_id', 'workspace'], store => {
         if (chrome.runtime.lastError) {
-          console.log('error: failed to read from storage')
-          alert('error')
-          reject(new Error('error'))
+          throw new Error('error: failed to read from storage')
         }
         API_TOKEN = store.api_token
         MEMBER_ID = store.member_id
@@ -462,11 +505,6 @@ const setup = () => {
               })
             })
         ])
-          .catch((e) => {
-            console.log('error', e)
-            alert('error')
-            reject(new Error('error'))
-          })
           .then(() => {
             // Initalize member map points to 0
             for (const memberObj of Object.values(MEMBER_MAP)) {
@@ -481,6 +519,27 @@ const setup = () => {
               }
             })
             resolve('All globals are setup')
+          })
+          .catch((e) => {
+            console.log(e)
+            /* TODO: Nedd to change alerts */
+            switch (e.message) {
+              case ERR_MSG_INTERNET:
+                // Respond to internet error
+                alert(e)
+                break
+              case ERR_MSG_INVALID_API_TOKEN:
+                // Respond to invalid api token error
+                alert(e)
+                break
+              case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
+                // Respond to quota exceeded
+                alert(e)
+                break
+              default:
+                // Respond to unknown error
+                alert(e)
+            }
           })
       })
     })
@@ -497,7 +556,6 @@ module.exports = {
   getMemberName,
   getMemberProfile,
   getProgress,
-  onLogin,
   setup,
   removeApiToken
 }
