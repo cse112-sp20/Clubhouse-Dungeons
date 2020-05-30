@@ -1,5 +1,7 @@
 # Quaranteam-8 Chrome Extension
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/94edb40a997842e993defc1bd247e1db)](https://www.codacy.com/gh/cse112-sp20/Quaranteam-8?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cse112-sp20/Quaranteam-8&amp;utm_campaign=Badge_Grade)
+![Base Pipeline](https://github.com/cse112-sp20/Quaranteam-8/workflows/Base%20Pipeline/badge.svg?branch=develop)
 ## Getting setup:
 
 1. First clone this repository by entering <code>git clone https://github.com/cse112-sp20/Quaranteam-8.git</code> into terminal

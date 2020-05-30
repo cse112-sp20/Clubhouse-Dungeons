@@ -1,11 +1,34 @@
 # Documentation Guide
+
 ### Table of Contents
 
-1.  Tool Overview
+1.  Overview
+2.  Markdown
+3.  Tool Overview
 2.  JSDoc
 3.  jsdoc-to-markdown
 4.  Eslint
 5.  Useful Links
+
+## Overview
+All documentation can be found in our Github Wiki. The source files of all our projects documentation can be found in the docs folder of our repository excluding API documentation which is generated dynamically. Each time we approve and merge any code into develop, all documentation is uploaded to our Github Wiki.
+
+## Markdown
+Since we are using Github Wiki to hold our documentation, we are using Markdown format. Markdown is a lightweight markup language with plain-text-formatting syntax. Refer to the references for more details.
+
+### Naming Scheme
+When creating documents in the `docs/` directory, name the files by capitalizing the first letter in each word and using `_` to separate words.
+
+Example: `Testing_Guide.md`
+
+### How to Add New Documentation to the Project
+1.  Create a new branch off of develop with the name `docs/<nam>`
+2.  Create the new markdown(`.md`) file in `docs/` directory
+3.  Create pull request to merge your branch into develop
+4.  Once the pull request is approved and merged, your new document should appear in the Github Wiki
+
+### Reference
+-   [Github Markdown Reference](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)
 
 ## Tool Overview
 The tools we use for maintaining our API-level documentation include:

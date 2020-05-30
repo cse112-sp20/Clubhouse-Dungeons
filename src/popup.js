@@ -156,7 +156,7 @@ function toggleMembersList () {
 /**
  * TODO: Record honoring of member in database
  *
- * @param {import('type-defs.js').Member} member Member object that is being honored
+ * @param {import('api/api.js').Member} member Member object that is being honored
  */
 function honorMember (member) {
   const memberId = member.id
@@ -166,7 +166,7 @@ function honorMember (member) {
 /**
  * TODO: Complete story
  *
- * @param {import('type-defs.js').Story} story Story that is being completed
+ * @param {import('api/api.js').Story} story Story that is being completed
  */
 function completeStory (story) {
   console.log('complete story', story)
