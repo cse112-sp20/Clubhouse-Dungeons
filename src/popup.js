@@ -55,6 +55,8 @@ battleLogTab.addEventListener('click', () => selectTab(2))
 
 //sounds
 const normal_hit = document.getElementById('sound_normal_hit')
+const killed_boss = document.getElementById('sound_killed_boss')
+
 /**
  * Signout by removing all items from StorageArea storage.sync
  */
@@ -190,12 +192,16 @@ function completeStory (story, storyNode, tabName) {
       // add the completed story to the battleLog tab
       addToBattleLogTab(story)
 
-      //play audio sound 
-      /*
-      var audio = new Audio()
-      audio.src = "./sound/normal_hit.mp3"
-      audio.play() */
+      //play the audio clip
       normal_hit.play()
+
+      //if 0 health remaining play victory sound
+      const health = document.getElementById('healthText')
+
+      if(health.innerHTML.charAt(0) == "0"){
+        killed_boss.play()
+        console.log("killed boss")
+      }
     })
   console.log('complete story', story)
 }
