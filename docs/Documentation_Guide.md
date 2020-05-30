@@ -1,6 +1,6 @@
 # Documentation Guide
 
-### Table of Contents
+## Table of Contents
 
 1.  Overview
 2.  Markdown
@@ -28,12 +28,12 @@ Example: `Testing_Guide.md`
 4.  Once the pull request is approved and merged, your new document should appear in the Github Wiki
 
 ### Reference
--   [Github Markdown Reference](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)
+-  [Github Markdown Reference](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)
 
 ## Tool Overview
 The tools we use for maintaining our API-level documentation include:
--   JSDoc
--   jsdoc-to-markdown
+-  JSDoc
+-  jsdoc-to-markdown
 
 ### How to install our tools
 After cloning our repository, run the command:
@@ -103,8 +103,8 @@ jsdoc-to-markdown generates markdown API documentation based on jsdoc annotated 
 ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code, with the goal of making code more consistent and avoiding bugs.
 
 ### Linting Rules
-1. JSDoc Comments
-2. [JS Standard Style guide](https://standardjs.com/rules-en.html)
+1.  JSDoc Comments
+2.  [JS Standard Style guide](https://standardjs.com/rules-en.html)
 
 ### Command to run Eslint
 To have the linter run automated fixes and report errors use the command:
@@ -112,7 +112,7 @@ To have the linter run automated fixes and report errors use the command:
 You should do this before commiting any changes to keep our repositories log clean of any commits that just fix linting errors.
 
 ## Useful Links
-1. [JSDoc\.app](https://jsdoc.app/)
-2. [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown)
-3. [JS Standard Style guide](https://standardjs.com/rules-en.html)
-4. [Eslint](https://eslint.org/)
+1.  [JSDoc\.app](https://jsdoc.app/)
+2.  [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown)
+3.  [JS Standard Style guide](https://standardjs.com/rules-en.html)
+4.  [Eslint](https://eslint.org/)

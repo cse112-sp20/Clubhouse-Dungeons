@@ -15,11 +15,11 @@ Quaranteam-8 Chrome Extension
 Gamify your Clubhouse experience to keep your team motivated.
 
 Use our extension to:
-- See  Clubhouse Stories that have been assigned to you
-- Complete Clubhouse Stories from any page
-- Be aware of how your team is progressing through the current sprint
-- Praise your teammates for their hard work
-- Earn rewards for completing sprints
+-  See  Clubhouse Stories that have been assigned to you
+-  Complete Clubhouse Stories from any page
+-  Be aware of how your team is progressing through the current sprint
+-  Praise your teammates for their hard work
+-  Earn rewards for completing sprints
 
 Happy Hunting!
 

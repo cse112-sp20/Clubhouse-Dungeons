@@ -4,8 +4,8 @@
 
 ### Windows
 
-+ [Git for Windows](https://gitforwindows.org/)
-+ [Node.js](https://nodejs.org/en/)
++  [Git for Windows](https://gitforwindows.org/)
++  [Node.js](https://nodejs.org/en/)
 
 ### Linux
 
@@ -17,15 +17,15 @@
 
 ## Creating the Repository
 
-1. Open the terminal (CMD for Windows), and navigate to your working directory
-2. Create the repository by entering
+1.  Open the terminal (CMD for Windows), and navigate to your working directory
+2.  Create the repository by entering
 
 ```shell
 > git clone https://github.com/cse112-sp20/Quaranteam-8.git
 ```
 
-3. Navigate into the newly created directory
-4. [Puppeteer](https://developers.google.com/web/tools/puppeteer/) and [Jest](https://jestjs.io/) are needed to test the program. Download and install them by entering
+3.  Navigate into the newly created directory
+4.  [Puppeteer](https://developers.google.com/web/tools/puppeteer/) and [Jest](https://jestjs.io/) are needed to test the program. Download and install them by entering
 
 ```shell
 > npm install

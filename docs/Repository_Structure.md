@@ -23,17 +23,19 @@ All other files in the root of the repo are configuration files
 
 # Branch Structure
 ## Overall Naming Scheme
-* All lowercase names
-* Separate words with ‘-’
+*  All lowercase names
+*  Separate words with ‘-’
 
 ## Examples
-* `build/automated-documentation`
-* `feature/honor-feed`
-* `test/api`
+*  `build/automated-documentation`
+*  `feature/honor-feed`
+*  `test/api`
 
 ## Master Branch
 This is a protected branch that holds the production version of our project.
+
 ### Pipelines Run
+
 #### On Pull Request
 
 * Base testing and linting
@@ -47,6 +49,7 @@ This is a protected branch that holds the production version of our project.
 This is a protected branch that holds the most up to date development version of our project.
 
 ### Pipelines Run
+
 #### On Pull Request
 
 * Base testing and linting
