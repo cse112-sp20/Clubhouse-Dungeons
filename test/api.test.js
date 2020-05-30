@@ -69,7 +69,7 @@ it('Test Getting Battle Log', done =>{
         // The only story that has been assigned to this test user as of right now is story 56
         battleStories = api.getBattleLog();
         
-        expect(battleStories.length).toBe(battleLogIDsSorted.length);  // Make sure the number of all incomplete is correct
+        expect(battleStories.length).toBe(battleLogIDsSorted.length);  // Make sure the number of battle log elements is correct
 
         // Since this is supposed to be a sorted we can directly compare elements to make sure they are equal
         for(i = 0; i < battleStories.length; i++){
@@ -88,7 +88,7 @@ it('Test Getting Battle Log', done =>{
 describe('api simple unit tests', () => {
 
     /**
-     * Unit Test 3:
+     * Unit Test 4:
      * Checks if getMemberName returns correct name
      */
     it('Testing getMemberName', () => {
@@ -103,7 +103,7 @@ describe('api simple unit tests', () => {
     });
 
     /**
-     * Unit Test 4:
+     * Unit Test 5:
      * Checks if getMemberProfile returns a correct default profile
      */
     it('Testing default getMemberProfile', () => {
