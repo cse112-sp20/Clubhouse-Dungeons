@@ -1,12 +1,13 @@
 const api = require('../src/api/api');
-const testAPIToken = "5ec07d9a-f9a8-4541-a2fe-d2aae53169e1";
-const memberID = "5ec07aaf-30c2-42ab-a9ee-7e1214f2e2d4";
+const testAPIToken = "5ed2b278-d7a6-4344-b33f-94b8901aa75a";
+const memberID = "5ecdd3de-0125-4888-802a-5d3ba46ca0dc";
 const fetch =  require("isomorphic-fetch").fetch;
 const resolve = require("isomorphic-fetch").resolve;
 
-const myIncompleteCount = 2;
-const myIncompleteIDs = [56, 90];
-const allIncompleteIDs = [56, 90, 93];
+// These variables are based on the testing clubhouse
+// MAKE SURE THESE ARE UP TO DATE IF YOU ADD/REMOVE/EDIT STORIES ON CLUBHOUSE
+const myIncompleteIDs = [31, 30, 38];
+const allIncompleteIDs = [31, 30, 34, 38];
 const myName = '_Test User_';
 const myIcon = 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png'
 
@@ -17,16 +18,17 @@ const myIcon = 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.p
  * Checks if the count of test stories are correct and that they are the correct ids
  */
 it('Test MY Incomplete Stories', done => {
-    /* Need to setup the API variables first
-    * Chase mentioned that we need to set up a test method in api
-    * So I went ahead and defined a method called setupTest in api.js
-    */
+    // Set up API variables, then run our test
     api.setupTest(testAPIToken, memberID, () => {
         // The only story that has been assigned to this test user as of right now is story 56
         incompleteStories = api.getMyIncompleteStories();
-        expect(incompleteStories.length).toBe(myIncompleteCount);  // Make sure the number of incomplete is correct
-        expect(myIncompleteIDs).toContain(incompleteStories[0]['id']);  // Then check if the values for these incomplete stories are also correct
-        expect(myIncompleteIDs).toContain(incompleteStories[1]['id']);  
+        expect(incompleteStories.length).toBe(myIncompleteIDs.length);  // Make sure the number of incomplete is correct
+
+        // Make sure each incomplete ID specified above will be in here
+        incompleteStories.forEach(story => {
+            expect(myIncompleteIDs).toContain(story['id']);
+        });
+
         done();
     });
 });
@@ -37,29 +39,22 @@ it('Test MY Incomplete Stories', done => {
  * Checks if the count of test stories are correct and that they are the correct ids
  */
 it('Test ALL Incomplete Stories', done => {
-    /* Need to setup the API variables first
-    * Chase mentioned that we need to set up a test method in api
-    * So I went ahead and defined a method called setupTest in api.js
-    */
+    // Set up API variables, then run our test
     api.setupTest(testAPIToken, memberID, () => {
         // The only story that has been assigned to this test user as of right now is story 56
         incompleteStories = api.getAllIncompleteStories();
         
-        let allStories = [];
+        expect(incompleteStories.length).toBe(allIncompleteIDs.length);  // Make sure the number of all incomplete is correct
 
-        // Try to find all test stories
-        incompleteStories.forEach(element => {
-            allStories.push(element['id']);
+        // Just like UT1, check if all the stories returned is a part of our expected list
+        incompleteStories.forEach(story => {
+            expect(allIncompleteIDs).toContain(story['id']);
         });
-
-        // Now let's check if all of the stories of our test list is within this list
-        allIncompleteIDs.forEach(id => {
-            expect(allStories).toContain(id);
-        });
-
+        
         done();
     });
 });
+
 
 
 /**
