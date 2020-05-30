@@ -80,44 +80,80 @@ it('Test Getting Battle Log', done =>{
     });
 });
 
+
+
+/**
+ * Unit Test 4:
+ * Checks if getMemberName returns correct name
+ */
+it('Testing getMemberName', done => {
+    var name;
+    // test setup - tried in beforeAll/beforeEach block, can't get it to work
+    api.setupTest(testAPIToken, memberID, () => {
+        name = api.getMemberName(memberID);
+        expect(name).toMatch(myName);
+        done();
+    })
+
+});
+
+/**
+ * Unit Test 5:
+ * Checks if getMemberProfile returns a correct default profile
+ */
+it('Testing default getMemberProfile', done => {
+    var name;
+    var icon;
+    var profile;
+
+    api.setupTest(testAPIToken, memberID, () => {
+        profile = api.getMemberProfile();
+        expect(profile.name).toMatch(myName);
+        expect(profile.icon).toContain(myIcon);
+        done();
+    });
+
+});
+
+
 /**
  * Testing suite for api.js unit tests
  * Copied Arren's format
  * 
  */
-describe('api simple unit tests', () => {
+//describe('api simple unit tests', () => {
 
-    /**
-     * Unit Test 4:
-     * Checks if getMemberName returns correct name
-     */
-    it('Testing getMemberName', () => {
-        var name;
-        // test setup - tried in beforeAll/beforeEach block, can't get it to work
-        api.setupTest(testAPIToken, memberID, () => {
-            name = api.getMemberName();
-            expect(name).toMatch(myName);
-            done();
-        })
+//    /**
+//     * Unit Test 4:
+//     * Checks if getMemberName returns correct name
+//     */
+//    it('Testing getMemberName', done => {
+//        var name;
+//        // test setup - tried in beforeAll/beforeEach block, can't get it to work
+//        api.setupTest(testAPIToken, memberID, () => {
+//            name = api.getMemberName();
+//            expect(name).toMatch('wrong');
+//            done();
+//        })
 
-    });
+//    });
 
-    /**
-     * Unit Test 5:
-     * Checks if getMemberProfile returns a correct default profile
-     */
-    it('Testing default getMemberProfile', () => {
-        var name;
-        var icon;
-        var profile;
+//    /**
+//     * Unit Test 5:
+//     * Checks if getMemberProfile returns a correct default profile
+//     */
+//    it('Testing default getMemberProfile',done => {
+//        var name;
+//        var icon;
+//        var profile;
 
-        api.setupTest(testAPIToken, memberID, () => {
-            profile = api.getMemberProfile();
-            expect(profile.name).toMatch(myName);
-            expect(profile.icon).toContain(myIcon);
-            done();
-        });
+//        api.setupTest(testAPIToken, memberID, () => {
+//            profile = api.getMemberProfile();
+//            expect(profile.name).toMatch(myName);
+//            expect(profile.icon).toContain(myIcon);
+//            done();
+//        });
 
-    });
+//    });
 
-});
+//});
