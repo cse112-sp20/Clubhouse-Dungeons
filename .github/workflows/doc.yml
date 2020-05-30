@@ -24,3 +24,17 @@ jobs:
         path: "docs"
       env:
         GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_WIKI_TOKEN }}
+        
+  codacy-coverage-reporter:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install Node Dependencies
+      run: npm install
+    - name: Generate coverage report
+      run: npm run test:coverage
+    - name: Run codacy-coverage-reporter
+      uses: codacy/codacy-coverage-reporter-action@master
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: coverage/clover.xml
