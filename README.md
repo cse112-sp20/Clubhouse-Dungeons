@@ -1,5 +1,7 @@
 # Quaranteam-8 Chrome Extension
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/51650db78a83488fb09833303e5fb272)](https://app.codacy.com/gh/cse112-sp20/Quaranteam-8?utm_source=github.com&utm_medium=referral&utm_content=cse112-sp20/Quaranteam-8&utm_campaign=Badge_Grade_Dashboard)
+
 ## Getting setup:
 
 1. First clone this repository by entering <code>git clone https://github.com/cse112-sp20/Quaranteam-8.git</code> into terminal
