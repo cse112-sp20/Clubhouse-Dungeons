@@ -1,68 +1,4 @@
-/**
- * TYPE DECLARATIONS
- *
- * @typedef Project
- * @type {Object}
- * @property {string} id - ID of the project
- *
- *
- * @typedef Story
- * @type {Object}
- * @property {boolean} completed - Whether the story is completed
- * @property {?string} completed_at - String representation of the time of
- *                                    completion
- * @property {number} estimate - Story point estimate
- * @property {string} id - ID of the story
- * @property {string} name - Name of the story
- * @property {Array<string>} owner_ids - Member IDs of members assigned to the
- *                                       story
- *
- *
- * @typedef BasicMember - Basic (not modified/enhanced by us) member object
- *                        fetched from Clubhouse
- * @type {Object}
- * @property {string} id - ID of the member
- * @property {Object} profile - Profile of the member containing personal info
- * @property {string} profile.name - Name of the member
- *
- *
- * @typedef Member - BasicMember that we have enhanced with additional
- *                   attributes (i.e. points)
- * @type {Object}
- * @property {string} id - ID of the member
- * @property {number} points - Total story points completed by the member
- * @property {Object} profile - Profile of the member containing personal info
- * @property {string} profile.name - Name of the member
- *
- *
- * @typedef MemberDisplay - Sub-object of BasicMember, with simplified structure
- * @type {Object}
- * @property {string} workspace - Name of the member's workspace
- * @property {name} name - Name of the member
- * @property {string} icon - URL of the member's display icon
- *
- *
- * @typedef TopContributor - Sub-object of Member, with simplified structure
- * @type {Object}
- * @private {string} name - Name of the topContributor (member)
- * @private {string} points - Total story points completed by the member
- *
- *
- * @typedef MemberInfo - Member object, containing workspace info (but less
- *                       member info than BasicMember), fetched from Clubhouse
- * @type {Object}
- * @property {string} id - ID of the member
- * @property {string} name - Name of the member
- * @property {Object} workspace2 - Info about the member's workspace
- * @property {string} workspace2.url_slug - Member's workspace URL slug
- *
- *
- * @typedef Progress
- * @type {Object}
- * @property {number} completed - Number of story points completed
- * @property {number} total - Number of total story points
- */
-
+import './type-defs'
 /**
  * Signed-in member's API key
  *
@@ -88,14 +24,14 @@ var MEMBER_ID = null
 /**
  * Object mapping member ID -> member object. Contains all members
  *
- * @type {?Object<string, Member>}
+ * @type {?object<string, import('type-defs.js').Member>}
  */
 var MEMBER_MAP = null
 
 /**
  * All stories in the workspace
  *
- * @type {?Array<Story>}
+ * @type {?Array<import('type-defs.js').Story>}
  */
 var STORIES = null
 
@@ -114,7 +50,7 @@ var SETUP = null
  * Fetch all projects
  *
  * @async
- * @returns {Promise<Array<Project>>} A promise to all projects in the workspace
+ * @returns {Promise<Array<import('type-defs.js').Project>>} A promise to all projects in the workspace
  */
 const fetchProjectsAsync = async () => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/projects?token=${API_TOKEN}`, {
@@ -128,7 +64,7 @@ const fetchProjectsAsync = async () => {
  *
  * @async
  * @param {string} projectId - ID of the project
- * @returns {Promise<Array<Story>>} A promise to all stories in the project
+ * @returns {Promise<Array<import('type-defs.js').Story>>} A promise to all stories in the project
  */
 const fetchProjectStoriesAsync = async (projectId) => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/projects/${projectId}/stories?token=${API_TOKEN}`, {
@@ -141,7 +77,7 @@ const fetchProjectStoriesAsync = async (projectId) => {
  * Fetch all stories in all projects
  *
  * @async
- * @returns {Promise<Array<Story>>} A promise to all stories in the workspace
+ * @returns {Promise<Array<import('type-defs.js').Story>>} A promise to all stories in the workspace
  */
 const fetchStoriesAsync = async () => {
   return await fetchProjectsAsync()
@@ -162,7 +98,7 @@ const fetchStoriesAsync = async () => {
  *
  * @async
  * @param {string} apiToken - Member's API token
- * @returns {Promise<MemberInfo>} A promise to the member info object
+ * @returns {Promise<import('type-defs.js').MemberInfo>} A promise to the member info object
  */
 const fetchMemberInfoAsync = async (apiToken) => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/member?token=${apiToken}`, {
@@ -175,7 +111,7 @@ const fetchMemberInfoAsync = async (apiToken) => {
  * Fetch all members in the workspace
  *
  * @async
- * @returns {Promise<Array<BasicMember>>} A promise to the array of member objects
+ * @returns {Promise<Array<import('type-defs.js').BasicMember>>} A promise to the array of member objects
  */
 const fetchMembersAsync = async () => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/members?token=${API_TOKEN}`, {
@@ -187,7 +123,7 @@ const fetchMembersAsync = async () => {
 /**
  * Check if a story is complete
  *
- * @param {Story} story - Story to check
+ * @param {import('type-defs.js').Story} story - Story to check
  * @returns {boolean} True if the story is complete, false otherwise
  */
 const isComplete = story => story.completed === true
@@ -196,7 +132,7 @@ const isComplete = story => story.completed === true
  * Get stories - using optional filters - from the set of all stories in the
  * workspace (STORIES).
  *
- * @param {Object<string, boolean>} [params] - Optional parameter to specify
+ * @param {object<string, boolean>} [params] - Optional parameter to specify
  *                                             filter flags.
  * @param {boolean} [params.memberOnly=false] - Flag to only include stories
  *                                              assigned to the signed-in
@@ -205,7 +141,7 @@ const isComplete = story => story.completed === true
  *                                                  that are incomplete.
  * @param {boolean} [params.completeOnly=false] - Flag to only include stories
  *                                                that are complete.
- * @returns {?Array<Story>} Stories specified by the filters (if any). If no
+ * @returns {?Array<import('type-defs.js').Story>} Stories specified by the filters (if any). If no
  *                          filters are specified, returns all stories in the
  *                          workspace (STORIES). If STORIES is null, returns
  *                          null.
@@ -232,7 +168,7 @@ const getStories = ({ memberOnly = false, incompleteOnly = false, completeOnly =
 /**
  * Get incomplete stories that are assigned to the signed-in member
  *
- * @returns {?Array<Story>} Incomplete stories assigned to the signed-in member.
+ * @returns {?Array<import('type-defs.js').Story>} Incomplete stories assigned to the signed-in member.
  *                          If STORIES is null, returns null.
  *
  * @see getStories
@@ -244,7 +180,7 @@ const getMyIncompleteStories = () => {
 /**
  * Get all incomplete stories in the workspace
  *
- * @returns {?Array<Story>} All incomplete stories in the workspace. If STORIES
+ * @returns {?Array<import('type-defs.js').Story>} All incomplete stories in the workspace. If STORIES
  *                          is null, returns null.
  *
  * @see getStories
@@ -257,7 +193,7 @@ const getAllIncompleteStories = () => {
  * Get up to top 3 point contributors. If less than 3 members have completed any
  * stories (and have more than 0 points), only return those that do.
  *
- * @returns {Array<TopContributor>} The top contributors (max 3). If less than
+ * @returns {Array<import('type-defs.js').TopContributor>} The top contributors (max 3). If less than
  *                                  3 top contributors exist, only those, the
  *                                  returned array will have length less than 3.
  */
@@ -272,7 +208,7 @@ const getTopWarriors = () => {
    * Finds top warrior by points and removes from map. If a top warrior doesn't
    * exist, return null.
    *
-   * @returns {?TopContributor} Top contributor in map or null if none exists
+   * @returns {?import('type-defs.js').TopContributor} Top contributor in map or null if none exists
    */
   const removeTopWarrior = () => {
     let memberName = null
@@ -315,7 +251,7 @@ const getTopWarriors = () => {
 /**
  * Get all team members.
  *
- * @returns {Array<Member>} Array of all members.
+ * @returns {Array<import('type-defs.js').Member>} Array of all members.
  */
 const getAllMembers = () => Object.values(MEMBER_MAP)
 
@@ -323,7 +259,7 @@ const getAllMembers = () => Object.values(MEMBER_MAP)
  * Get stories to show in the battle log - all completed stories sorted by most
  * recently completed.
  *
- * @returns {?Array<Story>} Stories for battle log. If STORIES is null, returns null
+ * @returns {?Array<import('type-defs.js').Story>} Stories for battle log. If STORIES is null, returns null
  */
 const getBattleLog = () => {
   const stories = getStories({ completeOnly: true })
@@ -367,7 +303,7 @@ const getMemberName = (memberId) => {
  * Get the display info - workspace, name, and display icon - of the signed-in
  * member.
  *
- * @returns {MemberDisplay} The display info of the signed-in member
+ * @returns {import('type-defs.js').MemberDisplay} The display info of the signed-in member
  */
 const getMemberProfile = () => {
   // Relevant user profile details
@@ -396,7 +332,7 @@ const removeApiToken = () => {
 /**
  * Get the overall progress of stories, in terms of points completed
  *
- * @returns {Progress} Completed points and total points
+ * @returns {import('type-defs.js').Progress} Completed points and total points
  */
 const getProgress = () => {
   let completed = 0
@@ -486,9 +422,12 @@ const setup = () => {
   return SETUP
 }
 
-/** Used for testing only.  Does the same thing as setup, but does not use chrome storage
- * @param apiToken the token to set the API_TOKEN var to
- * @param memberID the id to set MEMBER_ID var to
+/**
+ * Used for testing only.  Does the same thing as setup, but does not use chrome storage
+ *
+ * @param {string} apiToken the token to set the API_TOKEN var to
+ * @param {string} memberID the id to set MEMBER_ID var to
+ * @param {Function} cb function called at end
  */
 const setupTest = (apiToken, memberID, cb) => {
   API_TOKEN = apiToken

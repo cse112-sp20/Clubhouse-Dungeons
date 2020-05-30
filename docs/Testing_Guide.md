@@ -9,7 +9,7 @@
 The tools we use for testing include:
 -   Jest
 
-### How to install our tools:
+### How to install our tools
 After cloning our repository, run the command:
 `npm install`
 

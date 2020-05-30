@@ -13,8 +13,8 @@
     "clean": "run-script-os",
     "clean:darwin:linux": "rm -rf dist",
     "clean:win32": "rmdir /Q /S dist",
-    "lint": "eslint --fix src/",
-    "lint:report": "eslint --output-file eslint_report.json --format json src/",
+    "lint": "eslint --fix src/ test/",
+    "lint:report": "eslint --output-file eslint_report.json --format json src/ test/",
     "docs:build": "node scripts/doc.js > docs/API_Documentation.md"
   },
   "author": "quaranteam8",

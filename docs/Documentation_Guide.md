@@ -12,7 +12,7 @@ The tools we use for maintaining our API-level documentation include:
 -   JSDoc
 -   jsdoc-to-markdown
 
-### How to install our tools:
+### How to install our tools
 After cloning our repository, run the command:
 `npm install`
 
