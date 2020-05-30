@@ -8,6 +8,7 @@ const resolve = require("isomorphic-fetch").resolve;
 // MAKE SURE THESE ARE UP TO DATE IF YOU ADD/REMOVE/EDIT STORIES ON CLUBHOUSE
 const myIncompleteIDs = [31, 30, 38];
 const allIncompleteIDs = [31, 30, 34, 38];
+const battleLogIDsSorted = [39, 37, 36, 35];
 const myName = '_Test User_';
 const myIcon = 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png'
 
@@ -55,7 +56,29 @@ it('Test ALL Incomplete Stories', done => {
     });
 });
 
+/**
+ * Unit Test 3
+ * Testing for api.getBattleLog()
+ * Two main features for this to test:
+ * 1. Get a list of completed stories
+ * 2. Make sure they are sorted from most recently completed
+ */
+it('Test Getting Battle Log', done =>{
+    // Set up API variables, then run our test
+    api.setupTest(testAPIToken, memberID, () => {
+        // The only story that has been assigned to this test user as of right now is story 56
+        battleStories = api.getBattleLog();
+        
+        expect(battleStories.length).toBe(battleLogIDsSorted.length);  // Make sure the number of all incomplete is correct
 
+        // Since this is supposed to be a sorted we can directly compare elements to make sure they are equal
+        for(i = 0; i < battleStories.length; i++){
+            expect(battleStories[i]['id']).toBe(battleLogIDsSorted[i]);
+        }
+
+        done();
+    });
+});
 
 /**
  * Testing suite for api.js unit tests
