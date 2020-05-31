@@ -110,41 +110,10 @@ var STORIES = null
  */
 var SETUP = null
 
-/**
- *
- *
- *
- *
- * @type
- */
 const ERR_MSG_INTERNET = 'internet-error'
-
-/**
- *
- *
- *
- *
- * @type
- */
 const ERR_MSG_INVALID_API_TOKEN = 'invalid-api-token-error'
-
-/**
- *
- *
- *
- *
- * @type
- */
 const ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED = 'clubhouse-api-quota-exceeded-error'
-
-/**
- *
- *
- *
- *
- * @type
- */
-const ERR_MSG_UNKOWN = 'unkown-error'
+const ERR_MSG_UNKNOWN = 'unknown-error'
 
 /**
  * Fetch from Clubhouse
@@ -155,6 +124,11 @@ const ERR_MSG_UNKOWN = 'unkown-error'
 const fetchFromClubhouse = async (url, params) => {
   const corsProxyUrl = 'https://cors-anywhere.herokuapp.com'
   return fetch(`${corsProxyUrl}/${url}`, params)
+    .catch(e => {
+      // If the fetch call rejects, then there must've been an error in the network call
+      console.log(`Caught ${e.name} in fetchFromClubhouse. Throwing internet error`)
+      throw new Error(ERR_MSG_INTERNET) // Reject, with value 'internet-error'
+    })
     .then(res => {
       switch (res.status) {
         case 200:
@@ -164,13 +138,8 @@ const fetchFromClubhouse = async (url, params) => {
         case 429:
           throw new Error(ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED) // Reject, with value 'clubhouse-api-quota-exceeded-error'
         default:
-          throw new Error(ERR_MSG_UNKOWN) // Reject, with value 'unkown-error'
+          throw new Error(ERR_MSG_UNKNOWN) // Reject, with value 'unknown-error'
       }
-    })
-    .catch(e => {
-      // If the fetch call rejects, then there must've been an error in the network call
-      console.log(`Caught ${e.name} in fetchFromClubhouse. Throwing internet error`)
-      throw new Error(ERR_MSG_INTERNET) // Reject, with value 'internet-error'
     })
 }
 
