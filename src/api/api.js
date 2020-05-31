@@ -167,11 +167,11 @@ const fetchFromClubhouse = async (url, params) => {
           throw new Error(ERR_MSG_UNKOWN) // Reject, with value 'unkown-error'
       }
     })
-    // .catch(e => {
-    //   // If the fetch call rejects, then there must've been an error in the network call
-    //   console.log(`Caught ${e.name} in fetchFromClubhouse. Throwing internet error`)
-    //   throw new Error(e) // Reject, with value 'internet-error'
-    // })
+    .catch(e => {
+      // If the fetch call rejects, then there must've been an error in the network call
+      console.log(`Caught ${e.name} in fetchFromClubhouse. Throwing internet error`)
+      throw new Error(e) // Reject, with value 'internet-error'
+    })
 }
 
 /**
