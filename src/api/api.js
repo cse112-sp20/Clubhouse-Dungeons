@@ -113,7 +113,8 @@ var SETUP = null
 const ERR_MSG_INTERNET = 'internet-error'
 const ERR_MSG_INVALID_API_TOKEN = 'invalid-api-token-error'
 const ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED = 'clubhouse-api-quota-exceeded-error'
-const ERR_MSG_UNKNOWN = 'unknown-error'
+const ERR_MSG_BROWSER_STORAGE = 'browser-storage-error'
+const ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE = 'unknown-clubhouse-api-response-status'
 
 /**
  * Fetch from Clubhouse
@@ -138,7 +139,7 @@ const fetchFromClubhouse = async (url, params) => {
         case 429:
           throw new Error(ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED) // Reject, with value 'clubhouse-api-quota-exceeded-error'
         default:
-          throw new Error(ERR_MSG_UNKNOWN) // Reject, with value 'unknown-error'
+          throw new Error(ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE) // Reject, with value 'unknown-clubhouse-api-response-status'
       }
     })
 }
@@ -180,7 +181,7 @@ const fetchProjectStoriesAsync = async (projectId) => {
 const fetchStoriesAsync = async () => {
   return fetchProjectsAsync()
     .then(projects => {
-      return Promise.all(projects.map(project => fetchProjectStoriesAsync(project.id)));
+      return Promise.all(projects.map(project => fetchProjectStoriesAsync(project.id)))
     })
     .then(allProjectsStories => {
       // Remove projects that have no stories
@@ -463,8 +464,9 @@ const setup = () => {
     SETUP = new Promise((resolve, reject) => {
       chrome.storage.sync.get(['api_token', 'member_id', 'workspace'], store => {
         if (chrome.runtime.lastError) {
-          throw new Error('error: failed to read from storage')
+          reject(Error(ERR_MSG_BROWSER_STORAGE))
         }
+
         API_TOKEN = store.api_token
         MEMBER_ID = store.member_id
         WORKSPACE = store.workspace
@@ -495,27 +497,11 @@ const setup = () => {
                 })
               }
             })
-            resolve('All globals are setup')
+            resolve('setup resolved. All globals in api are setup')
           })
           .catch((e) => {
-            console.log(e)
-            switch (e.message) {
-              case ERR_MSG_INTERNET:
-                // Respond to internet error
-                /* TODO: UI */
-                break
-              case ERR_MSG_INVALID_API_TOKEN:
-                // Respond to invalid api token error
-                /* TODO: UI */
-                break
-              case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
-                // Respond to quota exceeded
-                /* TODO: UI */
-                break
-              default:
-              // Respond to unknown error
-              /* TODO: UI */
-            }
+            console.log(`Caught ${e.message} in setup. Rejecting with reason being the error`)
+            reject(e)
           })
       })
     })
@@ -561,6 +547,10 @@ module.exports = {
   getProgress,
   setup,
   removeApiToken,
+  ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
+  ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
+  ERR_MSG_BROWSER_STORAGE,
+  ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE,
   setupTest
 }

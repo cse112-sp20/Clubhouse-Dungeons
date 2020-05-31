@@ -8,7 +8,12 @@ import {
   getMemberName,
   getMemberProfile,
   getProgress,
-  removeApiToken
+  removeApiToken,
+  ERR_MSG_INTERNET,
+  ERR_MSG_INVALID_API_TOKEN,
+  ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
+  ERR_MSG_BROWSER_STORAGE,
+  ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
 } from './api/api'
 
 // Member profile button and info
@@ -177,8 +182,29 @@ document.addEventListener(
   () => {
     setup()
       .catch((e) => {
-        console.log('error: setup failed', e)
-        alert('error: setup failed')
+        switch (e.message) {
+          case ERR_MSG_INTERNET:
+            // Respond to internet error
+            /* TODO: UI */
+            break
+          case ERR_MSG_INVALID_API_TOKEN:
+            // Respond to invalid api token error
+            /* TODO: UI */
+            break
+          case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
+            // Respond to quota exceeded
+            /* TODO: UI */
+            break
+          case ERR_MSG_BROWSER_STORAGE:
+            // Respond to error reading/writing to browser storage
+            /* TODO: UI */
+            break
+          case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
+          default:
+            // Respond to unknown error
+            /* TODO: UI */
+            break
+        }
       })
       .then(() => {
         /* Get member info for profile button */
