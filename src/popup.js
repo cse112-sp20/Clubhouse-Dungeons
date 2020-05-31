@@ -14,7 +14,6 @@ import {
   ERR_MSG_BROWSER_STORAGE,
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
 } from './api/api'
-
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
 // const memberProfile = document.getElementById('memberProfile')
@@ -161,7 +160,7 @@ function toggleMembersList () {
 /**
  * TODO: Record honoring of member in database
  *
- * @param {Member} member
+ * @param {Member} member Member object that is being honored
  */
 function honorMember (member) {
   const memberId = member.id
@@ -171,7 +170,7 @@ function honorMember (member) {
 /**
  * TODO: Complete story
  *
- * @param {Story} story
+ * @param {Story} story Story that is being completed
  */
 function completeStory (story) {
   console.log('complete story', story)

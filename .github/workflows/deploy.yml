@@ -1,0 +1,34 @@
+name: Deployment Pipeline
+
+on: 
+  push:
+    branches: [ master ]
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setting up Node.JS 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: "12.x"
+    - name: Install Node Dependencies
+      run: npm install
+    - name: Generate API Documentation
+      run: npm run build
+    - name: Create Zip File
+      uses: thedoctor0/zip-release@master
+      with:
+        filename: 'release.zip'
+        directory: 'dist/'
+    - name: Deploy to Chrome Web Store
+      uses: mnao305/chrome-extension-upload@1.1.0
+      with:
+        file-path: dist/release.zip
+        extension-id: ${{ secrets.EXTENSION_ID }}
+        client-id: ${{ secrets.CLIENT_ID }}
+        client-secret: ${{ secrets.CLIENT_SECRET }}
+        refresh-token: ${{ secrets.REFRESH_TOKEN }}
+        
