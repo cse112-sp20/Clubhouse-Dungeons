@@ -1,14 +1,13 @@
 
 test('1 is 1', () => {
-    expect(1).toBe(1);
-});
+  expect(1).toBe(1)
+})
 
-
-const myMock = jest.fn();
-myMock.mockReturnValueOnce(true).mockReturnValueOnce(false);
-const expectPuppeteer = require('expect-puppeteer');
-const puppeteer = require('puppeteer');
-var browser;
+const myMock = jest.fn()
+myMock.mockReturnValueOnce(true).mockReturnValueOnce(false)
+const expectPuppeteer = require('expect-puppeteer')
+const puppeteer = require('puppeteer')
+var browser
 /*
 describe('extension', () => {
     beforeAll(async () => {
@@ -26,7 +25,6 @@ describe('extension', () => {
     it('browser opens and url == "about:blank"', async () => {
 
         const targets = await browser.targets();
-
 
         // ONLY TESTS BACKGROUND PROCESS
         //const BackgroundPage = targets.find(target => target.type() === 'background_page');
@@ -48,7 +46,7 @@ describe('extension', () => {
 })
 */
 
-//test('clicks the button', () => {
+// test('clicks the button', () => {
 //    buttonClick(myMock);
 //    expect(myMock).toHaveBeenCalled();
-//});
+// });
