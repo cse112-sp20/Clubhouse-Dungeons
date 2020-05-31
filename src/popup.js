@@ -8,7 +8,6 @@ import {
   getMemberName,
   getMemberProfile,
   getProgress,
-  removeApiToken,
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
@@ -70,8 +69,6 @@ const signout = () => {
   chrome.storage.sync.clear((clear) => {
     if (chrome.runtime.lastError === undefined) {
       console.log('storage cleared')
-      // remove the api token in use from api.js
-      removeApiToken()
       // load the login page
       window.location.href = 'login.html'
     } else {

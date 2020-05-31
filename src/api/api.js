@@ -424,13 +424,6 @@ const getMemberProfile = () => {
 }
 
 /**
- * Set the value of API_TOKEN to undefined
- */
-const removeApiToken = () => {
-  API_TOKEN = undefined
-}
-
-/**
  * Get the overall progress of stories, in terms of points completed
  *
  * @returns {Progress} Completed points and total points
@@ -546,7 +539,6 @@ module.exports = {
   getMemberProfile,
   getProgress,
   setup,
-  removeApiToken,
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
