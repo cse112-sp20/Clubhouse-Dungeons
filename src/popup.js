@@ -17,7 +17,6 @@ const profileContainer = document.getElementById('profileContainer')
 // const memberProfile = document.getElementById('memberProfile')
 const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
-const memberTeam = document.getElementById('memberTeam')
 
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
@@ -225,13 +224,13 @@ const getFNameAndLInitial = name => {
    * Else, if res has 1 element,
    * return the first element of res
    */
-  if (res.length == 0) {                              
-    throw "Length of name is 0!"
+  if (res.length === 0) {                              
+    throw new Error("Length of name is 0!")
   } else if (res.length > 2) {
     return res[0] + " " + res[res.length-1][0] + "."
-  } else if (res.length == 2) {
+  } else if (res.length === 2) {
     return res[0] + " " + res[1][0] + "."
-  } else if (res.length == 1) {
+  } else if (res.length === 1) {
     return res[0]
   }
 }
