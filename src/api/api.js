@@ -170,7 +170,7 @@ const fetchFromClubhouse = async (url, params) => {
     .catch(e => {
       // If the fetch call rejects, then there must've been an error in the network call
       console.log(`Caught ${e.name} in fetchFromClubhouse. Throwing internet error`)
-      throw new Error(e) // Reject, with value 'internet-error'
+      throw new Error(ERR_MSG_INTERNET) // Reject, with value 'internet-error'
     })
 }
 
@@ -537,8 +537,8 @@ const setup = () => {
                 /* TODO: UI */
                 break
               default:
-                // Respond to unknown error
-                /* TODO: UI */
+              // Respond to unknown error
+              /* TODO: UI */
             }
           })
       })
@@ -557,5 +557,6 @@ module.exports = {
   getMemberProfile,
   getProgress,
   setup,
-  removeApiToken
+  removeApiToken,
+  ERR_MSG_INVALID_API_TOKEN
 }

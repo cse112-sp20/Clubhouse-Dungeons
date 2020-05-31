@@ -1,5 +1,6 @@
 import {
-  fetchMemberInfoAsync
+  fetchMemberInfoAsync,
+  ERR_MSG_INVALID_API_TOKEN
 } from '../api/api'
 
 /**
@@ -23,7 +24,7 @@ const validateMember = (apiKey) => {
           window.location.href = '../popup.html'
         })
       } else {
-        throw new Error('Invalid API token')
+        throw new Error(ERR_MSG_INVALID_API_TOKEN)
       }
     })
     .catch((e) => {
