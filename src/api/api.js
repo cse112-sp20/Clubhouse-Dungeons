@@ -84,14 +84,14 @@ var MEMBER_ID = null
 /**
  * Object mapping member ID -> member object. Contains all members
  *
- * @type {?object<string, import('type-defs.js').Member>}
+ * @type {?object<string, Member>}
  */
 var MEMBER_MAP = null
 
 /**
  * All stories in the workspace
  *
- * @type {?Array<import('type-defs.js').Story>}
+ * @type {?Array<Story>}
  */
 var STORIES = null
 
@@ -110,7 +110,7 @@ var SETUP = null
  * Fetch all projects
  *
  * @async
- * @returns {Promise<Array<import('type-defs.js').Project>>} A promise to all projects in the workspace
+ * @returns {Promise<Array<Project>>} A promise to all projects in the workspace
  */
 const fetchProjectsAsync = async () => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/projects?token=${API_TOKEN}`, {
@@ -124,7 +124,7 @@ const fetchProjectsAsync = async () => {
  *
  * @async
  * @param {string} projectId - ID of the project
- * @returns {Promise<Array<import('type-defs.js').Story>>} A promise to all stories in the project
+ * @returns {Promise<Array<Story>>} A promise to all stories in the project
  */
 const fetchProjectStoriesAsync = async (projectId) => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/projects/${projectId}/stories?token=${API_TOKEN}`, {
@@ -137,7 +137,7 @@ const fetchProjectStoriesAsync = async (projectId) => {
  * Fetch all stories in all projects
  *
  * @async
- * @returns {Promise<Array<import('type-defs.js').Story>>} A promise to all stories in the workspace
+ * @returns {Promise<Array<Story>>} A promise to all stories in the workspace
  */
 const fetchStoriesAsync = async () => {
   return await fetchProjectsAsync()
@@ -158,7 +158,7 @@ const fetchStoriesAsync = async () => {
  *
  * @async
  * @param {string} apiToken - Member's API token
- * @returns {Promise<import('type-defs.js').MemberInfo>} A promise to the member info object
+ * @returns {Promise<MemberInfo>} A promise to the member info object
  */
 const fetchMemberInfoAsync = async (apiToken) => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/member?token=${apiToken}`, {
@@ -171,7 +171,7 @@ const fetchMemberInfoAsync = async (apiToken) => {
  * Fetch all members in the workspace
  *
  * @async
- * @returns {Promise<Array<import('type-defs.js').BasicMember>>} A promise to the array of member objects
+ * @returns {Promise<Array<BasicMember>>} A promise to the array of member objects
  */
 const fetchMembersAsync = async () => {
   const res = await fetch(`https://api.clubhouse.io/api/v3/members?token=${API_TOKEN}`, {
@@ -183,7 +183,7 @@ const fetchMembersAsync = async () => {
 /**
  * Check if a story is complete
  *
- * @param {import('type-defs.js').Story} story - Story to check
+ * @param {Story} story - Story to check
  * @returns {boolean} True if the story is complete, false otherwise
  */
 const isComplete = story => story.completed === true
@@ -201,7 +201,7 @@ const isComplete = story => story.completed === true
  *                                                  that are incomplete.
  * @param {boolean} [params.completeOnly=false] - Flag to only include stories
  *                                                that are complete.
- * @returns {?Array<import('type-defs.js').Story>} Stories specified by the filters (if any). If no
+ * @returns {?Array<Story>} Stories specified by the filters (if any). If no
  *                          filters are specified, returns all stories in the
  *                          workspace (STORIES). If STORIES is null, returns
  *                          null.
@@ -228,7 +228,7 @@ const getStories = ({ memberOnly = false, incompleteOnly = false, completeOnly =
 /**
  * Get incomplete stories that are assigned to the signed-in member
  *
- * @returns {?Array<import('type-defs.js').Story>} Incomplete stories assigned to the signed-in member.
+ * @returns {?Array<Story>} Incomplete stories assigned to the signed-in member.
  *                          If STORIES is null, returns null.
  *
  * @see getStories
@@ -240,7 +240,7 @@ const getMyIncompleteStories = () => {
 /**
  * Get all incomplete stories in the workspace
  *
- * @returns {?Array<import('type-defs.js').Story>} All incomplete stories in the workspace. If STORIES
+ * @returns {?Array<Story>} All incomplete stories in the workspace. If STORIES
  *                          is null, returns null.
  *
  * @see getStories
@@ -253,7 +253,7 @@ const getAllIncompleteStories = () => {
  * Get up to top 3 point contributors. If less than 3 members have completed any
  * stories (and have more than 0 points), only return those that do.
  *
- * @returns {Array<import('type-defs.js').TopContributor>} The top contributors (max 3). If less than
+ * @returns {Array<TopContributor>} The top contributors (max 3). If less than
  *                                  3 top contributors exist, only those, the
  *                                  returned array will have length less than 3.
  */
@@ -268,7 +268,7 @@ const getTopWarriors = () => {
    * Finds top warrior by points and removes from map. If a top warrior doesn't
    * exist, return null.
    *
-   * @returns {?import('type-defs.js').TopContributor} Top contributor in map or null if none exists
+   * @returns {?TopContributor} Top contributor in map or null if none exists
    */
   const removeTopWarrior = () => {
     let memberName = null
@@ -311,7 +311,7 @@ const getTopWarriors = () => {
 /**
  * Get all team members.
  *
- * @returns {Array<import('type-defs.js').Member>} Array of all members.
+ * @returns {Array<Member>} Array of all members.
  */
 const getAllMembers = () => Object.values(MEMBER_MAP)
 
@@ -319,7 +319,7 @@ const getAllMembers = () => Object.values(MEMBER_MAP)
  * Get stories to show in the battle log - all completed stories sorted by most
  * recently completed.
  *
- * @returns {?Array<import('type-defs.js').Story>} Stories for battle log. If STORIES is null, returns null
+ * @returns {?Array<Story>} Stories for battle log. If STORIES is null, returns null
  */
 const getBattleLog = () => {
   const stories = getStories({ completeOnly: true })
@@ -363,7 +363,7 @@ const getMemberName = (memberId) => {
  * Get the display info - workspace, name, and display icon - of the signed-in
  * member.
  *
- * @returns {import('type-defs.js').MemberDisplay} The display info of the signed-in member
+ * @returns {MemberDisplay} The display info of the signed-in member
  */
 const getMemberProfile = () => {
   // Relevant user profile details
@@ -392,7 +392,7 @@ const removeApiToken = () => {
 /**
  * Get the overall progress of stories, in terms of points completed
  *
- * @returns {import('type-defs.js').Progress} Completed points and total points
+ * @returns {Progress} Completed points and total points
  */
 const getProgress = () => {
   let completed = 0
