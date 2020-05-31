@@ -120,9 +120,6 @@ it('Testing default getMemberProfile', done => {
   })
 })
 
-
-
-
 /**
  * Unit Test 6:
  * Checks the completed and total story values for health bar
@@ -136,14 +133,12 @@ it('Test HealthBar Values', done => {
   })
 })
 
-
 /**
  * Unit Test 7: 
  * Gets the top warriors
  * There should only be two top warriors
  * The third slot should be filled accordingly with an empty slot and that will be tested in our puppeteer testing
  */
-
 it('Test Top Warriors', done => {
   setupTest(testAPIToken, memberID, () => {
     const topWarriors = getTopWarriors()
