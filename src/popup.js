@@ -4,6 +4,7 @@ import {
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
+  getAllMembers,
   getMemberName,
   getMemberProfile,
   getProgress,
@@ -45,6 +46,12 @@ const battleLog = document.getElementById('battleLog')
 // const warrior2Points = document.getElementById('warrior2Points')
 // const warrior3Name = document.getElementById('warrior3Name')
 // const warrior3Points = document.getElementById('warrior3Points')
+
+// Event listener for open honor menu
+const membersList = document.getElementById('membersList')
+const membersListContainer = document.getElementById('membersListContainer')
+const membersListButton = document.getElementById('membersListButton')
+membersListButton.addEventListener('click', () => toggleMembersList())
 
 // Click event listeners for tabs
 myStoriesTab.addEventListener('click', () => selectTab(0))
@@ -136,6 +143,27 @@ function selectTab (tabIndex) {
 }
 
 /**
+ * Toggle members list for honors
+ */
+function toggleMembersList () {
+  if (membersListContainer.classList.contains('show')) {
+    membersListContainer.classList.remove('show')
+  } else {
+    membersListContainer.classList.add('show')
+  }
+}
+
+/**
+ * TODO: Record honoring of member in database
+ *
+ * @param {Member} member
+ */
+function honorMember (member) {
+  const memberId = member.id
+  console.log('honor member', memberId)
+}
+
+/**
  * TODO: Complete story
  *
  * @param {Story} story
@@ -164,9 +192,9 @@ document.addEventListener(
         while (topWarriors.length < 3) {
           topWarriors.push({ name: 'Empty', points: 0 })
         }
-        document.getElementById('warrior1Name').innerText = (topWarriors) ? `${topWarriors[0].name}` : 'Kevin'
-        document.getElementById('warrior2Name').innerText = (topWarriors) ? `${topWarriors[1].name}` : 'Chris'
-        document.getElementById('warrior3Name').innerText = (topWarriors) ? `${topWarriors[2].name}` : 'Jedd'
+        document.getElementById('warrior1Name').innerText = (topWarriors) ? `${topWarriors[0].name.split(' ')[0]}` : 'Kevin'
+        document.getElementById('warrior2Name').innerText = (topWarriors) ? `${topWarriors[1].name.split(' ')[0]}` : 'Chris'
+        document.getElementById('warrior3Name').innerText = (topWarriors) ? `${topWarriors[2].name.split(' ')[0]}` : 'Jedd'
 
         document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
         document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
@@ -233,6 +261,21 @@ document.addEventListener(
           actionDiv.classList.add('action')
           actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + story.estimate + ' DMG'
           battleLog.appendChild(actionDiv)
+        })
+
+        const allMembers = getAllMembers()
+        allMembers.forEach(member => {
+          const memberDiv = document.createElement('div')
+          memberDiv.classList.add('member')
+          const memberName = document.createElement('div')
+          memberName.innerHTML = member.profile.name
+          const honorButton = document.createElement('div')
+          honorButton.classList.add('honor')
+          honorButton.innerHTML = 'Honor'
+          honorButton.addEventListener('click', () => honorMember(member))
+          memberDiv.appendChild(memberName)
+          memberDiv.appendChild(honorButton)
+          membersList.appendChild(memberDiv)
         })
       })
   },
