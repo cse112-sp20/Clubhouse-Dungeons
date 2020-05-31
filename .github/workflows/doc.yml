@@ -1,4 +1,4 @@
-name: Documentation Pipeline
+name: Documentation and Coverage Reporter Pipeline
 
 on: 
   push:
@@ -24,3 +24,24 @@ jobs:
         path: "docs"
       env:
         GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_WIKI_TOKEN }}
+        
+  coverage-reporter:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install Node Dependencies
+      run: npm install
+    - name: Generate coverage report
+      run: npm run test:coverage
+    - name: Run codacy-coverage-reporter
+      uses: codacy/codacy-coverage-reporter-action@master
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: coverage/clover.xml
+    - name: Test & publish code coverage
+      uses: paambaati/codeclimate-action@v2.6.0
+      env:
+        CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+      with:
+        coverageCommand: npm run test:coverage
+        coverageLocations: ${{ github.workspace }}/coverage/lcov.info:lcov

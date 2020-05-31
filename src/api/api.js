@@ -1,65 +1,61 @@
 /**
  * TYPE DECLARATIONS
- *
- * @typedef Project
- * @type {Object}
+ */
+
+/**
+ * @typedef {object} Project
  * @property {string} id - ID of the project
- *
- *
- * @typedef Story
- * @type {Object}
+ */
+
+/**
+ * @typedef {object} Story
  * @property {boolean} completed - Whether the story is completed
  * @property {?string} completed_at - String representation of the time of
- *                                    completion
+ * completion
  * @property {number} estimate - Story point estimate
- * @property {string} id - ID of the story
  * @property {string} name - Name of the story
  * @property {Array<string>} owner_ids - Member IDs of members assigned to the
- *                                       story
- *
- *
- * @typedef BasicMember - Basic (not modified/enhanced by us) member object
- *                        fetched from Clubhouse
- * @type {Object}
- * @property {string} id - ID of the member
- * @property {Object} profile - Profile of the member containing personal info
+ * story
+ */
+
+/**
+ * @typedef {object} BasicMember - Basic (not modified/enhanced by us) member object
+ * fetched from Clubhouse
+ * @property {object} profile - Profile of the member containing personal info
  * @property {string} profile.name - Name of the member
- *
- *
- * @typedef Member - BasicMember that we have enhanced with additional
- *                   attributes (i.e. points)
- * @type {Object}
- * @property {string} id - ID of the member
+ */
+
+/**
+ * @typedef {object} Member - BasicMember that we have enhanced with additional
+ * attributes (i.e. points)
  * @property {number} points - Total story points completed by the member
- * @property {Object} profile - Profile of the member containing personal info
+ * @property {object} profile - Profile of the member containing personal info
  * @property {string} profile.name - Name of the member
- *
- *
- * @typedef MemberDisplay - Sub-object of BasicMember, with simplified structure
- * @type {Object}
+ */
+
+/**
+ * @typedef {object} MemberDisplay - Sub-object of BasicMember, with simplified structure
  * @property {string} workspace - Name of the member's workspace
  * @property {name} name - Name of the member
  * @property {string} icon - URL of the member's display icon
- *
- *
- * @typedef TopContributor - Sub-object of Member, with simplified structure
- * @type {Object}
- * @private {string} name - Name of the topContributor (member)
- * @private {string} points - Total story points completed by the member
- *
- *
- * @typedef MemberInfo - Member object, containing workspace info (but less
- *                       member info than BasicMember), fetched from Clubhouse
- * @type {Object}
- * @property {string} id - ID of the member
+ */
+
+/**
+ * @typedef {object} TopContributor - Sub-object of Member, with simplified structure
+ * @property {string} name - Name of the topContributor (member)
+ * @property {string} points - Total story points completed by the member
+ */
+
+/**
+ * @typedef {object} MemberInfo - Member object, containing workspace info (but less
+ * member info than BasicMember), fetched from Clubhouse
  * @property {string} name - Name of the member
- * @property {Object} workspace2 - Info about the member's workspace
+ * @property {object} workspace2 - Info about the member's workspace
  * @property {string} workspace2.url_slug - Member's workspace URL slug
- *
- *
- * @typedef Progress
- * @type {Object}
- * @property {number} completed - Number of story points completed
+ */
+
+/**
+ * @typedef {object} Progress
  * @property {number} total - Number of total story points
  */
 
@@ -88,7 +84,7 @@ var MEMBER_ID = null
 /**
  * Object mapping member ID -> member object. Contains all members
  *
- * @type {?Object<string, Member>}
+ * @type {?object<string, Member>}
  */
 var MEMBER_MAP = null
 
@@ -196,7 +192,7 @@ const isComplete = story => story.completed === true
  * Get stories - using optional filters - from the set of all stories in the
  * workspace (STORIES).
  *
- * @param {Object<string, boolean>} [params] - Optional parameter to specify
+ * @param {object<string, boolean>} [params] - Optional parameter to specify
  *                                             filter flags.
  * @param {boolean} [params.memberOnly=false] - Flag to only include stories
  *                                              assigned to the signed-in
@@ -486,9 +482,12 @@ const setup = () => {
   return SETUP
 }
 
-/** Used for testing only.  Does the same thing as setup, but does not use chrome storage
- * @param apiToken the token to set the API_TOKEN var to
- * @param memberID the id to set MEMBER_ID var to
+/**
+ * Used for testing only.  Does the same thing as setup, but does not use chrome storage
+ *
+ * @param {string} apiToken the token to set the API_TOKEN var to
+ * @param {string} memberID the id to set MEMBER_ID var to
+ * @param {Function} cb function called at end
  */
 const setupTest = (apiToken, memberID, cb) => {
   API_TOKEN = apiToken

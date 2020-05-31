@@ -19,7 +19,7 @@ document.addEventListener(
     /**
      * Function to handle onClick event
      */
-    function onClick() {
+    function onClick () {
       var apiKey = document.getElementById('apiEntry').value
 
       console.log(document.getElementById('apiEntry').value)
