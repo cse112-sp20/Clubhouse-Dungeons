@@ -153,7 +153,8 @@ const ERR_MSG_UNKOWN = 'unkown-error'
  * @returns
  */
 const fetchFromClubhouse = async (url, params) => {
-  return fetch(url, params)
+  const corsProxyUrl = 'https://cors-anywhere.herokuapp.com'
+  return fetch(`${corsProxyUrl}/${url}`, params)
     .then(res => {
       switch (res.status) {
         case 200:
