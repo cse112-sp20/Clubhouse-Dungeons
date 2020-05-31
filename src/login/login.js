@@ -28,8 +28,7 @@ const validateMember = (apiKey) => {
     })
     .catch((e) => {
       console.log(e)
-      /* TODO: Nedd to change alerts */
-      alert(e)
+      /* TODO: UI */
     })
 }
 

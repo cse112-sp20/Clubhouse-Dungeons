@@ -523,23 +523,22 @@ const setup = () => {
           })
           .catch((e) => {
             console.log(e)
-            /* TODO: Nedd to change alerts */
             switch (e.message) {
               case ERR_MSG_INTERNET:
                 // Respond to internet error
-                alert(e)
+                /* TODO: UI */
                 break
               case ERR_MSG_INVALID_API_TOKEN:
                 // Respond to invalid api token error
-                alert(e)
+                /* TODO: UI */
                 break
               case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
                 // Respond to quota exceeded
-                alert(e)
+                /* TODO: UI */
                 break
               default:
                 // Respond to unknown error
-                alert(e)
+                /* TODO: UI */
             }
           })
       })
