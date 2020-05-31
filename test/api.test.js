@@ -115,45 +115,9 @@ it('Testing default getMemberProfile', done => {
 
 });
 
-
 /**
- * Testing suite for api.js unit tests
- * Copied Arren's format
- * 
+ * Unit Test 5: 
+ * Gets the top warriors
+ * There should only be two top warriors
+ * The third slot should be filled accordingly with an empty slot and that will be tested in our puppeteer testing
  */
-//describe('api simple unit tests', () => {
-
-//    /**
-//     * Unit Test 4:
-//     * Checks if getMemberName returns correct name
-//     */
-//    it('Testing getMemberName', done => {
-//        var name;
-//        // test setup - tried in beforeAll/beforeEach block, can't get it to work
-//        api.setupTest(testAPIToken, memberID, () => {
-//            name = api.getMemberName();
-//            expect(name).toMatch('wrong');
-//            done();
-//        })
-
-//    });
-
-//    /**
-//     * Unit Test 5:
-//     * Checks if getMemberProfile returns a correct default profile
-//     */
-//    it('Testing default getMemberProfile',done => {
-//        var name;
-//        var icon;
-//        var profile;
-
-//        api.setupTest(testAPIToken, memberID, () => {
-//            profile = api.getMemberProfile();
-//            expect(profile.name).toMatch(myName);
-//            expect(profile.icon).toContain(myIcon);
-//            done();
-//        });
-
-//    });
-
-//});
