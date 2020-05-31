@@ -9,11 +9,11 @@
 
 ### Linux
 
-?
++ [Node.js](https://nodejs.org/en/download/package-manager/)
 
 ### Mac
 
-?
++ [Node.js](https://nodejs.org/en/download/package-manager/)
 
 ## Creating the Repository
 

@@ -508,6 +508,18 @@ const setupTest = (apiToken, memberID, cb) => {
       })
   ])
     .then(() => {
+      // Initalize member map points to 0
+      for (const memberObj of Object.values(MEMBER_MAP)) {
+        memberObj.points = 0
+      }
+      // Set total contributed points to each member
+      getStories({ completeOnly: true }).map((story) => {
+        if (story.owner_ids && story.estimate) {
+          story.owner_ids.map((memberId) => {
+            MEMBER_MAP[memberId].points += story.estimate
+          })
+        }
+      })
       cb()
     })
 }
