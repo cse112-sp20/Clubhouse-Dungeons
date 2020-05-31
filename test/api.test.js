@@ -5,7 +5,12 @@ import {
   getMemberProfile,
   setupTest
 } from '../src/api/api'
-// import { fetch } from 'isomorphic-fetch'
+
+// Disabling eslint since we need fetch to be defined for testing. This import is used by api/api.js
+/* eslint-disable no-unused-vars */
+import { fetch } from 'isomorphic-fetch'
+/* eslint-enable no-unused-vars */
+
 const testAPIToken = '5ec07d9a-f9a8-4541-a2fe-d2aae53169e1'
 const memberID = '5ec07aaf-30c2-42ab-a9ee-7e1214f2e2d4'
 
