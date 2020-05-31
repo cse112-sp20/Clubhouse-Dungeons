@@ -395,15 +395,13 @@ const getMemberProfile = () => {
     return {
       workspace: WORKSPACE,
       name: MEMBER_MAP[MEMBER_ID].profile.name,
-      icon: MEMBER_MAP[MEMBER_ID].profile.display_icon.url,
-      role: MEMBER_MAP[MEMBER_ID].role
+      icon: MEMBER_MAP[MEMBER_ID].profile.display_icon.url
     }
   } else {
     return {
       workspace: WORKSPACE,
       name: MEMBER_MAP[MEMBER_ID].profile.name,
-      icon: 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png',
-      role: MEMBER_MAP[MEMBER_ID].role
+      icon: 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png'
     }
   }
 }

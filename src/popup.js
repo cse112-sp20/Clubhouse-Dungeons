@@ -207,15 +207,33 @@ function completeStory (story, storyNode, tabName) {
 }
 
 /**
- * Estimate the amount of story points a story is worth
- * (ensure that the value is at least 0 instead of null)
- *
- * @param {number} storyPoints the number of story points allocated to a
- * specific story
- * @returns {number} the number of points the story is worth
+ * Converts a string containing someone's full name into first name and last initial format
+ * 
+ * @param {string} name the name to be converted into first name, last initial format
  */
-const estimateStoryPoints = storyPoints => {
-  return storyPoints === null ? 0 : storyPoints
+const getFNameAndLInitial = name => {
+  // Split up the full name into an array called res using " " as the delimiter
+  var res = name.split(" ")
+
+  /* Pseudocode
+   * ----------
+   * If res is empty, throw error.
+   * Else, if res has more than 2 elements,
+   * concatenate and return the first element, a space, the first char of the last element, and a period.
+   * Else, if res has 2 elements,
+   * concatenate and return the first element, a space, the first char of the second element, and a period.
+   * Else, if res has 1 element,
+   * return the first element of res
+   */
+  if (res.length == 0) {                              
+    throw "Length of name is 0!"
+  } else if (res.length > 2) {
+    return res[0] + " " + res[res.length-1][0] + "."
+  } else if (res.length == 2) {
+    return res[0] + " " + res[1][0] + "."
+  } else if (res.length == 1) {
+    return res[0]
+  }
 }
 
 /**
@@ -247,7 +265,13 @@ const addToMyStoriesTab = story => {
   storyButton.classList.add('story-button')
   storyButton.innerHTML = '<img src="images/sword.png" >'
   storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
-  storyDiv.innerHTML += '<div class="points">' + estimateStoryPoints(story.estimate) + ' DMG</div>'
+
+  if (story.estimate) {
+    storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+  } else {
+    storyDiv.innerHTML += '<div class="points"></div>'
+  }
+
   storyButton.addEventListener('click', () => completeStory(story, storyDiv, 'myStoriesTab'))
   storyDiv.prepend(storyButton)
   myStories.appendChild(storyDiv)
@@ -269,7 +293,13 @@ const addToAllStoriesTab = story => {
   storyButton.classList.add('story-button')
   storyButton.innerHTML = '<img src="images/sword.png" >'
   storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
-  storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+
+  if (story.estimate) {
+    storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+  } else {
+    storyDiv.innerHTML += '<div class="points"></div>'
+  }
+
   const ownersDiv = document.createElement('div')
   ownersDiv.classList.add('owners')
   ownerNames.forEach(ownerName => {
@@ -293,11 +323,24 @@ const addToBattleLogTab = story => {
     : 'unassigned'
   const actionDiv = document.createElement('div')
   actionDiv.classList.add('action')
-  actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + estimateStoryPoints(story.estimate) + ' DMG'
+
+  if (story.estimate) {
+    actionDiv.innerHTML = ownerNames + ' completed ' + story.name + ' dealing ' + story.estimate + ' DMG'
+  } else {
+    actionDiv.innerHTML = ownerNames + ' completed ' + story.name
+  }
 
   battleLog.appendChild(actionDiv)
 }
 
+/**
+ * See {@link https://www.w3schools.com/jsref/met_document_addeventlistener.asp} for
+ * the definition and usage of document.addEventListener. Also, check out 
+ * {@link https://www.w3schools.com/jsref/dom_obj_event.asp} for at list of DOM Events
+ * which are used by entering as strings into the first parameter of addEventListener.
+ * Unfortunately, the 'DOMContentLoaded' event isn't listed in that link, but it is
+ * explained in detail here: {@link https://www.javascripttutorial.net/javascript-dom/javascript-domcontentloaded/}.
+ */
 document.addEventListener(
   'DOMContentLoaded',
   () => {
@@ -307,17 +350,18 @@ document.addEventListener(
         const memberProfile = getMemberProfile()
         memberName.innerHTML = memberProfile.name
         memberIcon.src = memberProfile.icon
-        memberTeam.innerHTML = memberProfile.role /* sets role of member not organization/team */
 
-        /* Get top warriors and update text */
+        /* If less than 3 warriors, places empty objects as top warriors */
         const topWarriors = getTopWarriors()
         while (topWarriors.length < 3) {
           topWarriors.push({ name: 'Empty', points: 0 })
         }
 
-        document.getElementById('warrior1Name').innerText = (topWarriors) ? `${topWarriors[0].name.split(' ')[0]}` : 'Kevin'
-        document.getElementById('warrior2Name').innerText = (topWarriors) ? `${topWarriors[1].name.split(' ')[0]}` : 'Chris'
-        document.getElementById('warrior3Name').innerText = (topWarriors) ? `${topWarriors[2].name.split(' ')[0]}` : 'Jedd'
+        console.log(getFNameAndLInitial(topWarriors[0].name))
+
+        document.getElementById('warrior1Name').innerText = getFNameAndLInitial(topWarriors[0].name)
+        document.getElementById('warrior2Name').innerText = getFNameAndLInitial(topWarriors[1].name)
+        document.getElementById('warrior3Name').innerText = getFNameAndLInitial(topWarriors[2].name)
 
         document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
         document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
@@ -326,8 +370,6 @@ document.addEventListener(
         updateHealthBar()
 
         /* Populate tabs */
-
-        // My Stories
         getMyIncompleteStories().map(story => {
           addToMyStoriesTab(story)
         })
@@ -340,8 +382,12 @@ document.addEventListener(
           addToBattleLogTab(story)
         })
 
-        const allMembers = getAllMembers()
-        allMembers.forEach(member => {
+        /*
+         * For each member in the array returned by getAllMembers(),
+         * create HTML 'div' elements (which includes the member name
+         * and honor button) to add into the honorButton drop-down list.
+         */
+        getAllMembers().map(member => {
           const memberDiv = document.createElement('div')
           memberDiv.classList.add('member')
           const memberName = document.createElement('div')
@@ -355,8 +401,7 @@ document.addEventListener(
           membersList.appendChild(memberDiv)
         })
       })
-  },
-  false
+  }
 ) // addEventListener()
 
 /**
