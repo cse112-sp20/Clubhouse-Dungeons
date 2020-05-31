@@ -2,7 +2,8 @@ module.exports = {
   env: {
     browser: true,
     es6: true,
-    webextensions: true
+    webextensions: true,
+    jest: true
   },
   extends: [
     'standard'
@@ -18,3 +19,4 @@ module.exports = {
   rules: {
   }
 }
+

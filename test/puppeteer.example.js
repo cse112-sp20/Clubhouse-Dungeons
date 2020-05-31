@@ -1,13 +1,13 @@
-const puppeteer = require('puppeteer');
-const assert = require('assert');
+const puppeteer = require('puppeteer')
+const assert = require('assert')
 
-const extensionPath = '../../../../../'; // This is the path to the manifext.json file
-const extensionID = `kggoidbofmfjedcmnincmhlefijkpgej`; // This extension ID might not work for you, but if it does, feel free to remove this comment :)
-const extensionPopupHtml = `popup.html`; // The main page of our extension
+const extensionPath = '../../../../../' // This is the path to the manifext.json file
+const extensionID = 'kggoidbofmfjedcmnincmhlefijkpgej' // This extension ID might not work for you, but if it does, feel free to remove this comment :)
+const extensionPopupHtml = 'popup.html' // The main page of our extension
 
 // Puppeteer object variables here
-let extensionPage = null;
-let browser = null;
+const extensionPage = null
+const browser = null
 
 /**
  * Calling the testing function here.  It is an async method.
@@ -24,7 +24,6 @@ let browser = null;
       `--load-extension=${extensionPath}`
     ]
   });
-
 
   // Open the extension in its own tab
   extensionPage = await browser.newPage();

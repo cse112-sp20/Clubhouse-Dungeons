@@ -157,6 +157,39 @@ const fetchStoriesAsync = async () => {
     })
 }
 
+const getCurrentTime = () => {
+  var today = new Date()
+  var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+  var time = 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + 'Z'
+  return date + time
+}
+
+/**
+ * Request update to story info using workflow_state_id and time completed
+ * @param {string} storyId - public id of the story
+ */
+const completeStoriesAsync = async (storyId) => {
+  const res = await fetch(`https://api.clubhouse.io/api/v3/stories/${storyId}?token=${API_TOKEN}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ completed_at_override: getCurrentTime(), workflow_state_id: 500000011 })
+  })
+  return res.json()
+}
+
+/**
+ * Request undo completion of story info using workflow_state_id
+ * @param {string} storyId - public id of the story
+ */
+const revertCompleteStoriesAsync = async (storyId) => {
+  const res = await fetch(`https://api.clubhouse.io/api/v3/stories/${storyId}?token=${API_TOKEN}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ completed_at_override: null, workflow_state_id: 500000008 })
+  })
+  return res.json()
+}
+
 /**
  * Fetch info about a member
  *
@@ -254,12 +287,8 @@ const getAllIncompleteStories = () => {
 }
 
 /**
- * Get up to top 3 point contributors. If less than 3 members have completed any
- * stories (and have more than 0 points), only return those that do.
- *
- * @returns {Array<TopContributor>} The top contributors (max 3). If less than
- *                                  3 top contributors exist, only those, the
- *                                  returned array will have length less than 3.
+ * Gets top 3 point contributors from completed stories
+ *  @returns {Array}
  */
 const getTopWarriors = () => {
   // Map to hold member ID as key and member object as value
@@ -375,13 +404,15 @@ const getMemberProfile = () => {
     return {
       workspace: WORKSPACE,
       name: MEMBER_MAP[MEMBER_ID].profile.name,
-      icon: MEMBER_MAP[MEMBER_ID].profile.display_icon.url
+      icon: MEMBER_MAP[MEMBER_ID].profile.display_icon.url,
+      role: MEMBER_MAP[MEMBER_ID].role
     }
   } else {
     return {
       workspace: WORKSPACE,
       name: MEMBER_MAP[MEMBER_ID].profile.name,
-      icon: 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png'
+      icon: 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.png',
+      role: MEMBER_MAP[MEMBER_ID].role
     }
   }
 }
@@ -450,7 +481,6 @@ const setup = () => {
         API_TOKEN = store.api_token
         MEMBER_ID = store.member_id
         WORKSPACE = store.workspace
-
         Promise.all([
           fetchStoriesAsync()
             .then(stories => {
@@ -514,6 +544,8 @@ const setupTest = (apiToken, memberID, cb) => {
 
 module.exports = {
   fetchMemberInfoAsync,
+  completeStoriesAsync,
+  revertCompleteStoriesAsync,
   getMyIncompleteStories,
   getAllIncompleteStories,
   getBattleLog,
