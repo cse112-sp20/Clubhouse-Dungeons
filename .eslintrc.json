@@ -5,6 +5,9 @@
     "webextensions": true,
     "jest": true
   },
+  "plugins": [
+    "jsdoc"
+  ],
   "extends": [
     "standard",
     "plugin:jsdoc/recommended"
@@ -24,8 +27,5 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": [
-    "jsdoc"
-  ],
   "rules": {}
 }
