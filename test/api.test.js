@@ -1,8 +1,16 @@
-const api = require('../src/api/api')
+import {
+    getMyIncompleteStories,
+    getAllIncompleteStories,
+    getBattleLog,
+    getMemberName,
+    getMemberProfile,
+    getProgress,
+    setupTest
+} from '../src/api/api'
+import { fetch } from 'isomorphic-fetch'
+
 const testAPIToken = '5ed2b278-d7a6-4344-b33f-94b8901aa75a'
 const memberID = '5ecdd3de-0125-4888-802a-5d3ba46ca0dc'
-const fetch = require('isomorphic-fetch').fetch
-const resolve = require('isomorphic-fetch').resolve
 
 // These variables are based on the testing clubhouse
 // MAKE SURE THESE ARE UP TO DATE IF YOU ADD/REMOVE/EDIT STORIES ON CLUBHOUSE
@@ -16,14 +24,14 @@ const myIcon = 'https://cdn.patchcdn.com/assets/layout/contribute/user-default.p
 
 /**
  * Unit Test 1
- * Testing for api.getMyIncompleteStories()
+ * Testing for getMyIncompleteStories()
  * Checks if the count of test stories are correct and that they are the correct ids
  */
 it('Test MY Incomplete Stories', done => {
   // Set up API variables, then run our test
-  api.setupTest(testAPIToken, memberID, () => {
+  setupTest(testAPIToken, memberID, () => {
     // The only story that has been assigned to this test user as of right now is story 56
-    const incompleteStories = api.getMyIncompleteStories()
+    const incompleteStories = getMyIncompleteStories()
     expect(incompleteStories.length).toBe(myIncompleteIDs.length) // Make sure the number of incomplete is correct
 
     // Make sure each incomplete ID specified above will be in here
@@ -37,14 +45,14 @@ it('Test MY Incomplete Stories', done => {
 
 /**
  * Unit Test 2
- * Testing for api.getAllIncompleteStories()
+ * Testing for getAllIncompleteStories()
  * Checks if the count of test stories are correct and that they are the correct ids
  */
 it('Test ALL Incomplete Stories', done => {
   // Set up API variables, then run our test
-  api.setupTest(testAPIToken, memberID, () => {
+  setupTest(testAPIToken, memberID, () => {
     // The only story that has been assigned to this test user as of right now is story 56
-    const incompleteStories = api.getAllIncompleteStories()
+    const incompleteStories = getAllIncompleteStories()
 
     expect(incompleteStories.length).toBe(allIncompleteIDs.length) // Make sure the number of all incomplete is correct
 
@@ -66,9 +74,9 @@ it('Test ALL Incomplete Stories', done => {
  */
 it('Test Getting Battle Log', done => {
   // Set up API variables, then run our test
-  api.setupTest(testAPIToken, memberID, () => {
+  setupTest(testAPIToken, memberID, () => {
     // The only story that has been assigned to this test user as of right now is story 56
-    const battleStories = api.getBattleLog()
+    const battleStories = getBattleLog()
 
     expect(battleStories.length).toBe(battleLogIDsSorted.length) // Make sure the number of battle log elements is correct
 
@@ -88,8 +96,8 @@ it('Test Getting Battle Log', done => {
 it('Testing getMemberName', done => {
   var name
   // test setup - tried in beforeAll/beforeEach block, can't get it to work
-  api.setupTest(testAPIToken, memberID, () => {
-    name = api.getMemberName(memberID)
+  setupTest(testAPIToken, memberID, () => {
+    name = getMemberName(memberID)
     expect(name).toMatch(myName)
     done()
   })
@@ -101,8 +109,8 @@ it('Testing getMemberName', done => {
  */
 it('Testing default getMemberProfile', done => {
   var profile
-  api.setupTest(testAPIToken, memberID, () => {
-    profile = api.getMemberProfile()
+  setupTest(testAPIToken, memberID, () => {
+    profile = getMemberProfile()
     expect(profile.name).toMatch(myName)
     expect(profile.icon).toContain(myIcon)
     done()
@@ -114,8 +122,8 @@ it('Testing default getMemberProfile', done => {
  * Checks the completed and total story values for health bar
  */
 it('Test HealthBar Values', done => {
-  api.setupTest(testAPIToken, memberID, () => {
-    const { completed, total } = api.getProgress()
+  setupTest(testAPIToken, memberID, () => {
+    const { completed, total } = getProgress()
     expect(completed).toBe(completedHealth)
     expect(total).toBe(totalHealth)
     done()
