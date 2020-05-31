@@ -23,14 +23,13 @@ const validateMember = (apiKey) => {
         member_name: res.name,
         workspace: res.workspace2.url_slug
       }, () => {
-        const storageError = chrome.runtime.lastError !== undefined
-        if (!storageError) {
+        if (chrome.runtime.lastError) {
+          throw new Error(ERR_MSG_BROWSER_STORAGE)
+        } else {
           console.log('Stored member info in browser storage')
 
           // Move to popup
           window.location.href = '../popup.html'
-        } else {
-          throw new Error(ERR_MSG_BROWSER_STORAGE)
         }
       })
     })

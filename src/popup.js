@@ -66,13 +66,16 @@ battleLogTab.addEventListener('click', () => selectTab(2))
  * Signout by removing all items from StorageArea storage.sync
  */
 const signout = () => {
-  chrome.storage.sync.clear((clear) => {
-    if (chrome.runtime.lastError === undefined) {
-      console.log('storage cleared')
+  chrome.storage.sync.clear(() => {
+    if (chrome.runtime.lastError) {
+      console.log(ERR_MSG_BROWSER_STORAGE)
+      console.log('Error trying to clear storage')
+      /* TODO: UI */
+    } else {
+      console.log('Storage cleared')
+
       // load the login page
       window.location.href = 'login.html'
-    } else {
-      alert('Error trying to clear storage')
     }
   })
 }
