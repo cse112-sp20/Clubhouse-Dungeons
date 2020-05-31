@@ -1,5 +1,5 @@
 module.exports = {
   transform: {
-    '^.+\\.ts?$': 'ts-jest',
+    '^.+\\.js$': 'babel-jest'  // Tells Jest to transform JavaScript files using Babel
   },
 }
