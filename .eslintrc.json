@@ -11,7 +11,14 @@
   ],
   "globals": {
     "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
+    "SharedArrayBuffer": "readonly",
+    "Member":"true",
+    "Story":"true",
+    "Project":"true",
+    "MemberDisplay":"true",
+    "TopContributor":"true",
+    "MemberInfo":"true",
+    "Progress":"true"
   },
   "parserOptions": {
     "ecmaVersion": 2018,
