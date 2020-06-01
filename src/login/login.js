@@ -8,10 +8,13 @@ import {
 } from '../api/api'
 
 /**
- * validate member
+ * Validates a potential member using their API key. First, validates their API
+ * key by checking with the Clubhouse API. If the API key is valid, stores the
+ * member's API key, member ID, name, and workspace in browser storage, then
+ * changes window to popup. If the API key is invalid or another error occurs,
+ * this method does nothing (TODO).
  *
- * @async
- * @returns {}
+ * @param {string} apiKey - The API key of the potential member
  */
 const validateMember = (apiKey) => {
   fetchMemberInfoAsync(apiKey)

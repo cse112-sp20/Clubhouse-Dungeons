@@ -113,10 +113,19 @@ const ERR_MSG_BROWSER_STORAGE = 'browser-storage-error'
 const ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE = 'unknown-clubhouse-api-response-status'
 
 /**
- * Fetch from Clubhouse
+ * Fetch from a Clubhouse API endpoint. Fetch calls from this method differ from
+ * regular fetches in that they send the desired fetch call through a CORS proxy.
  *
  * @async
- * @returns
+ * @param {string} url - The Clubhouse URL to fetch from
+ * @param {object} params - Optional parameters to pass to fetch (i.e. headers)
+ * @returns {Promise<Array<Project | Story | BasicMember> | MemberInfo | Error>}
+ * If successful, a promise to the requested object. Otherwise, an Error with
+ * message equal to the value of:
+ *   - ERR_MSG_INTERNET
+ *   - ERR_MSG_INVALID_API_TOKEN
+ *   - ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED
+ *   - ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
  */
 const fetchFromClubhouse = async (url, params) => {
   const corsProxyUrl = 'https://cors-anywhere.herokuapp.com'
