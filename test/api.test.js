@@ -9,10 +9,21 @@ import {
   getTopWarriors
 } from '../src/api/api'
 
-// Disabling eslint since we need fetch to be defined for testing. This import is used by api/api.js
-/* eslint-disable no-unused-vars */
-import { fetch } from 'isomorphic-fetch'
-/* eslint-enable no-unused-vars */
+import * as realFetch from 'node-fetch'
+
+/**
+ * Like normal fetch, but if resource URL starts with Heroku CORS proxy address,
+ * remove it; like normal fetch, but doesn't use CORS proxy.
+ */
+const fetchMock = jest.fn().mockImplementation((resource, init = {}) => {
+  const corsProxyUrl = 'https://cors-anywhere.herokuapp.com'
+  const corsPrefix = corsProxyUrl + '/'
+  if (resource.startsWith(corsPrefix)) {
+    resource = resource.substring(corsPrefix.length)
+  }
+  return realFetch(resource, init)
+})
+global.fetch = fetchMock
 
 const testAPIToken = '5ed2b278-d7a6-4344-b33f-94b8901aa75a'
 const memberID = '5ecdd3de-0125-4888-802a-5d3ba46ca0dc'

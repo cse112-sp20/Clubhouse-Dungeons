@@ -21,7 +21,6 @@
   "license": "ISC",
   "dependencies": {
     "eslint-plugin-jsdoc": "^24.0.6",
-    "isomorphic-fetch": "^2.2.1",
     "jest-puppeteer": "^4.4.0",
     "jsdoc": "^3.6.4",
     "jsdoc-to-markdown": "^5.0.3",
@@ -41,6 +40,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "jest": "^26.0.1",
+    "node-fetch": "^2.6.0",
     "run-script-os": "^1.1.1",
     "ts-jest": "^26.0.0",
     "webpack": "^4.43.0",
