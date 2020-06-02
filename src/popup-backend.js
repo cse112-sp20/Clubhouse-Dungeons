@@ -331,47 +331,6 @@ const setup = () => {
   return SETUP
 }
 
-/**
- * Used for testing only.  Does the same thing as setup, but does not use chrome storage
- *
- * @param {string} apiToken the token to set the API_TOKEN var to
- * @param {string} memberID the id to set MEMBER_ID var to
- * @param {Function} cb function called at end
- */
-const setupTest = (apiToken, memberID, cb) => {
-  API_TOKEN = apiToken
-  MEMBER_ID = memberID
-
-  Promise.all([
-    fetchStoriesAsync(apiToken)
-      .then(stories => {
-        STORIES = stories
-      }),
-    fetchMembersAsync(apiToken)
-      .then(members => {
-        MEMBER_MAP = {}
-        members.map(member => {
-          MEMBER_MAP[member.id] = member
-        })
-      })
-  ])
-    .then(() => {
-      // Initalize member map points to 0
-      for (const memberObj of Object.values(MEMBER_MAP)) {
-        memberObj.points = 0
-      }
-      // Set total contributed points to each member
-      getStories({ completeOnly: true }).map((story) => {
-        if (story.owner_ids && story.estimate) {
-          story.owner_ids.map((memberId) => {
-            MEMBER_MAP[memberId].points += story.estimate
-          })
-        }
-      })
-      cb()
-    })
-}
-
 export {
   getMyIncompleteStories,
   getAllIncompleteStories,
@@ -381,6 +340,5 @@ export {
   getMemberName,
   getMemberProfile,
   getProgress,
-  setup,
-  setupTest
+  setup
 }
