@@ -191,6 +191,7 @@ document.addEventListener(
             break
           case ERR_MSG_INVALID_API_TOKEN:
             // Respond to invalid api token error
+            signout()
             /* TODO: UI */
             break
           case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
