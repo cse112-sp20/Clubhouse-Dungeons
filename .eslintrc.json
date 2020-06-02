@@ -19,7 +19,7 @@
     "Story":"true",
     "Project":"true",
     "MemberDisplay":"true",
-    "TopContributor":"true",
+    "Contributor":"true",
     "MemberInfo":"true",
     "Progress":"true"
   },
