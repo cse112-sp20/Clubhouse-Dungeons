@@ -118,7 +118,8 @@ body {
 .battlefield {
   position: relative;
   height: 50%;
-  background: #244768;
+  /* background: #244768; */
+  background-image: url("images/background.png");
   display: flex;
   flex-direction: column;
   justify-content: space-between;
