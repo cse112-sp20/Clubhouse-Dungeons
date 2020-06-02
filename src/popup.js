@@ -174,7 +174,7 @@ function honorMember (member) {
  */
 function completeStory (story) {
   characterAttack()
-  setTimeout(characterIdle, 2780)
+  setTimeout(characterIdle, 1800)
   console.log('complete story', story)
 }
 
