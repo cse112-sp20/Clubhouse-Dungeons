@@ -1,7 +1,14 @@
 import {
   fetchStoriesAsync,
   fetchMembersAsync,
-  ERR_MSG_BROWSER_STORAGE
+  ERR_MSG_BROWSER_STORAGE,
+
+  // Types
+  Story,
+  Member,
+  MemberDisplay,
+  Contributor,
+  Progress
 } from './api/clubhouse-api'
 
 /**
@@ -124,59 +131,19 @@ const getAllIncompleteStories = () => {
  * Get up to top 3 point contributors. If less than 3 members have completed any
  * stories (and have more than 0 points), only return those that do.
  *
- * @returns {Array<TopContributor>} The top contributors (max 3). If less than
- *                                  3 top contributors exist, only those, the
- *                                  returned array will have length less than 3.
+ * @returns {Array<Contributor>} An array of top contributors (max 3). If less
+ *   than 3 top contributors exist, the returned array will have length less
+ *   than 3. If there are no top contributors, an empty array is returned.
  */
 const getTopWarriors = () => {
-  // Map to hold member ID as key and member object as value
-  const map = new Map()
-  for (const [memberId, memberObj] of Object.entries(MEMBER_MAP)) {
-    map.set(memberId, memberObj)
-  }
-
-  /**
-   * Finds top warrior by points and removes from map. If a top warrior doesn't
-   * exist, return null.
-   *
-   * @returns {?TopContributor} Top contributor in map or null if none exists
-   */
-  const removeTopWarrior = () => {
-    let memberName = null
-    let memberPoints = null
-    let memId = null
-    // Iterate through map and find greatest value
-    for (const [memberId, memberObj] of map) {
-      if (memberObj.points > memberPoints) {
-        memberPoints = memberObj.points
-        memberName = getMemberName(memberId)
-        memId = memberId
-      }
-    }
-
-    if (memberName) {
-      // If top warrior found, remove from map
-      map.delete(memId)
-
-      return {
-        name: memberName,
-        points: memberPoints
-      }
-    } else {
-      return null
-    }
-  }
-
-  const warriors = []
-  while (warriors.length < 3) {
-    const topWarrior = removeTopWarrior()
-    if (topWarrior) {
-      warriors.push(topWarrior)
-    } else {
-      break
-    }
-  }
-  return warriors
+  // Map Member objects to Contributor objects
+  // Filter out Members that haven't completed any story points
+  const contributors = Object.values(MEMBER_MAP)
+    .map(member => ({ name: member.profile.name, points: member.points }))
+    .filter(member => member.points > 0)
+  // Sort contributors by descending points
+  contributors.sort((a, b) => b.points - a.points)
+  return contributors.slice(0, 3)
 }
 
 /**

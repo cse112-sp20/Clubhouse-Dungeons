@@ -37,8 +37,8 @@
  */
 
 /**
- * @typedef {object} TopContributor - Sub-object of Member, with simplified structure
- * @property {string} name - Name of the topContributor (member)
+ * @typedef {object} Contributor - Sub-object of Member, with simplified structure
+ * @property {string} name - Name of the contributor (member)
  * @property {string} points - Total story points completed by the member
  */
 
