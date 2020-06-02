@@ -2,13 +2,12 @@ import {
   getMyIncompleteStories,
   getAllIncompleteStories,
   getBattleLog,
+  getTopWarriors,
   getMemberName,
   getMemberProfile,
   getProgress,
-  setupTest,
-  getTopWarriors
-} from '../src/api/api'
-
+  setupTest
+} from '../src/popup-backend'
 import * as realFetch from 'node-fetch'
 
 /**

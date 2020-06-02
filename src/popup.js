@@ -7,13 +7,16 @@ import {
   getAllMembers,
   getMemberName,
   getMemberProfile,
-  getProgress,
+  getProgress
+} from './popup-backend'
+import {
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
   ERR_MSG_BROWSER_STORAGE,
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
-} from './api/api'
+} from './api/clubhouse-api'
+
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
 // const memberProfile = document.getElementById('memberProfile')

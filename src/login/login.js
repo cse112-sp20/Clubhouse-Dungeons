@@ -5,7 +5,7 @@ import {
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
   ERR_MSG_BROWSER_STORAGE,
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
-} from '../api/api'
+} from '../api/clubhouse-api'
 
 /**
  * Validates a potential member using their API key. First, validates their API
