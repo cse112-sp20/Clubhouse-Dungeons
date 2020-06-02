@@ -57,6 +57,11 @@ myStoriesTab.addEventListener('click', () => selectTab(0))
 allStoriesTab.addEventListener('click', () => selectTab(1))
 battleLogTab.addEventListener('click', () => selectTab(2))
 
+// Fighting animation images
+const characterIdleImg = document.getElementById('characterIdle')
+const characterAttackImg = document.getElementById('characterAttack')
+const monsterImg = document.getElementById('monster')
+
 /**
  * Signout by removing all items from StorageArea storage.sync
  */
@@ -168,7 +173,24 @@ function honorMember (member) {
  * @param {Story} story Story that is being completed
  */
 function completeStory (story) {
+
   console.log('complete story', story)
+}
+
+/**
+ * Changes character image to attacking image
+ */
+function characterAttack () {
+  characterIdleImg.hidden = true
+  characterAttackImg.hidden = false
+}
+
+/**
+ * Changes character image to idle image
+ */
+function characterIdle () {
+  characterAttackImg.hidden = true
+  characterIdleImg.hidden = false
 }
 
 document.addEventListener(
