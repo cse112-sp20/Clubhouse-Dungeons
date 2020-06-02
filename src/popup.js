@@ -173,7 +173,8 @@ function honorMember (member) {
  * @param {Story} story Story that is being completed
  */
 function completeStory (story) {
-
+  characterAttack()
+  setTimeout(characterIdle, 2780)
   console.log('complete story', story)
 }
 
