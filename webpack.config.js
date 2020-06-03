@@ -1,15 +1,15 @@
-const CopyPlugin = require('copy-webpack-plugin');
-const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin')
+const path = require('path')
 
 module.exports = {
   mode: 'production',
   entry: {
     login: './src/login/login.js',
-    popup: './src/popup.js',
+    popup: './src/popup.js'
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist')
   },
   plugins: [
     new CopyPlugin(
