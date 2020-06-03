@@ -169,47 +169,22 @@ function honorMember (member) {
  * If the update fails, handle the error (TODO).
  *
  * @param {Story} story - Story that is being completed
- * @param {Element} storyNode - DOM element (in a tab) for the story
- * @param {string} tabName - Tab containing the story element. Should be either
- *   'myStoriesTab' or 'allStoriesTab'.
  */
-function onCompleteStory (story, storyNode, tabName) {
+function onCompleteStory (story) {
   completeStory(story.id)
     .then(story => {
-      switch (tabName) {
-        case 'myStoriesTab': {
-          // remove from myStories tab
-          myStories.removeChild(storyNode)
-          // find the node that corresponds to the allStories container
-          const newNode = getStoryNodeFromContainer(allStories, story.name)
-          if (newNode) {
-            // remove from allStories tab
-            allStories.removeChild(newNode)
-          }
-          break
-        }
-        case 'allStoriesTab': {
-          // find the node that corresponds to the myStories container
-          const newNode = getStoryNodeFromContainer(myStories, story.name)
-          if (newNode) {
-            // remove from myStories tab
-            myStories.removeChild(newNode)
-          }
-          // remove from allStories tab
-          allStories.removeChild(newNode)
-          break
-        }
-        default: {
-          /*
-            This case should never be reached. The complete story button should
-            only be available in the myStories tab and the allStoriesTab
-          */
-          console.log(`Button error. I do not know which tab 
-            ${getMemberProfile().name} was under when completing the story 
-            ${story.name}`)
-          break
-        }
+      // Remove from my stories
+      const myStoriesNode = getStoryNodeFromContainer(myStories, story)
+      if (myStoriesNode) {
+        myStories.removeChild(myStoriesNode)
       }
+
+      // Remove from all stories
+      const allStoriesNode = getStoryNodeFromContainer(allStories, story)
+      if (allStoriesNode) {
+        allStories.removeChild(allStoriesNode)
+      }
+
       // add the completed story to the battleLog tab
       addToBattleLogTab(story)
     })
@@ -271,19 +246,13 @@ const getFNameAndLInitial = name => {
  *
  * @param {Element} nodeContainer - Container of all stories associated with a
  *   specific tab in the DOM.
- * @param {string} storyName - The name of the story of the node we want to
- *   retrieve.
- * @returns {?Element} The node associated with the story name, or null if the
- *   node isn't found.
+ * @param {Story} story - The story of the story node to get
+ * @returns {?Element} The node associated with the story, or null if the node
+ *   isn't found.
  */
-const getStoryNodeFromContainer = (nodeContainer, storyName) => {
-  for (const element of nodeContainer.children) {
-    if (element.innerHTML.includes(storyName)) {
-      return element
-    }
-  }
-  // should never reach this statement if function is invoked from proper context
-  return null
+const getStoryNodeFromContainer = (nodeContainer, story) => {
+  const storyNode = nodeContainer.children.namedItem(story.id)
+  return storyNode || null
 }
 
 /**
@@ -293,6 +262,7 @@ const getStoryNodeFromContainer = (nodeContainer, storyName) => {
  */
 const addToMyStoriesTab = story => {
   const storyDiv = document.createElement('div')
+  storyDiv.setAttribute('id', story.id)
   const storyButton = document.createElement('div')
   storyDiv.classList.add('story')
   storyButton.classList.add('story-button')
@@ -305,7 +275,7 @@ const addToMyStoriesTab = story => {
     storyDiv.innerHTML += '<div class="points"></div>'
   }
 
-  storyButton.addEventListener('click', () => onCompleteStory(story, storyDiv, 'myStoriesTab'))
+  storyButton.addEventListener('click', () => onCompleteStory(story))
   storyDiv.prepend(storyButton)
   myStories.appendChild(storyDiv)
 }
@@ -321,6 +291,7 @@ const addToAllStoriesTab = story => {
     : ['Unassigned']
 
   const storyDiv = document.createElement('div')
+  storyDiv.setAttribute('id', story.id)
   const storyButton = document.createElement('div')
   storyDiv.classList.add('story')
   storyButton.classList.add('story-button')
@@ -340,6 +311,8 @@ const addToAllStoriesTab = story => {
     ownerDiv.innerHTML = ownerName
     ownersDiv.append(ownerDiv)
   })
+
+  storyButton.addEventListener('click', () => onCompleteStory(story))
   storyDiv.prepend(storyButton)
   storyDiv.append(ownersDiv)
   allStories.appendChild(storyDiv)
