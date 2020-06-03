@@ -24,7 +24,7 @@ test('1 is 1', () => {
 });
 ```
 ### Command to run all unit tests
-We set it up to run all
+We set it up to run all 
 ```npm run test```
 
 ## Useful Links

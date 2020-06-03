@@ -10,13 +10,13 @@
 ## How to lint
 
 1.  First setup the project using the instructions above
-2.  Then to lint all js files in <code>src/</code> run the command <code>npm run lint</code>.
+2.  Then to lint all js files in <code>src/</code> run the command <code>npm run lint</code>. 
 3.  If you want to remove the npm errors caused by linting errors, run the command <code>npm run lint -s</code>
 
 ## How to run tests
 
 1.  First setup the project using the instructions above
-2.  Then to run all jest tests in <code>test/</code> run the command <code>npm run test</code>.
+2.  Then to run all jest tests in <code>test/</code> run the command <code>npm run test</code>. 
 3.  If you want to remove the npm errors caused by jest errors, run the command <code>npm run test -s</code>
 
 ## How to test extension in Chrome

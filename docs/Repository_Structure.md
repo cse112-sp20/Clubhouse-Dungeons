@@ -76,21 +76,21 @@ Naming Scheme:
 ## QA/Test Branches
 Create a test branch when you want to add new tests for a given feature.
 
-Naming Scheme:
+Naming Scheme: 
 
 `test/<feature being tested>`
 
 ## Bug Branches
 Create a bug branch when you want to fix a bug/issue that was found.
 
-Naming Scheme:
+Naming Scheme: 
 
 `bug/<feature being fixed>`
 
 ## Documentation Branches
 Create a doc branch when you want to add a new Markdown file to our Wiki.
 
-Naming Scheme:
+Naming Scheme: 
 
 `doc/<thing being documented>`
 

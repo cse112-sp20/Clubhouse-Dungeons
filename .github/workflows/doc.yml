@@ -1,6 +1,6 @@
 name: Documentation and Coverage Reporter Pipeline
 
-on:
+on: 
   push:
     branches: [ develop ]
 
@@ -24,7 +24,7 @@ jobs:
         path: "docs"
       env:
         GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_WIKI_TOKEN }}
-
+        
   coverage-reporter:
     runs-on: ubuntu-latest
 
