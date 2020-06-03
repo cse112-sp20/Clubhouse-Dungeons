@@ -7,9 +7,15 @@ import {
   getAllMembers,
   getMemberName,
   getMemberProfile,
-  getProgress,
-  removeApiToken
-} from './api/api'
+  getProgress
+} from './popup-backend'
+import {
+  ERR_MSG_INTERNET,
+  ERR_MSG_INVALID_API_TOKEN,
+  ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
+  ERR_MSG_BROWSER_STORAGE,
+  ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
+} from './api/clubhouse-api'
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
@@ -62,15 +68,16 @@ battleLogTab.addEventListener('click', () => selectTab(2))
  * Signout by removing all items from StorageArea storage.sync
  */
 const signout = () => {
-  chrome.storage.sync.clear((clear) => {
-    if (chrome.runtime.lastError === undefined) {
-      console.log('storage cleared')
-      // remove the api token in use from api.js
-      removeApiToken()
+  chrome.storage.sync.clear(() => {
+    if (chrome.runtime.lastError) {
+      console.log(ERR_MSG_BROWSER_STORAGE)
+      console.log('Error trying to clear storage')
+      /* TODO: UI */
+    } else {
+      console.log('Storage cleared')
+
       // load the login page
       window.location.href = 'login.html'
-    } else {
-      alert('Error trying to clear storage')
     }
   })
 }
@@ -156,7 +163,7 @@ function toggleMembersList () {
 /**
  * TODO: Record honoring of member in database
  *
- * @param {Member} member
+ * @param {Member} member Member object that is being honored
  */
 function honorMember (member) {
   const memberId = member.id
@@ -166,7 +173,7 @@ function honorMember (member) {
 /**
  * TODO: Complete story
  *
- * @param {Story} story
+ * @param {Story} story Story that is being completed
  */
 function completeStory (story) {
   console.log('complete story', story)
@@ -176,6 +183,32 @@ document.addEventListener(
   'DOMContentLoaded',
   () => {
     setup()
+      .catch((e) => {
+        switch (e.message) {
+          case ERR_MSG_INTERNET:
+            // Respond to internet error
+            /* TODO: UI */
+            break
+          case ERR_MSG_INVALID_API_TOKEN:
+            // Respond to invalid api token error
+            signout()
+            /* TODO: UI */
+            break
+          case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
+            // Respond to quota exceeded
+            /* TODO: UI */
+            break
+          case ERR_MSG_BROWSER_STORAGE:
+            // Respond to error reading/writing to browser storage
+            /* TODO: UI */
+            break
+          case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
+          default:
+            // Respond to unknown error
+            /* TODO: UI */
+            break
+        }
+      })
       .then(() => {
         /* Get member info for profile button */
         const memberProfile = getMemberProfile()
