@@ -163,11 +163,15 @@ function honorMember (member) {
 }
 
 /**
- * TODO: Complete story
+ * Callback to be called when the user wants to mark a story completed. First,
+ * tries to update the story using the Clubhouse API. If successful, remove the
+ * story from local references (i.e. myStories) and from the tab that it is in.
+ * If the update fails, handle the error (TODO).
  *
- * @param {Story} story Story that is being completed
- * @param storyNode
- * @param tabName
+ * @param {Story} story - Story that is being completed
+ * @param {Element} storyNode - DOM element (in a tab) for the story
+ * @param {string} tabName - Tab containing the story element. Should be either
+ *   'myStoriesTab' or 'allStoriesTab'.
  */
 function onCompleteStory (story, storyNode, tabName) {
   completeStory(story.id)
@@ -233,17 +237,17 @@ function onCompleteStory (story, storyNode, tabName) {
 }
 
 /**
- * Converts a string containing someone's full name into first name and last initial format
+ * Converts a full (i.e. first and last) name into first name and last initial
+ * format.
  *
- * @param {string} name the name to be converted into first name, last initial format
+ * @param {string} name - Name to convert
+ * @returns {string} Name in first name and last initial format
  */
 const getFNameAndLInitial = name => {
   // Split up the full name into an array called res using " " as the delimiter
   var res = name.split(' ')
 
-  /* Pseudocode
-   * ----------
-   * If res is empty, throw error.
+  /* If res is empty, return original name.
    * Else, if res has more than 2 elements,
    * concatenate and return the first element, a space, the first char of the last element, and a period.
    * Else, if res has 2 elements,
@@ -252,7 +256,7 @@ const getFNameAndLInitial = name => {
    * return the first element of res
    */
   if (res.length === 0) {
-    throw new Error('Length of name is 0!')
+    return name
   } else if (res.length > 2) {
     return res[0] + ' ' + res[res.length - 1][0] + '.'
   } else if (res.length === 2) {
@@ -263,12 +267,14 @@ const getFNameAndLInitial = name => {
 }
 
 /**
- * Return the node associated with the passed in story name
+ * Get the node with storyName from a known container/parent
  *
- * @param {*} nodeContainer container of all stories associated with a specific
- * tab in the DOM
- * @param {*} storyName the name of the story of the node we want to retrieve
- * @returns the node associated with the story name
+ * @param {Element} nodeContainer - Container of all stories associated with a
+ *   specific tab in the DOM.
+ * @param {string} storyName - The name of the story of the node we want to
+ *   retrieve.
+ * @returns {?Element} The node associated with the story name, or null if the
+ *   node isn't found.
  */
 const getStoryNodeFromContainer = (nodeContainer, storyName) => {
   for (const element of nodeContainer.children) {
@@ -283,7 +289,7 @@ const getStoryNodeFromContainer = (nodeContainer, storyName) => {
 /**
  * Adds the passed in story to the myStories tab
  *
- * @param {*} story the story to add to the myStories tab
+ * @param {Story} story the story to add to the myStories tab
  */
 const addToMyStoriesTab = story => {
   const storyDiv = document.createElement('div')
@@ -307,7 +313,7 @@ const addToMyStoriesTab = story => {
 /**
  * Adds the passed in story to the allStories tab
  *
- * @param {*} story the story to add to the allStories tab
+ * @param {Story} story the story to add to the allStories tab
  */
 const addToAllStoriesTab = story => {
   const ownerNames = story.owner_ids.length > 0
@@ -342,7 +348,7 @@ const addToAllStoriesTab = story => {
 /**
  * Add the passed in story to the battleLog tab
  *
- * @param {*} story the story to add to the battleLog tab
+ * @param {Story} story the story to add to the battleLog tab
  */
 const addToBattleLogTab = story => {
   const ownerNames = story.owner_ids.length > 0

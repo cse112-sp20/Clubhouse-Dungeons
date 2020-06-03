@@ -183,7 +183,7 @@ const fetchMembersAsync = async (apiToken) => {
  * Request update to story info using workflow_state_id and time completed
  *
  * @async
- * @param apiToken
+ * @param {string} apiToken - Member's API token
  * @param {string} storyId - ID of the story
  */
 const completeStoryAsync = async (apiToken, storyId) => {
