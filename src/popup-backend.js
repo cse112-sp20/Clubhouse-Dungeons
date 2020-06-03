@@ -1,14 +1,8 @@
 import {
   fetchStoriesAsync,
   fetchMembersAsync,
-  ERR_MSG_BROWSER_STORAGE,
-
-  // Types
-  Story,
-  Member,
-  MemberDisplay,
-  Contributor,
-  Progress
+  completeStoryAsync,
+  ERR_MSG_BROWSER_STORAGE
 } from './api/clubhouse-api'
 
 /**
@@ -298,6 +292,8 @@ const setup = () => {
   return SETUP
 }
 
+const completeStory = storyId => completeStoryAsync(API_TOKEN, storyId)
+
 export {
   getMyIncompleteStories,
   getAllIncompleteStories,
@@ -307,5 +303,6 @@ export {
   getMemberName,
   getMemberProfile,
   getProgress,
-  setup
+  setup,
+  completeStory
 }
