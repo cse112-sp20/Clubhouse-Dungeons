@@ -2,21 +2,28 @@ import {
   setup,
   getMyIncompleteStories,
   getAllIncompleteStories,
-  completeStoriesAsync,
   getBattleLog,
   getTopWarriors,
   getAllMembers,
   getMemberName,
   getMemberProfile,
   getProgress,
-  removeApiToken
-} from './api/api'
+  completeStory
+} from './popup-backend'
+import {
+  ERR_MSG_INTERNET,
+  ERR_MSG_INVALID_API_TOKEN,
+  ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
+  ERR_MSG_BROWSER_STORAGE,
+  ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
+} from './api/clubhouse-api'
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
 // const memberProfile = document.getElementById('memberProfile')
 const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
+const memberTeam = document.getElementById('memberTeam')
 
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
@@ -53,15 +60,16 @@ battleLogTab.addEventListener('click', () => selectTab(2))
  * Signout by removing all items from StorageArea storage.sync
  */
 const signout = () => {
-  chrome.storage.sync.clear((clear) => {
-    if (chrome.runtime.lastError === undefined) {
-      console.log('storage cleared')
-      // remove the api token in use from api.js
-      removeApiToken()
+  chrome.storage.sync.clear(() => {
+    if (chrome.runtime.lastError) {
+      console.log(ERR_MSG_BROWSER_STORAGE)
+      console.log('Error trying to clear storage')
+      /* TODO: UI */
+    } else {
+      console.log('Storage cleared')
+
       // load the login page
       window.location.href = 'login.html'
-    } else {
-      alert('Error trying to clear storage')
     }
   })
 }
@@ -147,7 +155,7 @@ function toggleMembersList () {
 /**
  * TODO: Record honoring of member in database
  *
- * @param {Member} member
+ * @param {Member} member Member object that is being honored
  */
 function honorMember (member) {
   const memberId = member.id
@@ -157,14 +165,13 @@ function honorMember (member) {
 /**
  * TODO: Complete story
  *
- * @param {Story} story the story to be completed
- * @param {*} storyNode the child story node to be removed from the myStories and allStories tabs
- * @param {string} tabName the name of the tab from where the complete story button was clicked
+ * @param {Story} story Story that is being completed
+ * @param storyNode
+ * @param tabName
  */
-function completeStory (story, storyNode, tabName) {
-  completeStoriesAsync(story.id)
-    .then((data) => {
-      console.log(data)
+function onCompleteStory (story, storyNode, tabName) {
+  completeStory(story.id)
+    .then(story => {
       switch (tabName) {
         case 'myStoriesTab': {
           // remove from myStories tab
@@ -202,17 +209,37 @@ function completeStory (story, storyNode, tabName) {
       // add the completed story to the battleLog tab
       addToBattleLogTab(story)
     })
-  console.log('complete story', story)
+    .catch((e) => {
+      switch (e.message) {
+        case ERR_MSG_INTERNET:
+          // Respond to internet error
+          /* TODO: UI */
+          break
+        case ERR_MSG_INVALID_API_TOKEN:
+          signout()
+          /* TODO: UI */
+          break
+        case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
+          // Respond to quota exceeded
+          /* TODO: UI */
+          break
+        case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
+        default:
+          // Respond to unknown error
+          /* TODO: UI */
+          break
+      }
+    })
 }
 
 /**
  * Converts a string containing someone's full name into first name and last initial format
- * 
+ *
  * @param {string} name the name to be converted into first name, last initial format
  */
 const getFNameAndLInitial = name => {
   // Split up the full name into an array called res using " " as the delimiter
-  var res = name.split(" ")
+  var res = name.split(' ')
 
   /* Pseudocode
    * ----------
@@ -224,12 +251,12 @@ const getFNameAndLInitial = name => {
    * Else, if res has 1 element,
    * return the first element of res
    */
-  if (res.length === 0) {                              
-    throw new Error("Length of name is 0!")
+  if (res.length === 0) {
+    throw new Error('Length of name is 0!')
   } else if (res.length > 2) {
-    return res[0] + " " + res[res.length-1][0] + "."
+    return res[0] + ' ' + res[res.length - 1][0] + '.'
   } else if (res.length === 2) {
-    return res[0] + " " + res[1][0] + "."
+    return res[0] + ' ' + res[1][0] + '.'
   } else if (res.length === 1) {
     return res[0]
   }
@@ -255,6 +282,7 @@ const getStoryNodeFromContainer = (nodeContainer, storyName) => {
 
 /**
  * Adds the passed in story to the myStories tab
+ *
  * @param {*} story the story to add to the myStories tab
  */
 const addToMyStoriesTab = story => {
@@ -271,13 +299,14 @@ const addToMyStoriesTab = story => {
     storyDiv.innerHTML += '<div class="points"></div>'
   }
 
-  storyButton.addEventListener('click', () => completeStory(story, storyDiv, 'myStoriesTab'))
+  storyButton.addEventListener('click', () => onCompleteStory(story, storyDiv, 'myStoriesTab'))
   storyDiv.prepend(storyButton)
   myStories.appendChild(storyDiv)
 }
 
 /**
  * Adds the passed in story to the allStories tab
+ *
  * @param {*} story the story to add to the allStories tab
  */
 const addToAllStoriesTab = story => {
@@ -285,7 +314,6 @@ const addToAllStoriesTab = story => {
     ? story.owner_ids.map(memberId => getMemberName(memberId))
     : ['Unassigned']
 
-  console.log(ownerNames)
   const storyDiv = document.createElement('div')
   const storyButton = document.createElement('div')
   storyDiv.classList.add('story')
@@ -306,7 +334,6 @@ const addToAllStoriesTab = story => {
     ownerDiv.innerHTML = ownerName
     ownersDiv.append(ownerDiv)
   })
-  storyButton.addEventListener('click', () => completeStory(story, storyDiv, 'allStoriesTab'))
   storyDiv.prepend(storyButton)
   storyDiv.append(ownersDiv)
   allStories.appendChild(storyDiv)
@@ -314,6 +341,7 @@ const addToAllStoriesTab = story => {
 
 /**
  * Add the passed in story to the battleLog tab
+ *
  * @param {*} story the story to add to the battleLog tab
  */
 const addToBattleLogTab = story => {
@@ -334,7 +362,7 @@ const addToBattleLogTab = story => {
 
 /**
  * See {@link https://www.w3schools.com/jsref/met_document_addeventlistener.asp} for
- * the definition and usage of document.addEventListener. Also, check out 
+ * the definition and usage of document.addEventListener. Also, check out
  * {@link https://www.w3schools.com/jsref/dom_obj_event.asp} for at list of DOM Events
  * which are used by entering as strings into the first parameter of addEventListener.
  * Unfortunately, the 'DOMContentLoaded' event isn't listed in that link, but it is
@@ -344,19 +372,43 @@ document.addEventListener(
   'DOMContentLoaded',
   () => {
     setup()
+      .catch((e) => {
+        switch (e.message) {
+          case ERR_MSG_INTERNET:
+            // Respond to internet error
+            /* TODO: UI */
+            break
+          case ERR_MSG_INVALID_API_TOKEN:
+            signout()
+            /* TODO: UI */
+            break
+          case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
+            // Respond to quota exceeded
+            /* TODO: UI */
+            break
+          case ERR_MSG_BROWSER_STORAGE:
+            // Respond to error reading/writing to browser storage
+            /* TODO: UI */
+            break
+          case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
+          default:
+            // Respond to unknown error
+            /* TODO: UI */
+            break
+        }
+      })
       .then(() => {
         /* Get member info for profile button */
         const memberProfile = getMemberProfile()
-        memberName.innerHTML = memberProfile.name
         memberIcon.src = memberProfile.icon
+        memberName.innerHTML = memberProfile.name
+        memberTeam.innerHTML = memberProfile.workspace
 
-        /* If less than 3 warriors, places empty objects as top warriors */
+        /* Get top warraiors and update text */
         const topWarriors = getTopWarriors()
         while (topWarriors.length < 3) {
           topWarriors.push({ name: 'Empty', points: 0 })
         }
-
-        console.log(getFNameAndLInitial(topWarriors[0].name))
 
         document.getElementById('warrior1Name').innerText = getFNameAndLInitial(topWarriors[0].name)
         document.getElementById('warrior2Name').innerText = getFNameAndLInitial(topWarriors[1].name)
