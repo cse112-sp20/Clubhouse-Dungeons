@@ -4,19 +4,38 @@ import {
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
+  getSignedInMember,
   getAllMembers,
   getMemberName,
   getMemberProfile,
   getProgress,
-  completeStory
-} from './popup-backend'
+  removeApiToken,
+  onLogin
+} from './api/api'
 import {
-  ERR_MSG_INTERNET,
-  ERR_MSG_INVALID_API_TOKEN,
-  ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
-  ERR_MSG_BROWSER_STORAGE,
-  ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
-} from './api/clubhouse-api'
+  memberLogin,
+  honorDatabaseMember
+} from './db/firebase'
+
+/* Get user info from chrome sync storage. If token exists and there is no error,
+ * log the user in. Else, link the user back to the login page.
+ */
+
+chrome.storage.sync.get(['api_token', 'member_id', 'member_name', 'workspace'], store => {
+  const errorExists = chrome.runtime.lastError !== undefined
+  const tokenExists = Object.prototype.hasOwnProperty.call(store, 'api_token')
+  if (!errorExists && tokenExists) {
+    console.log(store)
+    onLogin(store.api_token, store.member_id, store.workspace)
+    setup()
+      .then(() => {
+        const allMemberIds = getAllMembers().map(member => member.id)
+        return memberLogin(store.member_id, allMemberIds, store.workspace)
+      })
+  } else {
+    window.location.href = '../login.html'
+  }
+})
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
@@ -153,13 +172,12 @@ function toggleMembersList () {
 }
 
 /**
- * TODO: Record honoring of member in database
+ * Record honoring of member in database
  *
- * @param {Member} member Member object that is being honored
+ * @param {Member} honoredMember
  */
-function honorMember (member) {
-  const memberId = member.id
-  console.log('honor member', memberId)
+function honorMember (honoredMember) {
+  honorDatabaseMember(getSignedInMember().id, honoredMember.id)
 }
 
 /**
