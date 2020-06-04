@@ -463,10 +463,9 @@ document.addEventListener(
  * Calculate the amount of health the boss has left and display it as a health
  * bar in the DOM
  */
-function updateHealthBar () {
+const updateHealthBar = async () => {
   /* Set progress bar values */
-  // const { completed, total } = getProgress()
-  const { boss, healthTotal, health } = getBoss(getMemberProfile().workspace)
+  const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace)
   monster.src = 'images/boss/' + boss + '.png'
   healthLeft.style.width = (health / healthTotal) * 100 + '%'
   healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))

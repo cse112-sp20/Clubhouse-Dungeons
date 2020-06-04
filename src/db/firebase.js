@@ -247,6 +247,7 @@ const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */)
  * @returns {Object}
  */
 const getBoss = async (workspace) => {
+
   workspaceRef = WORKSPACES_REF.child(workspace)
   const bossInfo = {}
   await workspaceRef.once('value')
