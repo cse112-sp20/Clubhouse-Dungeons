@@ -16,5 +16,6 @@
   "permissions": [
     "storage"
   ],
-  "content_security_policy": "script-src 'self' https://*.quaranteam-08.firebaseio.com; object-src 'self'"
+  "content_security_policy": "script-src 'self' https://*.quaranteam-08.firebaseio.com; object-src 'self'",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwUVT5omojEhmmf39owTcLvR3dZzOowV6Z32t6FyE4clWa6xX3Qili3IbR/bzKH2U6gEmnel4UTVp2uOxWl5hHBztbDzhVMU+vIvkc4h226LCFu0px1WH6uR6zgGJuWtD+5HNpjNqnHAkurr2qb9+6flY+7ypbmbtie1EkdPmSKJbDQPoQ6T1LWmJMawNX2gGs5KllU2f1V775oJWttJ+2YXGpDQhJ7vYqQ6qHHPIpIuKjSPhTUXdUSx8c3HeA93EvLB8GOAzot9y+pUaRMJa+y82z3nIz1+LANPrNaYqvlBC4OlDCUCEP/6RSYyWjfNPP1I174ZLhAtQ2vkanC1VgQIDAQAB"
 }
