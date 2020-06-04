@@ -242,44 +242,51 @@ const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */)
 
 /**
  * Retreive information about the team's boss
- * 
+ *
  * @param {!string} workspace - The key identifying the workspace the member is in
+ * @returns {Object}
  */
-const getBoss = (workspace) => {
-  workspaceRef = WORKSPACES_REF.child(workspace);
-
-  workspaceRef.once('value').then((snapshot) => {
-    const bossInfo = {
-      boss: snapshot.val().boss,
-      totalHealth: snapshot.val().totalHealth,
-      health: snapshot.val().health,
-    }
-    return bossInfo;
-  });
+const getBoss = async (workspace) => {
+  workspaceRef = WORKSPACES_REF.child(workspace)
+  const bossInfo = {}
+  await workspaceRef.once('value')
+    .then((snapshot) => {
+      if (snapshot.child('boss').exists()) {
+        bossInfo.boss = snapshot.val().boss
+      }
+      if (snapshot.child('healthTotal').exists()) {
+        bossInfo.healthTotal = snapshot.val().healthTotal
+      }
+      if (snapshot.child('health').exists()) {
+        bossInfo.health = snapshot.val().health
+      }
+    })
+  console.log(bossInfo)
+  return bossInfo
 }
 
 /**
- * 
- * 
+ *
+ *
  * @param {!string} workspace - The key identifying the workspace the member is in
  * @param {!number} damage - The damage (story points) to be done to the boss
  */
 const damageBoss = async (workspace, damage) => {
   workspaceRef = WORKSPACES_REF.child(workspace);
   // If the damage brings health to below 0 the boss has been defeated
-  if (workspaceRef.child(health) - damage < 1) {
+  if (workspaceRef.child('health') - damage < 1) {
     // Move team to next boss
     const bossHealth = Math.floor(Math.random() * 50) + 50
     return await workspaceRef.update({
-      boss: workspaceRef.child(boss) + 1,
+      boss: workspaceRef.child('boss') + 1,
       totalHealth: bossHealth,
       health: bossHealth
-    });
+    })
   } else {
     // Otherwise deal damage to the current boss
     return await workspaceRef.update({
-      health: workspaceRef.child(health) - damage
-    });
+      health: workspaceRef.child('health') - damage
+    })
   }
 }
 
