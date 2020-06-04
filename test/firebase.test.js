@@ -1,10 +1,13 @@
 import {
   memberLogin,
-  honorDatabaseMember
+  honorDatabaseMember,
+  member,
+  workspaceRef,
 } from '../src/db/firebase'
 import{
   setup,
-  getAllMembers
+  getAllMembers,
+  getMember
 } from '../src/popup-backend'
 
 import * as realFetch from 'node-fetch'
@@ -97,29 +100,32 @@ const chromeMock = {
 global.chrome = chromeMock
 /** CHROME STORAGE MOCK */
 
-const allMemberIDs = [
-    '5ecdd3a1-62b4-4aa9-9a45-b774c82b4e27', 
-    '5ecdd412-7a37-4aa4-b555-8006d2fb7ce6', 
-    '5ecdd3de-0125-4888-802a-5d3ba46ca0dc', 
-    '5ecdd438-2c26-445b-bfa5-cbb113f47484', 
-    '5ed2e8e5-8046-4508-86d3-02d366a31bd3', 
-    '5ed2c520-5486-4d9d-9882-3067306a2700', 
-    '5ecdd489-3ab7-42ab-addc-18e48997cce9'
-  ];
+
+// Test user Cases
+// USER 1: New user that has not been honored or will not be honoring anyone
+const user1ID = '5ed2c520-5486-4d9d-9882-3067306a2700'
+const user1HonoredBy = [];
+const user1HonorsRemaining = 3;
+
 const iterationId = 1; 
 
 /**
  * Unit Test 1
- * 
+ * We are creating a user that will have no honors, so the honoredBy should be empty or null
+ * This user is also not already in the database
  */
-it('Test Member Login', done => {
+it('Test Member Login for local Variables', done => {
   setup()
     .then(() =>{
-      memberLogin(memberID, getAllMembers().map(member => {member['id']}), workspace /*, iterationId */)
-      .then(() => {
-        expect(1).toBe(1)
-  
-        done()
-      })
+      memberLogin(user1ID, getAllMembers().map(member => {return member['id']}), workspace /*, iterationId */)
+        .then(() => {
+
+          // Expect the honored_by size of the newly logged in user to be 0
+          expect(getMember(user1ID).honoredBy.length).toBe(user1HonoredBy.length);
+
+          // Expect the honoredRecognitionsRemaining to be 3
+          expect(getMember(user1ID).honorRecognitionsRemaining).toBe(user1HonorsRemaining);
+          done()
+        })
     })
 })

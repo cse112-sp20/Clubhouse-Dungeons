@@ -260,4 +260,4 @@ const checkIfExists = async (nodeRef, key) => {
   return exists
 }
 
-export { memberLogin, honorDatabaseMember }
+export { memberLogin, honorDatabaseMember, workspaceRef, member,  }
