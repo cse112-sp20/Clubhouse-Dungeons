@@ -7,38 +7,46 @@
 		// all Clubhouse workspaces that are using our extension
 		'workspaces': {
 			'marvel': {
-				'tStark': {
-					'honored': 0
-				},
-				'sRodgers': {
-					'honored': 2,
-					'honoredBy': {
-						'nFury': true,
-						'sLee': true
+				'iterationId1': {
+					'tStark': {
+						'honorRecognitionsRemaining': 3,
+						'honoredBy': false
+					},
+					'sRodgers': {
+						'honorRecognitionsRemaining': 3,
+						'honoredBy': {
+							'nFury': true,
+							'sLee': true
+						}
+					},
+					'nFury': {
+						'honorRecognitionsRemaining': 2,
+						'honoredBy': false
 					}
+				}, 
+				'iterationId2': {
+					...
 				},
-				'nFury': {
-					'honored': 0
-				},
-				... ,
-				'iterationLength': 365,
-				'iterationStart': '1939-1-1T0:0:0Z',
-				'iterationEnd': '1939-12-31T23:59:59Z'
+				...
 			}, 
 			'dc': {
-				'bWayne': {
-					'honored': 0
+				'iterationId1': {
+					'bWayne': {
+						'honorRecognitionsRemaining': 3,
+						'honoredBy': false
+					},
+					'cKent': {
+						'honorRecognitionsRemaining': 3,
+						'honoredBy': {
+							'lLane': true
+						}
+					},
+					...
 				},
-				'cKent': {
-					'honored': 1,
-					'honoredBy': {
-						'lLane': true
-					}
+				'iterationId2': {
+					...
 				},
-				... ,
-				'iterationLength': 365,
-				'iterationStart': '1934-1-1T0:0:0Z',
-				'iterationEnd': '1934-12-31T23:59:59Z'
+				...
 			},
 			...
 		}
@@ -51,4 +59,6 @@
 * if using VS Code to view this file, you can view the Markdown preview by either:
 	* right-clicking the tab of the file and select 'Open Preview'
 	* (Ctrl/Cmd) - Shift - V
+* 3 is the maximum amount of members a single member is able to honor
+	* the amount of times they have left to honor other members is represented by the object honorRecognitionsRemaining (i.e. if you honor a single member, you will have 2 honorRecognitionsRemaining instead of the maximum 3)
 * structure guide referenced: [Structure Your Database](https://firebase.google.com/docs/database/web/structure-data)
