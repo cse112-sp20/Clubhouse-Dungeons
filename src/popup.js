@@ -74,6 +74,13 @@ const membersListContainer = document.getElementById('membersListContainer')
 const membersListButton = document.getElementById('membersListButton')
 membersListButton.addEventListener('click', () => toggleMembersList())
 
+const bossMap = document.getElementById('bossMap')
+const bossMapContent = document.getElementById('bossMapContent')
+const openBossMap = document.getElementById('openBossMap')
+const closeBossMap = document.getElementById('closeBossMap')
+openBossMap.addEventListener('click', () => toggleBossMap())
+closeBossMap.addEventListener('click', () => toggleBossMap())
+
 // Click event listeners for tabs
 myStoriesTab.addEventListener('click', () => selectTab(0))
 allStoriesTab.addEventListener('click', () => selectTab(1))
@@ -99,6 +106,17 @@ const signout = () => {
 
 /**
  * Show member profile menu
+ */
+const toggleBossMap = () => {
+  if (bossMap.classList.contains('open')) {
+    bossMap.classList.remove('open')
+  } else {
+    bossMap.classList.add('open')
+  }
+}
+
+/**
+ * Show or hide the boss map
  */
 const toggleMemberMenu = () => {
   if (profileContainer.classList.contains('closed')) {
@@ -424,6 +442,8 @@ document.addEventListener(
 
         updateHealthBar()
 
+        initBossMap()
+
         /* Populate tabs */
         getMyIncompleteStories().map(story => {
           addToMyStoriesTab(story)
@@ -456,8 +476,51 @@ document.addEventListener(
           membersList.appendChild(memberDiv)
         })
       })
+
   }
 ) // addEventListener()
+
+/**
+ * Populate the map with bosses
+ */
+const initBossMap = async () => {
+  const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace);
+  const numBosses = 10;
+  // Iterate through all the bosses, adding each to the map
+  for (let i = numBosses; i >= 0; i--) {
+    const bossDiv = document.createElement('div');
+    bossDiv.classList.add('boss');
+    // If this boss is the current boss apply active style
+    if (boss == i) {
+      bossDiv.classList.add('active');
+      const miniHealthBar = document.createElement('div');
+      const miniHealthBarFill = document.createElement('div');
+      miniHealthBar.classList.add('mini-health');
+      miniHealthBarFill.classList.add('mini-health-fill');
+      miniHealthBarFill.style.width = ((health / healthTotal) * 100) + '%';
+      miniHealthBar.appendChild(miniHealthBarFill);
+      bossDiv.appendChild(miniHealthBar);
+    } else if (boss > i) {
+      // If boss is greater than this boss it's already been defeated
+      bossDiv.classList.add('dead');
+      const crossDiv = document.createElement('div');
+      crossDiv.classList.add('cross');
+      crossDiv.innerHTML = '<span>&#10005;</span>'
+      bossDiv.appendChild(crossDiv);
+    } else {
+      bossDiv.classList.add('locked');
+    }
+    const bossImg = document.createElement('img');
+    bossImg.src = 'images/boss/' + i + '.png';
+    bossDiv.appendChild(bossImg);
+    bossMapContent.appendChild(bossDiv);
+    if (i != 0) {
+      const trailDiv = document.createElement('div');
+      trailDiv.classList.add('trail');
+      bossMapContent.appendChild(trailDiv); 
+    }
+  }
+}
 
 /**
  * Calculate the amount of health the boss has left and display it as a health

@@ -143,14 +143,6 @@ body {
   position: relative;
 }
 
-#profileContainer.closed {
-
-}
-
-#profileContainer.open {
-  
-}
-
 #memberProfile {
   display: flex;
   flex-direction: row;
@@ -249,6 +241,111 @@ body {
 }
 .menu-item:hover {
   background: rgba(0,0,0,0.2);
+}
+
+#openBossMap {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  height: 40px;
+  width: 40px;
+  z-index: 7;
+}
+#openBossMap img {
+  max-height: 100%;
+  max-width: 100%;
+}
+#bossMap {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 90%;
+  margin: 5%;
+  z-index: 8;
+  border: 4px solid #c58839;
+  background: #dec47e;
+  box-sizing: content-box;
+}
+#bossMap.open {
+  display: block;
+}
+#bossMapContent {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+#closeBossMap {
+  position: fixed;
+  top: 30px;
+  right: 20px;
+  color: rgba(255,255,255,.7);
+  /* background: rgba(0,0,0,0.3); */
+  border-radius: 500px;
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  line-height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#closeBossMap:hover {
+  color: rgba(255,255,255,1);
+}
+
+#bossMapContent .trail {
+  position: relative;
+  border-left: 4px dashed rgba(0,0,0,1);
+  min-height: 64px;
+  height: 64px;
+}
+
+#bossMapContent .boss {
+  position: relative;
+  height: 64px;
+  margin: 8px 0;
+}
+#bossMapContent .boss img {
+  max-height: 100%;
+}
+#bossMapContent .boss.active {
+
+}
+#bossMapContent .boss.active .mini-health {
+  width: 100%;
+  height: 6px;
+  padding: 1px;
+  border-radius: 500px;
+  background: rgba(0,0,0,0.9);
+}
+#bossMapContent .boss.active .mini-health .mini-health-fill {
+  height: 6px;
+  border-radius: 500px;
+  background: #c0392b;
+}
+#bossMapContent .boss.dead {
+  opacity: .5;
+}
+#bossMapContent .boss.dead .cross {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(0,0,0,.5);
+  height: 64px;
+  width: 64px;
+  font-size: 64px;
+  line-height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .boss-container {
