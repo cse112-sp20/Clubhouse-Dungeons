@@ -14,7 +14,9 @@ import {
 } from './api/api'
 import {
   memberLogin,
-  honorDatabaseMember
+  honorDatabaseMember,
+  getBoss,
+  damageBoss
 } from './db/firebase'
 
 /* Get user info from chrome sync storage. If token exists and there is no error,
@@ -43,6 +45,8 @@ const profileContainer = document.getElementById('profileContainer')
 const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
 const memberTeam = document.getElementById('memberTeam')
+
+const monster = document.getElementById('monster')
 
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
@@ -205,6 +209,9 @@ function onCompleteStory (story) {
 
       // add the completed story to the battleLog tab
       addToBattleLogTab(story)
+
+      // do damage to the boss
+      doDamage(story.estimate)
     })
     .catch((e) => {
       switch (e.message) {
@@ -458,14 +465,25 @@ document.addEventListener(
  */
 function updateHealthBar () {
   /* Set progress bar values */
-  const { completed, total } = getProgress()
-  healthLeft.style.width = (completed / total) * 100 + '%'
-  healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
+  // const { completed, total } = getProgress()
+  const { boss, healthTotal, health } = getBoss(getMemberProfile().workspace)
+  monster.src = 'images/boss/' + boss + '.png'
+  healthLeft.style.width = (health / healthTotal) * 100 + '%'
+  healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
 
   /* Set progress bar color change */
-  const greenThreshold = (2 / 5) * total
-  const yellowThreshold = (1 / 5) * total
-  healthLeft.className += (total - completed > greenThreshold) ? 'healthBarGreenState'
-    : (total - completed > yellowThreshold) ? 'healthBarYellowState'
+  const greenThreshold = (2 / 5) * health
+  const yellowThreshold = (1 / 5) * health
+  healthLeft.className += (health - healthTotal > greenThreshold) ? 'healthBarGreenState'
+    : (health - healthTotal > yellowThreshold) ? 'healthBarYellowState'
       : 'healthBarRedState'
+}
+
+/**
+ * Deal damage to the boss by calling appropriate Firebase function
+ * 
+ * @param {!number} damage - amount of damage (story points) being done
+ */
+function doDamage(damage) {
+  damageBoss(getMemberProfile().workspace, damage).then(() => updateHealthBar())
 }

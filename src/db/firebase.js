@@ -201,10 +201,14 @@ const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */)
 
   const workspaceExists = await checkIfExists(WORKSPACES_REF, workspace)
   if (!workspaceExists) {
-    // Create the workspace and the current iteration
+    // Create the workspace with current iteration and new boss
+    const bossHealth =  Math.floor(Math.random() * 50) + 50;
     const workspaceDbObj = {
       [workspace]: {
-        [currentIterationId]: buildMemberHonoredByObj()
+        [currentIterationId]: buildMemberHonoredByObj(),
+        boss: 0,
+        totalHealth: bossHealth,
+        health: bossHealth
       }
     }
     await WORKSPACES_REF.update(workspaceDbObj)
@@ -237,6 +241,49 @@ const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */)
 }
 
 /**
+ * Retreive information about the team's boss
+ * 
+ * @param {!string} workspace - The key identifying the workspace the member is in
+ */
+const getBoss = (workspace) => {
+  workspaceRef = WORKSPACES_REF.child(workspace);
+
+  workspaceRef.once('value').then((snapshot) => {
+    const bossInfo = {
+      boss: snapshot.val().boss,
+      totalHealth: snapshot.val().totalHealth,
+      health: snapshot.val().health,
+    }
+    return bossInfo;
+  });
+}
+
+/**
+ * 
+ * 
+ * @param {!string} workspace - The key identifying the workspace the member is in
+ * @param {!number} damage - The damage (story points) to be done to the boss
+ */
+const damageBoss = async (workspace, damage) => {
+  workspaceRef = WORKSPACES_REF.child(workspace);
+  // If the damage brings health to below 0 the boss has been defeated
+  if (workspaceRef.child(health) - damage < 1) {
+    // Move team to next boss
+    const bossHealth = Math.floor(Math.random() * 50) + 50
+    return await workspaceRef.update({
+      boss: workspaceRef.child(boss) + 1,
+      totalHealth: bossHealth,
+      health: bossHealth
+    });
+  } else {
+    // Otherwise deal damage to the current boss
+    return await workspaceRef.update({
+      health: workspaceRef.child(health) - damage
+    });
+  }
+}
+
+/**
  * Check to see if the passed in key already exists within the passed in reference
  *
  * @param {Reference} nodeRef - The Reference where the key might exist
@@ -260,4 +307,4 @@ const checkIfExists = async (nodeRef, key) => {
   return exists
 }
 
-export { memberLogin, honorDatabaseMember }
+export { memberLogin, honorDatabaseMember, getBoss, damageBoss }
