@@ -273,20 +273,21 @@ const getBoss = async (workspace) => {
  * @param {!number} damage - The damage (story points) to be done to the boss
  */
 const damageBoss = async (workspace, damage) => {
-  workspaceRef = WORKSPACES_REF.child(workspace);
+  workspaceRef = WORKSPACES_REF.child(workspace)
+  const bossInfo = await getBoss(workspace)
   // If the damage brings health to below 0 the boss has been defeated
-  if (workspaceRef.child('health') - damage < 1) {
+  if (bossInfo.health - damage < 1) {
     // Move team to next boss
     const bossHealth = Math.floor(Math.random() * 50) + 50
     return await workspaceRef.update({
-      boss: workspaceRef.child('boss') + 1,
-      totalHealth: bossHealth,
+      boss: bossInfo.boss + 1,
+      healthTotal: bossHealth,
       health: bossHealth
     })
   } else {
     // Otherwise deal damage to the current boss
     return await workspaceRef.update({
-      health: workspaceRef.child('health') - damage
+      health: bossInfo.health - damage
     })
   }
 }
