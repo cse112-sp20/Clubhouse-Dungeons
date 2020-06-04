@@ -110,7 +110,7 @@ const user5ID = '5ecdd438-2c26-445b-bfa5-cbb113f47484'
 
 const users = [user1ID, user2ID, user3ID, user4ID, user5ID]
 
-const iterationId = 1; 
+const iterationId = 1 // Will be used in the future when we are able to add iterations in the honor system
 
 /**
  * Unit Test 1
@@ -306,7 +306,7 @@ it('Test usage of honorDatabaseMember once', done => {
                       }
                     }
                     // Call the recursive function
-                    checkUser(1);
+                    checkUser(1)
                   })
                 })
               }) 
