@@ -124,7 +124,7 @@ var member = null
  * @param {!string} memberId - The id of the (locally stored) Member currently logged in and using our extension
  * @param {!string} honoredMemberId - The id of the Member that the (locally stored) Member currently logged in and using our extension would like to honor (cannot equal memberId)
  */
-const honorDatabaseMember = (memberId, honoredMemberId) => {
+const honorDatabaseMember = async (memberId, honoredMemberId) => {
   if (memberId !== honoredMemberId) {
     console.log('members are different')
     // update the member and honoredMember at the same time in the database
@@ -133,8 +133,8 @@ const honorDatabaseMember = (memberId, honoredMemberId) => {
     if (member.honorRecognitionsRemaining !== null &&
           member.honorRecognitionsRemaining > 0) {
       const honoredMemberRef = workspaceRef.child(currentIterationId).child(honoredMemberId)
-      honoredMemberRef.once('value')
-        .then(dataSnapshot => {
+      await honoredMemberRef.once('value')
+        .then(async (dataSnapshot) => {
           // used to check if should update database instead of checking
           // if updates is {}
           let updateDB = false
@@ -159,7 +159,7 @@ const honorDatabaseMember = (memberId, honoredMemberId) => {
           }
           console.log('checking if should write to db: ' + updateDB)
           if (updateDB) {
-            workspaceRef.update(updates)
+            await workspaceRef.update(updates)
               .then(value => {
                 console.log('finished updating db')
               }, reason => { console.log(reason.message) })
@@ -260,4 +260,4 @@ const checkIfExists = async (nodeRef, key) => {
   return exists
 }
 
-export { memberLogin, honorDatabaseMember, workspaceRef, member,  }
+export { memberLogin, honorDatabaseMember, workspaceRef }
