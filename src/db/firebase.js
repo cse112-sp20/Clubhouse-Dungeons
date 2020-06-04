@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
-import { getMember } from '../api/api'
+import { getMember } from '../popup-backend'
 
 /**
  * TYPE DECLARATIONS
