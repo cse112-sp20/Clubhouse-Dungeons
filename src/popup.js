@@ -1,5 +1,6 @@
 import {
   setup,
+  completeStoriesAsync,
   getMyIncompleteStories,
   getAllIncompleteStories,
   getBattleLog,
@@ -211,7 +212,7 @@ function honorMember (honoredMember) {
  * @param {Story} story - Story that is being completed
  */
 function onCompleteStory (story) {
-  completeStory(story.id)
+  completeStoriesAsync(story.id)
     .then(story => {
       // Remove from my stories
       const myStoriesNode = getStoryNodeFromContainer(myStories, story)
@@ -527,6 +528,8 @@ const initBossMap = async () => {
  * bar in the DOM
  */
 const updateHealthBar = async () => {
+  // Reset health text
+  healthText.innerHTML = ''
   /* Set progress bar values */
   const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace)
   monster.src = 'images/boss/' + boss + '.png'
