@@ -20,6 +20,7 @@ import {
 } from './api/clubhouse-api'
 import {
   honorDatabaseMember,
+  getHonoredByMap,
   memberLogin
 } from './db/firebase'
 
@@ -385,6 +386,10 @@ document.addEventListener(
 
         const allMemberIds = getAllMembers().map(member => member.id)
         memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace)
+          .then(() => {
+            // needs to wait for the database variables to be setup by memberLogin
+            getHonoredByMap(allMemberIds)
+          })
 
         /* Get member info for profile button */
         memberIcon.src = memberProfile.icon

@@ -91,7 +91,7 @@ const DATABASE_REF = DATABASE.ref()
 const WORKSPACES_REF = DATABASE_REF.child('workspaces')
 
 /**
- * The Reference to the Workspace of the Member
+ * The Reference to signed in Member's specific Workspace
  *
  * @type {?Reference}
  */
@@ -172,6 +172,42 @@ const honorDatabaseMember = async (memberId, honoredMemberId) => {
   } else {
     console.log('you cannot honor yourself')
   }
+}
+
+/**
+ * Get the lists of all Members that have honored the corresponding Member
+ * for every Member in the Workspace
+ *
+ * @async
+ * @param {string[]} allMemberIds - Array containing the ids of all the members within the workspace
+ * @returns {Promise<object.<string, string[]>>} a Promise resolved to an
+ * object mapping each member's id to an array of other member ids that have
+ * honored them. A member's array will be empty if they have not been honored
+ * by other members
+ */
+const getHonoredByMap = async allMemberIds => {
+  const HONORED_BY_MAP = {}
+
+  // check to make sure the workspace is not null
+  if (workspaceRef) {
+    await workspaceRef.child(currentIterationId).once('value')
+      .then(dataSnapshot => {
+        if (dataSnapshot.exists()) {
+          for (const member of allMemberIds) {
+            if (dataSnapshot.child(member).exists()) {
+              // get the keys of all the members that have honored this member
+              // and add them to the honored by map
+              HONORED_BY_MAP[member] = Object.keys(dataSnapshot.child(member).child('honoredBy').val())
+            } else {
+              console.log(`member "${member}" does not exist inside workspace iteration id ${currentIterationId}`)
+            }
+          }
+        }
+      })
+  } else {
+    console.log('Error. The database has not finished its intialization procedures yet. Please try again later.')
+  }
+  return HONORED_BY_MAP
 }
 
 /**
@@ -259,4 +295,4 @@ const checkIfExists = async (nodeRef, key) => {
   return exists
 }
 
-export { memberLogin, honorDatabaseMember, workspaceRef }
+export { memberLogin, honorDatabaseMember, getHonoredByMap, workspaceRef }
