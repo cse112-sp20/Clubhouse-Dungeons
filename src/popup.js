@@ -19,7 +19,8 @@ import {
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
 } from './api/clubhouse-api'
 import {
-  honorDatabaseMember
+  honorDatabaseMember,
+  memberLogin
 } from './db/firebase'
 
 // Member profile button and info
@@ -380,8 +381,12 @@ document.addEventListener(
         }
       })
       .then(() => {
-        /* Get member info for profile button */
         const memberProfile = getMemberProfile()
+
+        const allMemberIds = getAllMembers().map(member => member.id)
+        memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace)
+
+        /* Get member info for profile button */
         memberIcon.src = memberProfile.icon
         memberName.innerHTML = memberProfile.name
         memberTeam.innerHTML = memberProfile.workspace
