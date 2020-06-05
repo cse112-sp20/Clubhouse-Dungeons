@@ -141,6 +141,21 @@ const getTopWarriors = () => {
 }
 
 /**
+ * Get a member
+ *
+ * @param {string} memberId - Member ID of the member to get
+ * @returns {Member} The member
+ */
+const getMember = (memberId) => MEMBER_MAP[memberId]
+
+/**
+ * Get the signed-in member
+ *
+ * @returns {Member} Signed-in member
+ */
+const getSignedInMember = () => MEMBER_MAP[MEMBER_ID]
+
+/**
  * Get all team members.
  *
  * @returns {Array<Member>} Array of all members.
@@ -299,6 +314,8 @@ export {
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
+  getMember,
+  getSignedInMember,
   getAllMembers,
   getMemberName,
   getMemberProfile,

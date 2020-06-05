@@ -4,6 +4,7 @@ import {
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
+  getSignedInMember,
   getAllMembers,
   getMemberName,
   getMemberProfile,
@@ -17,6 +18,10 @@ import {
   ERR_MSG_BROWSER_STORAGE,
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
 } from './api/clubhouse-api'
+import {
+  honorDatabaseMember,
+  memberLogin
+} from './db/firebase'
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
@@ -153,13 +158,12 @@ function toggleMembersList () {
 }
 
 /**
- * TODO: Record honoring of member in database
+ * Record honoring of member in database
  *
- * @param {Member} member Member object that is being honored
+ * @param {Member} honoredMember - Member object that is being honored
  */
-function honorMember (member) {
-  const memberId = member.id
-  console.log('honor member', memberId)
+function honorMember (honoredMember) {
+  honorDatabaseMember(getSignedInMember().id, honoredMember.id)
 }
 
 /**
@@ -377,8 +381,12 @@ document.addEventListener(
         }
       })
       .then(() => {
-        /* Get member info for profile button */
         const memberProfile = getMemberProfile()
+
+        const allMemberIds = getAllMembers().map(member => member.id)
+        memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace)
+
+        /* Get member info for profile button */
         memberIcon.src = memberProfile.icon
         memberName.innerHTML = memberProfile.name
         memberTeam.innerHTML = memberProfile.workspace

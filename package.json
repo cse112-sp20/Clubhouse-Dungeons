@@ -21,6 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "eslint-plugin-jsdoc": "^24.0.6",
+    "firebase": "^7.14.6",
     "jest-puppeteer": "^4.4.0",
     "jsdoc": "^3.6.4",
     "jsdoc-to-markdown": "^5.0.3",
