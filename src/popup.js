@@ -18,6 +18,9 @@ import {
   ERR_MSG_BROWSER_STORAGE,
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
 } from './api/clubhouse-api'
+import {
+  honorDatabaseMember
+} from './db/firebase'
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
@@ -156,7 +159,7 @@ function toggleMembersList () {
 /**
  * Record honoring of member in database
  *
- * @param {Member} member Member object that is being honored
+ * @param {Member} honoredMember - Member object that is being honored
  */
 function honorMember (honoredMember) {
   honorDatabaseMember(getSignedInMember().id, honoredMember.id)
