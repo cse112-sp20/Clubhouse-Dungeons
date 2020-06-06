@@ -42,13 +42,13 @@ const signoutButton = document.getElementById('signoutButton')
 // const selectedTabBG = document.getElementById("selectedTabBG");
 
 // Tab elements
-const myStoriesTab = document.getElementById('myStoriesTab')
-const allStoriesTab = document.getElementById('allStoriesTab')
+const storiesTab = document.getElementById('storiesTab')
+const teamTab = document.getElementById('teamTab')
 const battleLogTab = document.getElementById('battleLogTab')
 
 // Containers for actual elements
-const myStories = document.getElementById('myStories')
-const allStories = document.getElementById('allStories')
+const stories = document.getElementById('stories')
+// const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
 
 // Event listener for open honor menu
@@ -58,8 +58,8 @@ const membersListButton = document.getElementById('membersListButton')
 membersListButton.addEventListener('click', () => toggleMembersList())
 
 // Click event listeners for tabs
-myStoriesTab.addEventListener('click', () => selectTab(0))
-allStoriesTab.addEventListener('click', () => selectTab(1))
+storiesTab.addEventListener('click', () => selectTab(0))
+teamTab.addEventListener('click', () => selectTab(1))
 battleLogTab.addEventListener('click', () => selectTab(2))
 
 /**
@@ -129,13 +129,13 @@ function selectTab (tabIndex) {
   switch (tabIndex) {
     // My Stories
     case 0:
-      myStoriesTab.classList.add('selected')
-      myStories.classList.add('selected')
+      storiesTab.classList.add('selected')
+      stories.classList.add('selected')
+      // allStories.classList.add('selected')
       break
     // All Stories
     case 1:
-      allStoriesTab.classList.add('selected')
-      allStories.classList.add('selected')
+      teamTab.classList.add('selected')
       break
     // Battle Log
     case 2:
@@ -179,16 +179,16 @@ function onCompleteStory (story) {
   completeStory(story.id)
     .then(story => {
       // Remove from my stories
-      const myStoriesNode = getStoryNodeFromContainer(myStories, story)
+      const myStoriesNode = getStoryNodeFromContainer(stories, story)
       if (myStoriesNode) {
-        myStories.removeChild(myStoriesNode)
+        stories.removeChild(myStoriesNode)
       }
-
+      /*
       // Remove from all stories
       const allStoriesNode = getStoryNodeFromContainer(allStories, story)
       if (allStoriesNode) {
         allStories.removeChild(allStoriesNode)
-      }
+      } */
 
       // add the completed story to the battleLog tab
       addToBattleLogTab(story)
@@ -265,7 +265,7 @@ const getStoryNodeFromContainer = (nodeContainer, story) => {
  *
  * @param {Story} story the story to add to the myStories tab
  */
-const addToMyStoriesTab = story => {
+const addToMyStoriesSection = story => {
   const storyDiv = document.createElement('div')
   storyDiv.setAttribute('id', story.id)
   const storyButton = document.createElement('div')
@@ -282,7 +282,7 @@ const addToMyStoriesTab = story => {
 
   storyButton.addEventListener('click', () => onCompleteStory(story))
   storyDiv.prepend(storyButton)
-  myStories.appendChild(storyDiv)
+  stories.appendChild(storyDiv)
 }
 
 /**
@@ -290,37 +290,44 @@ const addToMyStoriesTab = story => {
  *
  * @param {Story} story the story to add to the allStories tab
  */
-const addToAllStoriesTab = story => {
+const addToAllStoriesSection = story => {
   const ownerNames = story.owner_ids.length > 0
     ? story.owner_ids.map(memberId => getMemberName(memberId))
     : ['Unassigned']
 
-  const storyDiv = document.createElement('div')
-  storyDiv.setAttribute('id', story.id)
-  const storyButton = document.createElement('div')
-  storyDiv.classList.add('story')
-  storyButton.classList.add('story-button')
-  storyButton.innerHTML = '<img src="images/sword.png" >'
-  storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
-
-  if (story.estimate) {
-    storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
-  } else {
-    storyDiv.innerHTML += '<div class="points"></div>'
-  }
-
+  let signedInOwner = false
+  const signedInOwnerName = getSignedInMember()
   const ownersDiv = document.createElement('div')
   ownersDiv.classList.add('owners')
   ownerNames.forEach(ownerName => {
+    if (ownerName === signedInOwnerName) {
+      signedInOwner = true
+    }
     const ownerDiv = document.createElement('div')
     ownerDiv.innerHTML = ownerName
     ownersDiv.append(ownerDiv)
   })
 
-  storyButton.addEventListener('click', () => onCompleteStory(story))
-  storyDiv.prepend(storyButton)
-  storyDiv.append(ownersDiv)
-  allStories.appendChild(storyDiv)
+  if (!signedInOwner) {
+    const storyDiv = document.createElement('div')
+    storyDiv.setAttribute('id', story.id)
+    const storyButton = document.createElement('div')
+    storyDiv.classList.add('story')
+    storyButton.classList.add('story-button')
+    storyButton.innerHTML = '<img src="images/sword.png" >'
+    storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+
+    if (story.estimate) {
+      storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+    } else {
+      storyDiv.innerHTML += '<div class="points"></div>'
+    }
+
+    storyButton.addEventListener('click', () => onCompleteStory(story))
+    storyDiv.prepend(storyButton)
+    storyDiv.append(ownersDiv)
+    stories.appendChild(storyDiv)
+  }
 }
 
 /**
@@ -413,12 +420,20 @@ document.addEventListener(
         updateHealthBar()
 
         /* Populate tabs */
+        const myStoriesH2 = document.createElement('h2')
+        myStoriesH2.innerHTML = 'My Stories'
+        stories.appendChild(myStoriesH2)
         getMyIncompleteStories().map(story => {
-          addToMyStoriesTab(story)
+          addToMyStoriesSection(story)
         })
 
+        // add separator between myStories section and allStories section
+        const allStoriesH2 = document.createElement('h2')
+        allStoriesH2.innerHTML = 'All Stories'
+        stories.appendChild(allStoriesH2)
+
         getAllIncompleteStories().map(story => {
-          addToAllStoriesTab(story)
+          addToAllStoriesSection(story)
         })
 
         getBattleLog().map(story => {
