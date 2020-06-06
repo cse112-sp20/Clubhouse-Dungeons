@@ -185,6 +185,7 @@ const fetchMembersAsync = async (apiToken) => {
  * @async
  * @param {string} apiToken - Member's API token
  * @param {string} storyId - ID of the story
+ * @returns {Promise<Story>} A promise to the updated story
  */
 const completeStoryAsync = async (apiToken, storyId) => {
   return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/stories/${storyId}?token=${apiToken}`, {
