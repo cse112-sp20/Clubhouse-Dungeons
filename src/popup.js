@@ -179,16 +179,10 @@ function onCompleteStory (story) {
   completeStory(story.id)
     .then(story => {
       // Remove from my stories
-      const myStoriesNode = getStoryNodeFromContainer(stories, story)
-      if (myStoriesNode) {
-        stories.removeChild(myStoriesNode)
+      const storiesNode = getStoryNodeFromContainer(stories, story)
+      if (storiesNode) {
+        stories.removeChild(storiesNode)
       }
-      /*
-      // Remove from all stories
-      const allStoriesNode = getStoryNodeFromContainer(allStories, story)
-      if (allStoriesNode) {
-        allStories.removeChild(allStoriesNode)
-      } */
 
       // add the completed story to the battleLog tab
       addToBattleLogTab(story)
@@ -296,7 +290,7 @@ const addToAllStoriesSection = story => {
     : ['Unassigned']
 
   let signedInOwner = false
-  const signedInOwnerName = getSignedInMember()
+  const signedInOwnerName = getMemberName(getSignedInMember().id)
   const ownersDiv = document.createElement('div')
   ownersDiv.classList.add('owners')
   ownerNames.forEach(ownerName => {
@@ -420,6 +414,7 @@ document.addEventListener(
         updateHealthBar()
 
         /* Populate tabs */
+        // add My Stories heading to the stories tab
         const myStoriesH2 = document.createElement('h2')
         myStoriesH2.innerHTML = 'My Stories'
         stories.appendChild(myStoriesH2)
@@ -427,7 +422,7 @@ document.addEventListener(
           addToMyStoriesSection(story)
         })
 
-        // add separator between myStories section and allStories section
+        // add All Stories heading to the stories tab
         const allStoriesH2 = document.createElement('h2')
         allStoriesH2.innerHTML = 'All Stories'
         stories.appendChild(allStoriesH2)
