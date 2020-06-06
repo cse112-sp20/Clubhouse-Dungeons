@@ -3,13 +3,13 @@
 ## Content
 
 ### Title(in manifest)
-Quaranteam-8 Chrome Extension
+Clubhouse Dungeons
 
 ### Description(in manifest)
-Quaranteam-8 Chrome Extension
+Gamify your Clubhouse Experience
 
 ### Version(in manifest)
-1.0
+1.1
 
 ### Detailed Description
 Gamify your Clubhouse experience to keep your team motivated.
