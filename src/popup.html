@@ -1,26 +1,107 @@
-<style>
-    .center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 50px;
-    }
-</style>
-
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link rel = "stylesheet" href="popup.css">
-    <meta charset="UTF-8" />
-	<title>Quaranteam-8</title>
+  <meta charset="UTF-8">
+  <title>Quaranteam-8</title>
+  <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
-    <h1 style="text-align: center;">Quaranteam-8</h1>
-    <h2 style="text-align: center;">Welcome to our Chrome Extension</h2>
-    <p style="text-align: center;"><img src="images/quaranteam8logo.png" /></p>
-    <div class="center">
-        <button id="button">Display/Refresh Clubhouse Story Data</button>
-        <script src="popup.js" charset="utf-8"></script>
+  <!-- Battliefield contains the monster, healthbar, and top warriors -->
+  <div class="battlefield" id="battlefield">
+
+    <div class="nav">
+
+      <div></div>
+      <div id="profileContainer" class="closed">
+        <!-- Member profile info and button to open menu -->
+        <div id="memberProfile">
+          <div class="member-icon">
+            <img id="memberIcon" />
+          </div>
+          <div>
+            <div id="memberName"></div>
+            <div id="memberTeam"></div>
+          </div>
+          <span class="carrot">&#9662</span>
+        </div>
+
+        <!-- Member profile menu -->
+        <div id="memberMenu" class="hide">
+          <div id="signoutButton" class="menu-item">Signout</div>
+        </div>
+      </div>
+
     </div>
+
+    <div class="boss-container">
+
+      <div id="healthbar">
+        <div id="healthText"></div>
+        <div id="healthLeft"></div>
+      </div>
+
+      <img id="monster" src="images/sully.png">
+    </div>
+
+    <div class="top-warriors">
+      <div class="top-warriors-title">Top Warriors</div>
+      <div class="top-warrior">
+        <div class="number">1</div>
+        <div class="name" id="warrior1Name"></div>
+        <div class="points" id="warrior1Points"></div>
+      </div>
+      <div class="top-warrior">
+        <div class="number">2</div>
+        <div class="name" id="warrior2Name"></div>
+        <div class="points" id="warrior2Points"></div>
+      </div>
+      <div class="top-warrior">
+        <div class="number">3</div>
+        <div class="name" id="warrior3Name"></div>
+        <div class="points" id="warrior3Points"></div>
+      </div>
+
+      <div id="membersListContainer">
+        <div id="membersListButton">
+          <span>&#8226;</span>
+          <span>&#8226;</span>
+          <span>&#8226;</span>
+          <div>&#x2715;</div>
+        </div>
+
+        <div id="membersList"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel">
+
+    <!-- Tabs contains the buttons for displaying stories and logs -->
+    <div class="tabs">
+
+      <div class="tab selected" id="myStoriesTab">My Stories</div>
+      <div class="tab" id="allStoriesTab">All Stories</div>
+      <div class="tab" id="battleLogTab">Battle Log</div>
+
+    </div>
+
+    <!-- All stories assigned to user -->
+    <div class="panel-item selected" id="myStories">
+    </div>
+
+    <!-- All stories -->
+    <div class="panel-item" id="allStories">
+    </div>
+
+    <!-- Log of all actions -->
+    <div class="panel-item" id="battleLog">
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
 </body>
+
 </html>

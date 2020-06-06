@@ -2,21 +2,36 @@
   "name": "quaranteam8",
   "version": "1.0.0",
   "description": "None",
-  "main": "index.js",
+  "private": true,
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "jest test/",
-    "lint": "eslint --fix src/",
-    "lint:report": "eslint --output-file eslint_report.json --format json src/"
+    "test:coverage": "jest test/ --coverage",
+    "build": "webpack",
+    "clean": "run-script-os",
+    "clean:darwin:linux": "rm -rf dist",
+    "clean:win32": "rmdir /Q /S dist",
+    "lint": "eslint --fix src/ test/",
+    "lint:report": "eslint --output-file eslint_report.json --format json src/ test/",
+    "docs:build": "node scripts/doc.js > docs/API_Documentation.md"
   },
   "author": "quaranteam8",
   "license": "ISC",
   "dependencies": {
-    "eslint-plugin-jsdoc": "^24.0.6"
+    "eslint-plugin-jsdoc": "^24.0.6",
+    "firebase": "^7.14.6",
+    "jest-puppeteer": "^4.4.0",
+    "jsdoc": "^3.6.4",
+    "jsdoc-to-markdown": "^5.0.3",
+    "puppeteer": "^3.2.0",
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.9.6",
+    "babel-jest": "^26.0.1",
+    "copy-webpack-plugin": "^5.1.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-google": "^0.14.0",
@@ -25,6 +40,13 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "jest": "^26.0.1"
+    "jest": "^26.0.1",
+    "node-fetch": "^2.6.0",
+    "run-script-os": "^1.1.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "jest": {
+    "verbose": true
   }
 }
