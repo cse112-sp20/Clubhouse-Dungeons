@@ -1,14 +1,8 @@
 import {
   fetchStoriesAsync,
   fetchMembersAsync,
-  ERR_MSG_BROWSER_STORAGE,
-
-  // Types
-  Story,
-  Member,
-  MemberDisplay,
-  Contributor,
-  Progress
+  completeStoryAsync,
+  ERR_MSG_BROWSER_STORAGE
 } from './api/clubhouse-api'
 
 /**
@@ -145,6 +139,21 @@ const getTopWarriors = () => {
   contributors.sort((a, b) => b.points - a.points)
   return contributors.slice(0, 3)
 }
+
+/**
+ * Get a member
+ *
+ * @param {string} memberId - Member ID of the member to get
+ * @returns {Member} The member
+ */
+const getMember = (memberId) => MEMBER_MAP[memberId]
+
+/**
+ * Get the signed-in member
+ *
+ * @returns {Member} Signed-in member
+ */
+const getSignedInMember = () => MEMBER_MAP[MEMBER_ID]
 
 /**
  * Get all team members.
@@ -298,14 +307,19 @@ const setup = () => {
   return SETUP
 }
 
+const completeStory = storyId => completeStoryAsync(API_TOKEN, storyId)
+
 export {
   getMyIncompleteStories,
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
+  getMember,
+  getSignedInMember,
   getAllMembers,
   getMemberName,
   getMemberProfile,
   getProgress,
-  setup
+  setup,
+  completeStory
 }

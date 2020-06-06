@@ -179,10 +179,34 @@ const fetchMembersAsync = async (apiToken) => {
   })
 }
 
+/**
+ * Request update to story info using workflow_state_id and time completed
+ *
+ * @async
+ * @param {string} apiToken - Member's API token
+ * @param {string} storyId - ID of the story
+ * @returns {Promise<Story>} A promise to the updated story
+ */
+const completeStoryAsync = async (apiToken, storyId) => {
+  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/stories/${storyId}?token=${apiToken}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ completed_at_override: getCurrentTime(), workflow_state_id: 500000011 })
+  })
+}
+
+const getCurrentTime = () => {
+  var today = new Date()
+  var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+  var time = 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + 'Z'
+  return date + time
+}
+
 export {
   fetchMemberInfoAsync,
   fetchStoriesAsync,
   fetchMembersAsync,
+  completeStoryAsync,
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
