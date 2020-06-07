@@ -184,7 +184,7 @@ function onCompleteStory (story) {
         stories.removeChild(storiesNode)
       }
 
-      // add the completed story to the battleLog tab
+      // add the completed story to the top of the battleLog tab
       addToBattleLogTab(story, true)
     })
     .catch((e) => {
@@ -255,7 +255,7 @@ const getStoryNodeFromContainer = (nodeContainer, story) => {
 }
 
 /**
- * Adds the passed in story to the myStories tab
+ * Adds the passed in story to the myStories section of the stories tab
  *
  * @param {Story} story the story to add to the myStories tab
  */
@@ -280,7 +280,7 @@ const addToMyStoriesSection = story => {
 }
 
 /**
- * Adds the passed in story to the allStories tab
+ * Adds the passed in story to the allStories section of the stories tab
  *
  * @param {Story} story the story to add to the allStories tab
  */
