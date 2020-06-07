@@ -58,6 +58,13 @@
  */
 
 /**
+ * @typedef {object} IterationDisplay - Sub-object of Iteration, with additional days_remaining attribute
+ * @property {Date} start_date - The starting date of the iteration
+ * @property {Date} end_date - The ending date of the iteration
+ * @property {number} days_remaining - Days remaining in the iteration
+ */
+
+/**
  * @typedef {object} Progress
  * @property {number} total - Number of total story points
  */
@@ -193,9 +200,9 @@ const fetchMembersAsync = async (apiToken) => {
  */
 const fetchSprintTimelineAsync = async (apiToken) => {
   return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/iterations?token=${apiToken}`, {
-    headers: { 'Content-Type': 'application/json'}
+    headers: { 'Content-Type': 'application/json' }
   })
-} 
+}
 
 /**
  * Request update to story info using workflow_state_id and time completed

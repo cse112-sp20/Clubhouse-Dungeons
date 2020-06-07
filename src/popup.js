@@ -25,7 +25,7 @@ import {
   memberLogin
 } from './db/firebase'
 
-//sprint timeline elements
+// sprint timeline elements
 const sprintStart = document.getElementById('sprintStart')
 const sprintEnd = document.getElementById('sprintEnd')
 const sprintRemaining = document.getElementById('sprintRemaining')
@@ -404,23 +404,20 @@ document.addEventListener(
 
         /* Get sprint timeline details */
         const sprintTimeline = getSprintTimeline()
+        if (sprintTimeline === false) {
+          sprintStart.innerHTML = 'No'
+          sprintEnd.innerHTML = 'Started'
+          sprintRemaining.innerHTML = 'Iterations'
+        } else {
+          const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
-        if(sprintTimeline == false){
-          sprintStart.innerHTML = "No"
-          sprintEnd.innerHTML = "Started"
-          sprintRemaining.innerHTML = "Iterations"
-        }
-        else{
-          const months = ["January", "February", "March", "April", "May", "June", "July", 
-          "August", "September", "October", "November", "December"]
-
-          //update page text with readable dates
-          sprintStart.innerHTML = "Start: " + months[sprintTimeline.start.getMonth()] + " " + sprintTimeline.start.getDate()
-          sprintEnd.innerHTML = "End: " + months[sprintTimeline.end.getMonth()] + " " + sprintTimeline.end.getDate()
-          sprintRemaining.innerHTML = "Remaining: " + sprintTimeline.remaining + " days"
+          // update page text with readable dates
+          sprintStart.innerHTML = 'Start: ' + months[sprintTimeline.start_date.getMonth()] + ' ' + sprintTimeline.start_date.getDate()
+          sprintEnd.innerHTML = 'End: ' + months[sprintTimeline.end_date.getMonth()] + ' ' + sprintTimeline.end_date.getDate()
+          sprintRemaining.innerHTML = 'Remaining: ' + sprintTimeline.days_remaining + ' days'
         }
 
-        /* Get top warraiors and update text */
+        /* Get top warriors and update text */
         const topWarriors = getTopWarriors()
         while (topWarriors.length < 3) {
           topWarriors.push({ name: 'Empty', points: 0 })

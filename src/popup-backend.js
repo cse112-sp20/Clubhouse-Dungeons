@@ -44,7 +44,7 @@ var STORIES = null
 
 /**
  * The first started iteration returned by the clubhouse API
- * 
+ *
  * @type {?Array<Iteration>}
  */
 var CURRENT_ITERATION = null
@@ -256,37 +256,34 @@ const getProgress = () => {
 }
 
 /**
- * Get the current started iteration.
- * 
- * @returns {Sprint}
+ * Get the current iteration
+ *
+ * @returns {IterationDisplay} The current iteration
  */
 const getSprintTimeline = () => {
-  //select only iterations that are started
-  CURRENT_ITERATION = CURRENT_ITERATION.filter(iter => iter.status == 'started')
-    
-  if(CURRENT_ITERATION[0]){
-    //calculate days remaining based on current & end dates
+  // select only iterations that are started
+  CURRENT_ITERATION = CURRENT_ITERATION.filter(iter => iter.status === 'started')
+
+  if (CURRENT_ITERATION[0]) {
+    // calculate days remaining based on current & end dates
     var s = new Date(CURRENT_ITERATION[0].start_date)
     var c = new Date()
     var e = new Date(CURRENT_ITERATION[0].end_date)
-    var remaining = Math.ceil(( e.getTime() - c.getTime() ) / (1000 * 3600 * 24))
+    var remaining = Math.ceil((e.getTime() - c.getTime()) / (1000 * 3600 * 24))
 
-    if(remaining < 0){ //if the iteration is late don't show negative days
+    if (remaining < 0) { // if the iteration is late don't show negative days
       remaining = 0
     }
-    
+
     return {
-      start: s,
-      end: e,
-      remaining: remaining
+      start_date: s,
+      end_date: e,
+      days_remaining: remaining
     }
-  } 
-  else{ //no started iterations
+  } else { // no started iterations
     return false
-  } 
+  }
 }
-
-
 
 /**
  * Get the SETUP promise. If SETUP hasn't been initialized yet, create it.
