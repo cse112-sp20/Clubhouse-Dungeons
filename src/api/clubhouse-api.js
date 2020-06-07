@@ -179,6 +179,13 @@ const fetchMembersAsync = async (apiToken) => {
   })
 }
 
+
+const fetchSprintTimelineAsync = async (apiToken) => {
+  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/iterations?token=${apiToken}`, {
+    headers: { 'Content-Type': 'application/json'}
+  })
+} 
+
 /**
  * Request update to story info using workflow_state_id and time completed
  *
@@ -206,6 +213,7 @@ export {
   fetchMemberInfoAsync,
   fetchStoriesAsync,
   fetchMembersAsync,
+  fetchSprintTimelineAsync,
   completeStoryAsync,
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
