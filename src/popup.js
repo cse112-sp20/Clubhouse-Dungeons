@@ -9,6 +9,7 @@ import {
   getMemberName,
   getMemberProfile,
   getProgress,
+  getSprintTimeline,
   completeStory
 } from './popup-backend'
 import {
@@ -23,6 +24,11 @@ import {
   getHonoredByMap,
   memberLogin
 } from './db/firebase'
+
+// sprint timeline elements
+const sprintStart = document.getElementById('sprintStart')
+const sprintEnd = document.getElementById('sprintEnd')
+const sprintRemaining = document.getElementById('sprintRemaining')
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
@@ -396,7 +402,22 @@ document.addEventListener(
         memberName.innerHTML = memberProfile.name
         memberTeam.innerHTML = memberProfile.workspace
 
-        /* Get top warraiors and update text */
+        /* Get sprint timeline details */
+        const sprintTimeline = getSprintTimeline()
+        if (sprintTimeline === false) {
+          sprintStart.innerHTML = 'No'
+          sprintEnd.innerHTML = 'Started'
+          sprintRemaining.innerHTML = 'Iterations'
+        } else {
+          const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+          // update page text with readable dates
+          sprintStart.innerHTML = 'Start: ' + months[sprintTimeline.start_date.getMonth()] + ' ' + sprintTimeline.start_date.getDate()
+          sprintEnd.innerHTML = 'End: ' + months[sprintTimeline.end_date.getMonth()] + ' ' + sprintTimeline.end_date.getDate()
+          sprintRemaining.innerHTML = 'Remaining: ' + sprintTimeline.days_remaining + ' days'
+        }
+
+        /* Get top warriors and update text */
         const topWarriors = getTopWarriors()
         while (topWarriors.length < 3) {
           topWarriors.push({ name: 'Empty', points: 0 })

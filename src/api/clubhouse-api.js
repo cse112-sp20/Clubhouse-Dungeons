@@ -51,6 +51,20 @@
  */
 
 /**
+ * @typedef {object} Iteration - Iteration object that contains all info about an iteration from Clubhouse
+ * @property {Date} start_date - The starting date of the iteration
+ * @property {Date} end_date - The ending date of the iteration
+ * @property {string} status - The current status of the iteration. Can be 'started', 'unstarted' or 'done'
+ */
+
+/**
+ * @typedef {object} IterationDisplay - Sub-object of Iteration, with additional days_remaining attribute
+ * @property {Date} start_date - The starting date of the iteration
+ * @property {Date} end_date - The ending date of the iteration
+ * @property {number} days_remaining - Days remaining in the iteration
+ */
+
+/**
  * @typedef {object} Progress
  * @property {number} total - Number of total story points
  */
@@ -180,6 +194,17 @@ const fetchMembersAsync = async (apiToken) => {
 }
 
 /**
+ * @async
+ * @param {string} apiToken - Member's API token
+ * @returns {Promise<Array<Iteration>>} A promise of an array of iteration objects
+ */
+const fetchSprintTimelineAsync = async (apiToken) => {
+  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/iterations?token=${apiToken}`, {
+    headers: { 'Content-Type': 'application/json' }
+  })
+}
+
+/**
  * Request update to story info using workflow_state_id and time completed
  *
  * @async
@@ -206,6 +231,7 @@ export {
   fetchMemberInfoAsync,
   fetchStoriesAsync,
   fetchMembersAsync,
+  fetchSprintTimelineAsync,
   completeStoryAsync,
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
