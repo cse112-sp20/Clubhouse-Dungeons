@@ -11,6 +11,7 @@ const waitForNavigationTimeout = 3000;
 const expectPuppeteer = require('expect-puppeteer');
 const puppeteer = require('puppeteer');
 var extensionPage;
+var profileContainer;
 var browser;
 
 describe('Login intended behavior', () => {
@@ -82,7 +83,7 @@ describe('Login intended behavior', () => {
 
         await extensionPage.click('#profileContainer');
         profileContainer = await extensionPage.$('#profileContainer');
-        expect(profileContainer['_remoteObject']['description']).toContain('open');
+        expect(profileContainer['_remoteObject']['description']).toContain('closed');
 
 
     });
