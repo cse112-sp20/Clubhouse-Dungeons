@@ -71,6 +71,7 @@
 
 const ERR_MSG_INTERNET = 'internet-error'
 const ERR_MSG_INVALID_API_TOKEN = 'invalid-api-token-error'
+const ERR_MSG_NO_ACTIVE_ITERATION = 'no-iteration-in-progress-error'
 const ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED = 'clubhouse-api-quota-exceeded-error'
 const ERR_MSG_BROWSER_STORAGE = 'browser-storage-error'
 const ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE = 'unknown-clubhouse-api-response-status'
@@ -113,61 +114,6 @@ const fetchFromClubhouse = async (url, params) => {
 }
 
 /**
- * Fetch all projects
- *
- * @async
- * @param {string} apiToken - Member's API token
- * @returns {Promise<Array<Project>>} A promise to all projects in the workspace
- */
-/* Fetch all projects. Returns a promise */
-const fetchProjectsAsync = async (apiToken) => {
-  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/projects?token=${apiToken}`, {
-    headers: { 'Content-Type': 'application/json' }
-  })
-}
-
-/**
- * Fetch all stories in a project
- *
- * @async
- * @param {string} apiToken - Member's API token
- * @param {string} projectId - ID of the project
- * @returns {Promise<Array<Story>>} A promise to all stories in the project
- */
-/* Fetch all stories in a project. Returns a promise */
-const fetchProjectStoriesAsync = async (apiToken, projectId) => {
-  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/projects/${projectId}/stories?token=${apiToken}`, {
-    headers: { 'Content-Type': 'application/json' }
-  })
-}
-
-/**
- * Fetch all stories in all projects
- *
- * @async
- * @param {string} apiToken - Member's API token
- * @returns {Promise<Array<Story>>} A promise to all stories in the workspace
- */
-/* Fetch all stories in all projects. Returns a promise */
-const fetchStoriesAsync = async (apiToken) => {
-  return fetchProjectsAsync(apiToken)
-    .then(projects => {
-      return Promise.all(projects.map(project => fetchProjectStoriesAsync(apiToken, project.id)))
-    })
-    .then(allProjectsStories => {
-      // Remove projects that have no stories
-      // Flatten the array to an array of story objects
-      return allProjectsStories
-        .filter(projectStories => projectStories.length > 0)
-        .flat()
-    })
-    .catch(e => {
-      console.log(`Caught ${e.message} in fetchStoriesAsync. Rethrowing it`)
-      throw e
-    })
-}
-
-/**
  * Fetch info about a member
  *
  * @async
@@ -181,6 +127,31 @@ const fetchMemberInfoAsync = async (apiToken) => {
 }
 
 /**
+ * @async
+ * @param {string} apiToken - Member's API token
+ * @returns {Promise<Array<Iteration>>} A promise of an array of iteration objects
+ */
+const fetchSprintTimelineAsync = async (apiToken) => {
+  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/iterations?token=${apiToken}`, {
+    headers: { 'Content-Type': 'application/json' }
+  })
+}
+
+/**
+ * Fetch all stories in an iteration
+ *
+ * @async
+ * @param {string} apiToken - Member's API token
+ * @param {string} iterationId - ID of the iteration
+ * @returns {Promise<Array<Story>>} A promise to all stories in the iteration
+ */
+const fetchIterationStoriesAsync = async (apiToken, iterationId) => {
+  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/iterations/${iterationId}/stories?token=${apiToken}`, {
+    headers: { 'Content-Type': 'application/json' }
+  })
+}
+
+/**
  * Fetch all members in the workspace
  *
  * @async
@@ -189,17 +160,6 @@ const fetchMemberInfoAsync = async (apiToken) => {
  */
 const fetchMembersAsync = async (apiToken) => {
   return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/members?token=${apiToken}`, {
-    headers: { 'Content-Type': 'application/json' }
-  })
-}
-
-/**
- * @async
- * @param {string} apiToken - Member's API token
- * @returns {Promise<Array<Iteration>>} A promise of an array of iteration objects
- */
-const fetchSprintTimelineAsync = async (apiToken) => {
-  return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/iterations?token=${apiToken}`, {
     headers: { 'Content-Type': 'application/json' }
   })
 }
@@ -229,12 +189,13 @@ const getCurrentTime = () => {
 
 export {
   fetchMemberInfoAsync,
-  fetchStoriesAsync,
-  fetchMembersAsync,
   fetchSprintTimelineAsync,
+  fetchIterationStoriesAsync,
+  fetchMembersAsync,
   completeStoryAsync,
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
+  ERR_MSG_NO_ACTIVE_ITERATION,
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
   ERR_MSG_BROWSER_STORAGE,
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE

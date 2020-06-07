@@ -15,6 +15,7 @@ import {
 import {
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
+  ERR_MSG_NO_ACTIVE_ITERATION,
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
   ERR_MSG_BROWSER_STORAGE,
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
@@ -362,31 +363,6 @@ document.addEventListener(
   'DOMContentLoaded',
   () => {
     setup()
-      .catch((e) => {
-        switch (e.message) {
-          case ERR_MSG_INTERNET:
-            // Respond to internet error
-            /* TODO: UI */
-            break
-          case ERR_MSG_INVALID_API_TOKEN:
-            signout()
-            /* TODO: UI */
-            break
-          case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
-            // Respond to quota exceeded
-            /* TODO: UI */
-            break
-          case ERR_MSG_BROWSER_STORAGE:
-            // Respond to error reading/writing to browser storage
-            /* TODO: UI */
-            break
-          case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
-          default:
-            // Respond to unknown error
-            /* TODO: UI */
-            break
-        }
-      })
       .then(() => {
         const memberProfile = getMemberProfile()
 
@@ -404,17 +380,17 @@ document.addEventListener(
 
         /* Get sprint timeline details */
         const sprintTimeline = getSprintTimeline()
-        if (sprintTimeline === false) {
-          sprintStart.innerHTML = 'No'
-          sprintEnd.innerHTML = 'Started'
-          sprintRemaining.innerHTML = 'Iterations'
-        } else {
+        if (sprintTimeline) {
           const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
           // update page text with readable dates
           sprintStart.innerHTML = 'Start: ' + months[sprintTimeline.start_date.getMonth()] + ' ' + sprintTimeline.start_date.getDate()
           sprintEnd.innerHTML = 'End: ' + months[sprintTimeline.end_date.getMonth()] + ' ' + sprintTimeline.end_date.getDate()
           sprintRemaining.innerHTML = 'Remaining: ' + sprintTimeline.days_remaining + ' days'
+        } else {
+          sprintStart.innerHTML = 'No'
+          sprintEnd.innerHTML = 'Started'
+          sprintRemaining.innerHTML = 'Iterations'
         }
 
         /* Get top warriors and update text */
@@ -464,6 +440,35 @@ document.addEventListener(
           memberDiv.appendChild(honorButton)
           membersList.appendChild(memberDiv)
         })
+      })
+      .catch((e) => {
+        switch (e.message) {
+          case ERR_MSG_INTERNET:
+            // Respond to internet error
+            /* TODO: UI */
+            break
+          case ERR_MSG_INVALID_API_TOKEN:
+            signout()
+            /* TODO: UI */
+            break
+          case ERR_MSG_NO_ACTIVE_ITERATION:
+            // Respond to iterations being turned off or no iteration set up
+            /* TODO: UI */
+            break
+          case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
+            // Respond to quota exceeded
+            /* TODO: UI */
+            break
+          case ERR_MSG_BROWSER_STORAGE:
+            // Respond to error reading/writing to browser storage
+            /* TODO: UI */
+            break
+          case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
+          default:
+            // Respond to unknown error
+            /* TODO: UI */
+            break
+        }
       })
   }
 ) // addEventListener()

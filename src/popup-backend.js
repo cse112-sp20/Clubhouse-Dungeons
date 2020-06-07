@@ -1,8 +1,9 @@
 import {
-  fetchStoriesAsync,
-  fetchMembersAsync,
   fetchSprintTimelineAsync,
+  fetchIterationStoriesAsync,
+  fetchMembersAsync,
   completeStoryAsync,
+  ERR_MSG_NO_ACTIVE_ITERATION,
   ERR_MSG_BROWSER_STORAGE
 } from './api/clubhouse-api'
 
@@ -43,9 +44,10 @@ var MEMBER_MAP = null
 var STORIES = null
 
 /**
- * The first started iteration returned by the clubhouse API
+ * The current iteration that the signed-in member is in; the first 'started'
+ * iteration of all iterations.
  *
- * @type {?Array<Iteration>}
+ * @type {?Iteration}
  */
 var CURRENT_ITERATION = null
 
@@ -258,30 +260,28 @@ const getProgress = () => {
 /**
  * Get the current iteration
  *
- * @returns {IterationDisplay} The current iteration
+ * @returns {?IterationDisplay} Display information about the current iteration,
+ *   or null if CURRENT_ITERATION is null.
  */
 const getSprintTimeline = () => {
-  // select only iterations that are started
-  CURRENT_ITERATION = CURRENT_ITERATION.filter(iter => iter.status === 'started')
+  if (!CURRENT_ITERATION) {
+    return null
+  }
 
-  if (CURRENT_ITERATION[0]) {
-    // calculate days remaining based on current & end dates
-    var s = new Date(CURRENT_ITERATION[0].start_date)
-    var c = new Date()
-    var e = new Date(CURRENT_ITERATION[0].end_date)
-    var remaining = Math.ceil((e.getTime() - c.getTime()) / (1000 * 3600 * 24))
+  // calculate days remaining based on current & end dates
+  var s = new Date(CURRENT_ITERATION.start_date)
+  var c = new Date()
+  var e = new Date(CURRENT_ITERATION.end_date)
+  var remaining = Math.ceil((e.getTime() - c.getTime()) / (1000 * 3600 * 24))
 
-    if (remaining < 0) { // if the iteration is late don't show negative days
-      remaining = 0
-    }
+  if (remaining < 0) { // if the iteration is late don't show negative days
+    remaining = 0
+  }
 
-    return {
-      start_date: s,
-      end_date: e,
-      days_remaining: remaining
-    }
-  } else { // no started iterations
-    return false
+  return {
+    start_date: s,
+    end_date: e,
+    days_remaining: remaining
   }
 }
 
@@ -307,24 +307,28 @@ const setup = () => {
         MEMBER_ID = store.member_id
         WORKSPACE = store.workspace
 
-        Promise.all([
-          fetchSprintTimelineAsync(API_TOKEN)
-            .then(iterations => {
-              CURRENT_ITERATION = iterations
-            }),
-          fetchStoriesAsync(API_TOKEN)
-            .then(stories => {
-              STORIES = stories
-            }),
-          fetchMembersAsync(API_TOKEN)
-            .then(members => {
-              MEMBER_MAP = {}
-              members.map(member => {
-                MEMBER_MAP[member.id] = member
-              })
-            })
-        ])
-          .then(() => {
+        fetchSprintTimelineAsync(API_TOKEN)
+          .then(async iterations => {
+            CURRENT_ITERATION = iterations.find(iter => iter.status === 'started')
+
+            if (!CURRENT_ITERATION) {
+              throw Error(ERR_MSG_NO_ACTIVE_ITERATION)
+            }
+
+            await Promise.all([
+              fetchIterationStoriesAsync(API_TOKEN, CURRENT_ITERATION.id)
+                .then(stories => {
+                  STORIES = stories
+                }),
+              fetchMembersAsync(API_TOKEN)
+                .then(members => {
+                  MEMBER_MAP = {}
+                  members.map(member => {
+                    MEMBER_MAP[member.id] = member
+                  })
+                })
+            ])
+
             // Initalize member map points to 0
             for (const memberObj of Object.values(MEMBER_MAP)) {
               memberObj.points = 0
@@ -337,9 +341,10 @@ const setup = () => {
                 })
               }
             })
+
             resolve('setup resolved. All globals in api are setup')
           })
-          .catch((e) => {
+          .catch(e => {
             console.log(`Caught ${e.message} in setup. Rejecting with reason being the error`)
             reject(e)
           })
