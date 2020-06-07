@@ -1,5 +1,5 @@
 import {
-  fetchSprintTimelineAsync,
+  fetchIterationsAsync,
   fetchIterationStoriesAsync,
   fetchMembersAsync,
   completeStoryAsync,
@@ -263,7 +263,7 @@ const getProgress = () => {
  * @returns {?IterationDisplay} Display information about the current iteration,
  *   or null if CURRENT_ITERATION is null.
  */
-const getSprintTimeline = () => {
+const getIterationTimeline = () => {
   if (!CURRENT_ITERATION) {
     return null
   }
@@ -307,7 +307,7 @@ const setup = () => {
         MEMBER_ID = store.member_id
         WORKSPACE = store.workspace
 
-        fetchSprintTimelineAsync(API_TOKEN)
+        fetchIterationsAsync(API_TOKEN)
           .then(async iterations => {
             CURRENT_ITERATION = iterations.find(iter => iter.status === 'started')
 
@@ -367,7 +367,7 @@ export {
   getMemberName,
   getMemberProfile,
   getProgress,
-  getSprintTimeline,
+  getIterationTimeline,
   setup,
   completeStory
 }

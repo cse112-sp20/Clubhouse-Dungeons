@@ -9,7 +9,7 @@ import {
   getMemberName,
   getMemberProfile,
   getProgress,
-  getSprintTimeline,
+  getIterationTimeline,
   completeStory
 } from './popup-backend'
 import {
@@ -26,10 +26,10 @@ import {
   memberLogin
 } from './db/firebase'
 
-// sprint timeline elements
-const sprintStart = document.getElementById('sprintStart')
-const sprintEnd = document.getElementById('sprintEnd')
-const sprintRemaining = document.getElementById('sprintRemaining')
+// Iteration timeline elements
+const iterationStart = document.getElementById('iterationStart')
+const iterationEnd = document.getElementById('iterationEnd')
+const iterationRemaining = document.getElementById('iterationRemaining')
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
@@ -378,19 +378,19 @@ document.addEventListener(
         memberName.innerHTML = memberProfile.name
         memberTeam.innerHTML = memberProfile.workspace
 
-        /* Get sprint timeline details */
-        const sprintTimeline = getSprintTimeline()
-        if (sprintTimeline) {
+        /* Get iteration timeline details */
+        const iterationTimeline = getIterationTimeline()
+        if (iterationTimeline) {
           const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
           // update page text with readable dates
-          sprintStart.innerHTML = 'Start: ' + months[sprintTimeline.start_date.getMonth()] + ' ' + sprintTimeline.start_date.getDate()
-          sprintEnd.innerHTML = 'End: ' + months[sprintTimeline.end_date.getMonth()] + ' ' + sprintTimeline.end_date.getDate()
-          sprintRemaining.innerHTML = 'Remaining: ' + sprintTimeline.days_remaining + ' days'
+          iterationStart.innerHTML = 'Start: ' + months[iterationTimeline.start_date.getMonth()] + ' ' + iterationTimeline.start_date.getDate()
+          iterationEnd.innerHTML = 'End: ' + months[iterationTimeline.end_date.getMonth()] + ' ' + iterationTimeline.end_date.getDate()
+          iterationRemaining.innerHTML = 'Remaining: ' + iterationTimeline.days_remaining + ' days'
         } else {
-          sprintStart.innerHTML = 'No'
-          sprintEnd.innerHTML = 'Started'
-          sprintRemaining.innerHTML = 'Iterations'
+          iterationStart.innerHTML = 'No'
+          iterationEnd.innerHTML = 'Started'
+          iterationRemaining.innerHTML = 'Iterations'
         }
 
         /* Get top warriors and update text */

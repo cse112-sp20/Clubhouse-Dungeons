@@ -131,7 +131,7 @@ const fetchMemberInfoAsync = async (apiToken) => {
  * @param {string} apiToken - Member's API token
  * @returns {Promise<Array<Iteration>>} A promise of an array of iteration objects
  */
-const fetchSprintTimelineAsync = async (apiToken) => {
+const fetchIterationsAsync = async (apiToken) => {
   return fetchFromClubhouse(`https://api.clubhouse.io/api/v3/iterations?token=${apiToken}`, {
     headers: { 'Content-Type': 'application/json' }
   })
@@ -189,7 +189,7 @@ const getCurrentTime = () => {
 
 export {
   fetchMemberInfoAsync,
-  fetchSprintTimelineAsync,
+  fetchIterationsAsync,
   fetchIterationStoriesAsync,
   fetchMembersAsync,
   completeStoryAsync,
