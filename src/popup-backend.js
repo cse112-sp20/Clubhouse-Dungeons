@@ -258,7 +258,7 @@ const getProgress = () => {
 }
 
 /**
- * Get the current iteration
+ * Get display information about the current iteration
  *
  * @returns {?IterationDisplay} Display information about the current iteration,
  *   or null if CURRENT_ITERATION is null.
@@ -284,6 +284,13 @@ const getIterationTimeline = () => {
     days_remaining: remaining
   }
 }
+
+/**
+ * Get the ID of the current iteration
+ *
+ * @returns {number} ID of the current iteration
+ */
+const getCurrentIterationId = () => CURRENT_ITERATION.id
 
 /**
  * Get the SETUP promise. If SETUP hasn't been initialized yet, create it.
@@ -368,6 +375,7 @@ export {
   getMemberProfile,
   getProgress,
   getIterationTimeline,
+  getCurrentIterationId,
   setup,
   completeStory
 }

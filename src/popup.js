@@ -10,6 +10,7 @@ import {
   getMemberProfile,
   getProgress,
   getIterationTimeline,
+  getCurrentIterationId,
   completeStory
 } from './popup-backend'
 import {
@@ -367,7 +368,7 @@ document.addEventListener(
         const memberProfile = getMemberProfile()
 
         const allMemberIds = getAllMembers().map(member => member.id)
-        memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace)
+        memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace, getCurrentIterationId())
           .then(() => {
             // needs to wait for the database variables to be setup by memberLogin
             getHonoredByMap(allMemberIds)
