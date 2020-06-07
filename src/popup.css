@@ -558,7 +558,15 @@ body {
   color: #34495e;
 }
 
+.story:last-child {
+  margin-bottom: 100px
+}
+
 .action {
   padding: 8px;
   border-bottom: 1px solid rgba(0,0,0,.1);
+}
+
+.action:last-child {
+  margin-bottom: 100px
 }
