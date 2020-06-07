@@ -23,7 +23,6 @@ describe('Login error handling', () => {
         // describe path to our extension
         const pathToExtension = require('path').join(__dirname, '../dist');
         browser = await puppeteer.launch({
-            headless: false,
             args: [
                 `--disable-extensions-except=${pathToExtension}`,
                 `--load-extension=${pathToExtension}`
@@ -166,7 +165,6 @@ describe('Login intended behavior', () => {
         const pathToExtension = require('path').join(__dirname, '../dist');
         //open a new browser
         browser = await puppeteer.launch({
-            headless: false,
             args: [
                 `--disable-extensions-except=${pathToExtension}`,
                 `--load-extension=${pathToExtension}`
