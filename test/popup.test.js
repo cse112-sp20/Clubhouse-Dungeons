@@ -75,11 +75,29 @@ describe('Login intended behavior', () => {
 
     /**
      * Unit Test 1
+     * Testing profileContainer Button when Open
      */
-    it('Test "All Stories" Tab button', async () => {
+    it('Test "profileContainer" Tab button', async (  ) => {
         await extensionPage.click('#profileContainer');
-        const profileContainer = extensionPage.$('#profileContainer');
-        expect(profileContainer).toContain('open');
+
+        await extensionPage.click('#profileContainer');
+        profileContainer = await extensionPage.$('#profileContainer');
+        expect(profileContainer['_remoteObject']['description']).toContain('open');
+
+
+    });
+
+    /**
+     * Unit Test 2
+     * Testing profileContainer Button when Closed
+     */
+    it('Test "profileContainer" Tab button', async () => {
+        await extensionPage.click('#profileContainer');
+
+        profileContainer = await extensionPage.$('#profileContainer');
+        expect(profileContainer['_remoteObject']['description']).toContain('open');
+
+
     });
 
 })
