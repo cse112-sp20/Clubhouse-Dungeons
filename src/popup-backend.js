@@ -42,7 +42,11 @@ var MEMBER_MAP = null
  */
 var STORIES = null
 
-
+/**
+ * The first started iteration returned by the clubhouse API
+ * 
+ * @type {?Array<Iteration>}
+ */
 var CURRENT_ITERATION = null
 
 /**
@@ -251,11 +255,13 @@ const getProgress = () => {
   return { completed, total }
 }
 
-const getSprintTimeline = () => { 
-  console.log(CURRENT_ITERATION)
-  
+/**
+ * Get the current started iteration.
+ * 
+ * @returns {Sprint}
+ */
+const getSprintTimeline = () => {
   //select only iterations that are started
-
   CURRENT_ITERATION = CURRENT_ITERATION.filter(iter => iter.status == 'started')
     
   if(CURRENT_ITERATION[0]){
