@@ -185,7 +185,7 @@ function onCompleteStory (story) {
       }
 
       // add the completed story to the battleLog tab
-      addToBattleLogTab(story)
+      addToBattleLogTab(story, true)
     })
     .catch((e) => {
       switch (e.message) {
@@ -328,8 +328,9 @@ const addToAllStoriesSection = story => {
  * Add the passed in story to the battleLog tab
  *
  * @param {Story} story the story to add to the battleLog tab
+ * @param {boolean} [addToTop=false] - whether to add the story to the top of the battleLog tab
  */
-const addToBattleLogTab = story => {
+const addToBattleLogTab = (story, addToTop = false) => {
   const ownerNames = story.owner_ids.length > 0
     ? story.owner_ids.map(memberId => getMemberName(memberId)).join(', ')
     : 'unassigned'
@@ -342,7 +343,12 @@ const addToBattleLogTab = story => {
     actionDiv.innerHTML = ownerNames + ' completed ' + story.name
   }
 
-  battleLog.appendChild(actionDiv)
+  if (addToTop) {
+    console.log('add to top of battleLog')
+    battleLog.prepend(actionDiv)
+  } else {
+    battleLog.appendChild(actionDiv)
+  }
 }
 
 /**
@@ -415,17 +421,18 @@ document.addEventListener(
 
         /* Populate tabs */
         // add My Stories heading to the stories tab
-        const myStoriesH2 = document.createElement('h2')
-        myStoriesH2.innerHTML = 'My Stories'
-        stories.appendChild(myStoriesH2)
+        const myStoriesH1 = document.createElement('h1')
+        myStoriesH1.innerHTML = 'My Stories'
+        stories.appendChild(myStoriesH1)
+
         getMyIncompleteStories().map(story => {
           addToMyStoriesSection(story)
         })
 
         // add All Stories heading to the stories tab
-        const allStoriesH2 = document.createElement('h2')
-        allStoriesH2.innerHTML = 'All Stories'
-        stories.appendChild(allStoriesH2)
+        const allStoriesH1 = document.createElement('h1')
+        allStoriesH1.innerHTML = 'All Stories'
+        stories.appendChild(allStoriesH1)
 
         getAllIncompleteStories().map(story => {
           addToAllStoriesSection(story)
