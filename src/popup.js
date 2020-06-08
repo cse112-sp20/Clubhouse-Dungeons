@@ -50,12 +50,7 @@ const battleLogTab = document.getElementById('battleLogTab')
 const stories = document.getElementById('stories')
 // const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
-
-// Event listener for open honor menu
-const membersList = document.getElementById('membersList')
-const membersListContainer = document.getElementById('membersListContainer')
-const membersListButton = document.getElementById('membersListButton')
-membersListButton.addEventListener('click', () => toggleMembersList())
+const team = document.getElementById('team')
 
 // Click event listeners for tabs
 storiesTab.addEventListener('click', () => selectTab(0))
@@ -133,9 +128,10 @@ function selectTab (tabIndex) {
       stories.classList.add('selected')
       // allStories.classList.add('selected')
       break
-    // All Stories
+    // Team Tab / Honor List
     case 1:
       teamTab.classList.add('selected')
+      team.classList.add('selected')
       break
     // Battle Log
     case 2:
@@ -144,17 +140,6 @@ function selectTab (tabIndex) {
       break
 
     default:
-  }
-}
-
-/**
- * Toggle members list for honors
- */
-function toggleMembersList () {
-  if (membersListContainer.classList.contains('show')) {
-    membersListContainer.classList.remove('show')
-  } else {
-    membersListContainer.classList.add('show')
   }
 }
 
@@ -390,12 +375,52 @@ document.addEventListener(
       })
       .then(() => {
         const memberProfile = getMemberProfile()
-
         const allMemberIds = getAllMembers().map(member => member.id)
         memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace)
           .then(() => {
             // needs to wait for the database variables to be setup by memberLogin
             getHonoredByMap(allMemberIds)
+              .then((honoredByMap) => {
+                /*
+                 * For each member in the array returned by getAllMembers(),
+                 * create HTML 'div' elements (which includes the member name
+                 * and honor button) to add into the honorButton drop-down list.
+                 */
+                getAllMembers().map(member => {
+                  const memberDiv = document.createElement('div')
+                  memberDiv.classList.add('member')
+                  const memberName = document.createElement('div')
+                  memberName.innerHTML = member.profile.name
+                  const honorBadge = document.createElement('div')
+                  honorBadge.classList.add('badge')
+                  const hoverText = document.createElement('span')
+                  hoverText.classList.add('hovertext')
+
+                  /*
+                   * If the current member has an honored_by array that's greater
+                   * than 0, add the honorBadge image to the honorBadge div element
+                   * that will be appended to memberDiv. Also, for each member in
+                   * the current member's honored_by array, add them to the tooltip
+                   * that pops up when the cursor hovers over the badge.
+                   */
+                  if (honoredByMap[member.id].length > 0) {
+                    honorBadge.innerHTML = '<img src="images/honorBadge.png" >'
+                    hoverText.innerHTML = '<b><u>Honored by:</u></b>'
+                    for (const m of honoredByMap[member.id]) {
+                      hoverText.innerHTML += '<br>' + getFNameAndLInitial(getMemberName(m))
+                    }
+                    honorBadge.appendChild(hoverText)
+                  }
+                  const honorButton = document.createElement('div')
+                  honorButton.classList.add('honor')
+                  honorButton.innerHTML = 'Honor'
+                  honorButton.addEventListener('click', () => honorMember(member))
+                  memberDiv.appendChild(memberName)
+                  memberDiv.appendChild(honorBadge)
+                  memberDiv.appendChild(honorButton)
+                  team.appendChild(memberDiv)
+                })
+              })
           })
 
         /* Get member info for profile button */
@@ -440,25 +465,6 @@ document.addEventListener(
 
         getBattleLog().map(story => {
           addToBattleLogTab(story)
-        })
-
-        /*
-         * For each member in the array returned by getAllMembers(),
-         * create HTML 'div' elements (which includes the member name
-         * and honor button) to add into the honorButton drop-down list.
-         */
-        getAllMembers().map(member => {
-          const memberDiv = document.createElement('div')
-          memberDiv.classList.add('member')
-          const memberName = document.createElement('div')
-          memberName.innerHTML = member.profile.name
-          const honorButton = document.createElement('div')
-          honorButton.classList.add('honor')
-          honorButton.innerHTML = 'Honor'
-          honorButton.addEventListener('click', () => honorMember(member))
-          memberDiv.appendChild(memberName)
-          memberDiv.appendChild(honorButton)
-          membersList.appendChild(memberDiv)
         })
       })
   }
