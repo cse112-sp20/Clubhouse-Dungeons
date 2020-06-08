@@ -15,7 +15,8 @@
     "clean:win32": "rmdir /Q /S dist",
     "lint": "eslint --fix src/ test/",
     "lint:report": "eslint --output-file eslint_report.json --format json src/ test/",
-    "docs:build": "node scripts/doc.js > docs/API_Documentation.md"
+    "docs:build": "node scripts/doc.js > docs/API_Documentation.md",
+    "pup":"npm run build & npm run test "
   },
   "author": "quaranteam8",
   "license": "ISC",
