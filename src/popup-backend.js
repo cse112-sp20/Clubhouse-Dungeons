@@ -1,6 +1,7 @@
 import {
   fetchStoriesAsync,
   fetchMembersAsync,
+  fetchSprintTimelineAsync,
   completeStoryAsync,
   ERR_MSG_BROWSER_STORAGE
 } from './api/clubhouse-api'
@@ -40,6 +41,13 @@ var MEMBER_MAP = null
  * @type {?Array<Story>}
  */
 var STORIES = null
+
+/**
+ * The first started iteration returned by the clubhouse API
+ *
+ * @type {?Array<Iteration>}
+ */
+var CURRENT_ITERATION = null
 
 /**
  * A promise to all global variables being initialized; promise that fulfills
@@ -248,6 +256,36 @@ const getProgress = () => {
 }
 
 /**
+ * Get the current iteration
+ *
+ * @returns {IterationDisplay} The current iteration
+ */
+const getSprintTimeline = () => {
+  // select only iterations that are started
+  CURRENT_ITERATION = CURRENT_ITERATION.filter(iter => iter.status === 'started')
+
+  if (CURRENT_ITERATION[0]) {
+    // calculate days remaining based on current & end dates
+    var startDate = new Date(CURRENT_ITERATION[0].start_date)
+    var currDate = new Date()
+    var endDate = new Date(CURRENT_ITERATION[0].end_date)
+    var remaining = Math.ceil((endDate.getTime() - currDate.getTime()) / (1000 * 3600 * 24))
+
+    if (remaining < 0) { // if the iteration is late don't show negative days
+      remaining = 0
+    }
+
+    return {
+      start_date: startDate,
+      end_date: endDate,
+      days_remaining: remaining
+    }
+  } else { // no started iterations
+    return false
+  }
+}
+
+/**
  * Get the SETUP promise. If SETUP hasn't been initialized yet, create it.
  * Otherwise, return the existing promise - do not recreate/restart it.
  *
@@ -270,6 +308,10 @@ const setup = () => {
         WORKSPACE = store.workspace
 
         Promise.all([
+          fetchSprintTimelineAsync(API_TOKEN)
+            .then(iterations => {
+              CURRENT_ITERATION = iterations
+            }),
           fetchStoriesAsync(API_TOKEN)
             .then(stories => {
               STORIES = stories
@@ -320,6 +362,7 @@ export {
   getMemberName,
   getMemberProfile,
   getProgress,
+  getSprintTimeline,
   setup,
   completeStory
 }
