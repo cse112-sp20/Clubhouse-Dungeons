@@ -26,7 +26,8 @@ describe('Login intended behavior', () => {
             executablePath: process.env.PUPPETEER_EXEC_PATH,
             args: [
                 `--disable-extensions-except=${pathToExtension}`,
-                `--load-extension=${pathToExtension}`
+                `--load-extension=${pathToExtension}`,
+                '--no-sandbox'
             ]
         });
 
