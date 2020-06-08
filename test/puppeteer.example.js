@@ -19,6 +19,7 @@ async function testFunc(){
   // Open a new browser with puppeteer and load the extension
   browser = await puppeteer.launch({
     headless: false, // extension are allowed only in head-full mode
+    executablePath: process.env.PUPPETEER_EXEC_PATH,
     args: [
       `--disable-extensions-except=${extensionPath}`,
       `--load-extension=${extensionPath}`

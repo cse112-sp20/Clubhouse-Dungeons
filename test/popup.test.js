@@ -23,6 +23,7 @@ describe('Login intended behavior', () => {
         //open a new browser
         browser = await puppeteer.launch({
             headless: false,
+            executablePath: process.env.PUPPETEER_EXEC_PATH,
             args: [
                 `--disable-extensions-except=${pathToExtension}`,
                 `--load-extension=${pathToExtension}`
