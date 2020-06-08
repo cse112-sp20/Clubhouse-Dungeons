@@ -13,9 +13,9 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
     - name: Install node 
-      uses: actions/setup-node@v2-beta
+      uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: "12.x"
     - name: Install stuff 
       run: npm install 
       env:
