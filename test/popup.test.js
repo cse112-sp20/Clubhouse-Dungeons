@@ -11,7 +11,7 @@ const waitForNavigationTimeout = 3000;
 const expectPuppeteer = require('expect-puppeteer');
 const puppeteer = require('puppeteer');
 var extensionPage;
-var profileContainer;
+var testContainer;
 var browser;
 
 describe('Login intended behavior', () => {
@@ -82,8 +82,8 @@ describe('Login intended behavior', () => {
         await extensionPage.click('#profileContainer');
 
         await extensionPage.click('#profileContainer');
-        profileContainer = await extensionPage.$('#profileContainer');
-        expect(profileContainer['_remoteObject']['description']).toContain('closed');
+        testContainer = await extensionPage.$('#profileContainer');
+        expect(testContainer['_remoteObject']['description']).toContain('closed');
 
 
     });
@@ -95,8 +95,74 @@ describe('Login intended behavior', () => {
     it('Test "profileContainer" Tab button', async () => {
         await extensionPage.click('#profileContainer');
 
-        profileContainer = await extensionPage.$('#profileContainer');
-        expect(profileContainer['_remoteObject']['description']).toContain('open');
+        testContainer = await extensionPage.$('#profileContainer');
+        expect(testContainer['_remoteObject']['description']).toContain('open');
+
+
+    });
+
+    /**
+     * Unit Test 3
+     * Testing membersList Button when Open
+     */
+    it('Test "membersList" Tab button', async (  ) => {
+        await extensionPage.click('#membersListButton');
+
+        await extensionPage.click('#membersListButton');
+        testContainer = await extensionPage.$('#membersListContainer');
+        expect(testContainer['_remoteObject']['description']).not.toContain('show');
+
+
+    });
+    
+    /**
+     * Unit Test 4
+     * Testing membersList Button when Closed
+     */
+    it('Test "membersList" Tab button', async (  ) => {
+        await extensionPage.click('#membersListButton');
+
+        testContainer = await extensionPage.$('#membersListContainer');
+        expect(testContainer['_remoteObject']['description']).toContain('show');
+
+
+    });
+    
+    /**
+     * Unit Test 5
+     * Testing myStories Tab
+     */
+    it('Test "myStories" Tab button', async (  ) => {
+        await extensionPage.click('#myStoriesTab');
+
+        testContainer = await extensionPage.$('#myStories');
+        expect(testContainer['_remoteObject']['description']).toContain('selected');
+
+
+    });
+
+    /**
+     * Unit Test 6
+     * Testing allStories Tab
+     */
+    it('Test "allStories" Tab button', async (  ) => {
+        await extensionPage.click('#allStoriesTab');
+
+        testContainer = await extensionPage.$('#allStories');
+        expect(testContainer['_remoteObject']['description']).toContain('selected');
+
+
+    });
+
+    /**
+     * Unit Test 7
+     * Testing battleLog Tab
+     */
+    it('Test "battleLog" Tab button', async (  ) => {
+        await extensionPage.click('#battleLogTab');
+
+        testContainer = await extensionPage.$('#battleLog');
+        expect(testContainer['_remoteObject']['description']).toContain('selected');
 
 
     });
