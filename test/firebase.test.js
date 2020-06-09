@@ -1,7 +1,8 @@
 import {
     memberLogin,
     honorDatabaseMember,
-    workspaceRef
+    workspaceRef,
+    memberRef
 } from '../src/db/firebase'
 import {
     setup,
@@ -113,7 +114,7 @@ describe('Test suite for firebase.js', () => {
 
     // Perform the setup before any test
     beforeAll(async () => {
-        await setup();
+        await setup()
     });
 
     // Before each test, generate a new database for the test
@@ -124,8 +125,10 @@ describe('Test suite for firebase.js', () => {
 
     // After each test, destroy the test database entry
     afterEach(() => {
+        memberRef.off()
         // Clear the test database to keep each test clean
         workspaceRef.remove()
+        
     })
 
 
@@ -135,7 +138,7 @@ describe('Test suite for firebase.js', () => {
      */
     it('Test Member Login for USER 1', async (done) => {
         // Grab the values of the current user in the db
-        workspaceRef.child(iterationId).child(user1ID).once('value').then((dataSnapshot) => {
+        await workspaceRef.child(iterationId).child(user1ID).once('value').then((dataSnapshot) => {
             // Save variables to test, then clear db
             var honoredByTest = dataSnapshot.val().honoredBy
             var honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
@@ -144,9 +147,9 @@ describe('Test suite for firebase.js', () => {
             expect(honoredByTest).toBe(false)
             // Expect the remaining recognitions to be 3
             expect(honorsRemainingTest).toBe(3)
-
-            done()
         })
+
+        done()
     })
 
 
@@ -155,7 +158,6 @@ describe('Test suite for firebase.js', () => {
      * USER 1 will honor USER 2 once
      */
     it('Test usage of honorDatabaseMember once', async (done) => {
-
         // Perform the honoring
         await honorDatabaseMember(user1ID, user2ID)
 
@@ -172,7 +174,7 @@ describe('Test suite for firebase.js', () => {
         })
 
         // Now check that USER2 received the honor
-        workspaceRef.child(iterationId).child(user2ID).once('value', (dataSnapshot) => {
+        await workspaceRef.child(iterationId).child(user2ID).once('value', (dataSnapshot) => {
             // Save variables to test, then clear db
             var honoredByTest2 = dataSnapshot.val().honoredBy
             var honorsRemainingTest2 = dataSnapshot.val().honorRecognitionsRemaining
@@ -181,9 +183,9 @@ describe('Test suite for firebase.js', () => {
             expect(honoredByTest2).toHaveProperty(user1ID)
             // Expect the remaining recognitions to be 3
             expect(honorsRemainingTest2).toBe(3)
-
-            done()
         })
+
+        done()
     })
 
 
@@ -194,7 +196,6 @@ describe('Test suite for firebase.js', () => {
      * End result should be the same as Unit Test 2
      */
     it('Test usage of honorDatabaseMember twice', async (done) => {
-
         // Perform the honoring
         await honorDatabaseMember(user1ID, user2ID) // First honoring
         await honorDatabaseMember(user1ID, user2ID) // Second honoring
@@ -211,17 +212,17 @@ describe('Test suite for firebase.js', () => {
         })
 
         // Now check that USER2 received a single honor
-        workspaceRef.child(iterationId).child(user2ID).once('value', (dataSnapshot) => {
+        await workspaceRef.child(iterationId).child(user2ID).once('value', (dataSnapshot) => {
             var honoredByTest2 = dataSnapshot.val().honoredBy
             var honorsRemainingTest2 = dataSnapshot.val().honorRecognitionsRemaining
 
             // Expect the honoredBy to have only 1 honor by user1
             expect(honoredByTest2).toHaveProperty(user1ID)
             // Expect the remaining recognitions to be 3
-            expect(honorsRemainingTest2).toBe(3)
-
-            done()
+            expect(honorsRemainingTest2).toBe(3)   
         })
+
+        done()
     })
 
 
@@ -232,7 +233,6 @@ describe('Test suite for firebase.js', () => {
      * Only USER's 2,3,4 should get the honors because of the 3 honor limit
      */
     it('Test usage of honorDatabaseMember once', async (done) => {
-
         // Perform the honoring
         await honorDatabaseMember(user1ID, user2ID)  // First honor (USER1->USER2)
         await honorDatabaseMember(user1ID, user3ID)  // Second honor (USER1->USER3)
@@ -259,11 +259,11 @@ describe('Test suite for firebase.js', () => {
          * Recursive function that will go through each user and check the honors
          * @param {int} currUser - The current user number to check values for (expected 1 - 4)
          */
-        const checkUser = (currUser) => {
+        const checkUser = async (currUser) => {
             // Just keep going recursively for all non USER5
             if (currUser < 4) {
                 // Check that USER5 did NOT receive any honors
-                workspaceRef.child(iterationId).child(users[currUser]).once('value', (dataSnapshot) => {
+                await workspaceRef.child(iterationId).child(users[currUser]).once('value', (dataSnapshot) => {
                     honoredByTest = dataSnapshot.val().honoredBy
                     honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
 
@@ -276,7 +276,7 @@ describe('Test suite for firebase.js', () => {
                 })
             } else {
                 // Now check that USER 5 did not receive any honors
-                workspaceRef.child(iterationId).child(user5ID).once('value', (dataSnapshot) => {
+                await workspaceRef.child(iterationId).child(user5ID).once('value', (dataSnapshot) => {
                     honoredByTest = dataSnapshot.val().honoredBy
                     honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
 
@@ -285,13 +285,15 @@ describe('Test suite for firebase.js', () => {
                     // Expect the remaining recognitions to be 3
                     expect(honorsRemainingTest).toBe(3)
 
-                    done()
+                    
                 })
             }
         }
 
         // Call the recursive function
-        checkUser(1)
+        await checkUser(1)
+
+        done()
     })
 
 })
