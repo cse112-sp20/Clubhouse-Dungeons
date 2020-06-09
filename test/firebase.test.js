@@ -30,6 +30,7 @@ global.fetch = fetchMock
 const testAPIToken = '5ed2b278-d7a6-4344-b33f-94b8901aa75a'
 const memberID = '5ecdd3de-0125-4888-802a-5d3ba46ca0dc'
 const workspace = 'quarantest8'
+const iterationId = 48
 const myName = '_Test User_'
 
 /** CHROME STORAGE MOCK */
@@ -107,8 +108,6 @@ const user5ID = '5ecdd438-2c26-445b-bfa5-cbb113f47484'
 
 const users = [user1ID, user2ID, user3ID, user4ID, user5ID]
 
-// const iterationId = 1 // Will be used in the future when we are able to add iterations in the honor system
-
 /**
  * Unit Test 1
  * We are creating a user that will have no honors, so the honoredBy should be empty or null
@@ -119,10 +118,10 @@ it('Test Member Login for USER 1', done => {
   setup()
     .then(() => {
       // Log in the user using the firebase.js script
-      memberLogin(user1ID, getAllMembers().map(member => { return member.id }), workspace /*, iterationId */)
+      memberLogin(user1ID, getAllMembers().map(member => { return member.id }), workspace, iterationId)
         .then(() => {
           // Grab the values of the current user in the db
-          workspaceRef.child(2).child(user1ID).once('value').then((dataSnapshot) => {
+          workspaceRef.child(iterationId).child(user1ID).once('value').then((dataSnapshot) => {
             // Save variables to test, then clear db
             var honoredByTest = dataSnapshot.val().honoredBy
             var honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
@@ -150,12 +149,12 @@ it('Test usage of honorDatabaseMember once', done => {
   setup()
     .then(() => {
       // Log in the user using the firebase.js script
-      memberLogin(user1ID, getAllMembers().map(member => { return member.id }), workspace /*, iterationId */)
+      memberLogin(user1ID, getAllMembers().map(member => { return member.id }), workspace, iterationId)
         .then(() => {
           // Perform the honoring
           honorDatabaseMember(user1ID, user2ID).then(() => {
             // First check that USER1 sent the honor
-            workspaceRef.child(2).child(user1ID).once('value', (dataSnapshot) => {
+            workspaceRef.child(iterationId).child(user1ID).once('value', (dataSnapshot) => {
               // Save variables to test, then clear db
               var honoredByTest1 = dataSnapshot.val().honoredBy
               var honorsRemainingTest1 = dataSnapshot.val().honorRecognitionsRemaining
@@ -166,7 +165,7 @@ it('Test usage of honorDatabaseMember once', done => {
               expect(honorsRemainingTest1).toBe(2)
 
               // Now check that USER2 received the honor
-              workspaceRef.child(2).child(user2ID).once('value', (dataSnapshot) => {
+              workspaceRef.child(iterationId).child(user2ID).once('value', (dataSnapshot) => {
                 // Save variables to test, then clear db
                 var honoredByTest2 = dataSnapshot.val().honoredBy
                 var honorsRemainingTest2 = dataSnapshot.val().honorRecognitionsRemaining
@@ -197,13 +196,13 @@ it('Test usage of honorDatabaseMember once', done => {
   setup()
     .then(() => {
       // Log in the user using the firebase.js script
-      memberLogin(user1ID, getAllMembers().map(member => { return member.id }), workspace /*, iterationId */)
+      memberLogin(user1ID, getAllMembers().map(member => { return member.id }), workspace, iterationId)
         .then(() => {
           // Perform the honoring
           honorDatabaseMember(user1ID, user2ID).then(() => {
             honorDatabaseMember(user1ID, user2ID).then(() => {
               // First check that USER1 sent the honor and still has both honors
-              workspaceRef.child(2).child(user1ID).once('value', (dataSnapshot) => {
+              workspaceRef.child(iterationId).child(user1ID).once('value', (dataSnapshot) => {
                 var honoredByTest1 = dataSnapshot.val().honoredBy
                 var honorsRemainingTest1 = dataSnapshot.val().honorRecognitionsRemaining
 
@@ -213,7 +212,7 @@ it('Test usage of honorDatabaseMember once', done => {
                 expect(honorsRemainingTest1).toBe(2)
 
                 // Now check that USER2 received the honor
-                workspaceRef.child(2).child(user2ID).once('value', (dataSnapshot) => {
+                workspaceRef.child(iterationId).child(user2ID).once('value', (dataSnapshot) => {
                   var honoredByTest2 = dataSnapshot.val().honoredBy
                   var honorsRemainingTest2 = dataSnapshot.val().honorRecognitionsRemaining
 
@@ -244,7 +243,7 @@ it('Test usage of honorDatabaseMember once', done => {
   setup()
     .then(() => {
       // Log in the user using the firebase.js script
-      memberLogin(user1ID, getAllMembers().map(member => { return member.id }), workspace /*, iterationId */)
+      memberLogin(user1ID, getAllMembers().map(member => { return member.id }), workspace, iterationId)
         .then(() => {
           // Perform the honoring
           honorDatabaseMember(user1ID, user2ID).then(() => {
@@ -252,7 +251,7 @@ it('Test usage of honorDatabaseMember once', done => {
               honorDatabaseMember(user1ID, user4ID).then(() => {
                 honorDatabaseMember(user1ID, user5ID).then(() => {
                   // First check that USER1 has 0 honors
-                  workspaceRef.child(2).child(user1ID).once('value', (dataSnapshot) => {
+                  workspaceRef.child(iterationId).child(user1ID).once('value', (dataSnapshot) => {
                     var honoredByTest = dataSnapshot.val().honoredBy
                     var honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
 
@@ -266,7 +265,7 @@ it('Test usage of honorDatabaseMember once', done => {
                       // Just keep going recursively for all non USER5
                       if (currUser < 4) {
                         // Check that USER5 did NOT receive any honors
-                        workspaceRef.child(2).child(users[currUser]).once('value', (dataSnapshot) => {
+                        workspaceRef.child(iterationId).child(users[currUser]).once('value', (dataSnapshot) => {
                           honoredByTest = dataSnapshot.val().honoredBy
                           honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
 
@@ -279,7 +278,7 @@ it('Test usage of honorDatabaseMember once', done => {
                         })
                       } else {
                         // Now check that USER 5 did not receive any honors
-                        workspaceRef.child(2).child(user5ID).once('value', (dataSnapshot) => {
+                        workspaceRef.child(iterationId).child(user5ID).once('value', (dataSnapshot) => {
                           honoredByTest = dataSnapshot.val().honoredBy
                           honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
 

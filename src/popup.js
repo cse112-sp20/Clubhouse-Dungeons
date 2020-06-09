@@ -9,12 +9,14 @@ import {
   getMemberName,
   getMemberProfile,
   getProgress,
-  getSprintTimeline,
+  getIterationTimeline,
+  getCurrentIterationId,
   completeStory
 } from './popup-backend'
 import {
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
+  ERR_MSG_NO_ACTIVE_ITERATION,
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
   ERR_MSG_BROWSER_STORAGE,
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
@@ -25,10 +27,10 @@ import {
   memberLogin
 } from './db/firebase'
 
-// sprint timeline elements
-const sprintStart = document.getElementById('sprintStart')
-const sprintEnd = document.getElementById('sprintEnd')
-const sprintRemaining = document.getElementById('sprintRemaining')
+// Iteration timeline elements
+const iterationStart = document.getElementById('iterationStart')
+const iterationEnd = document.getElementById('iterationEnd')
+const iterationRemaining = document.getElementById('iterationRemaining')
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
@@ -354,35 +356,10 @@ document.addEventListener(
   'DOMContentLoaded',
   () => {
     setup()
-      .catch((e) => {
-        switch (e.message) {
-          case ERR_MSG_INTERNET:
-            // Respond to internet error
-            /* TODO: UI */
-            break
-          case ERR_MSG_INVALID_API_TOKEN:
-            signout()
-            /* TODO: UI */
-            break
-          case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
-            // Respond to quota exceeded
-            /* TODO: UI */
-            break
-          case ERR_MSG_BROWSER_STORAGE:
-            // Respond to error reading/writing to browser storage
-            /* TODO: UI */
-            break
-          case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
-          default:
-            // Respond to unknown error
-            /* TODO: UI */
-            break
-        }
-      })
       .then(() => {
         const memberProfile = getMemberProfile()
         const allMemberIds = getAllMembers().map(member => member.id)
-        memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace)
+        memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace, getCurrentIterationId())
           .then(() => {
             // needs to wait for the database variables to be setup by memberLogin
             getHonoredByMap(allMemberIds)
@@ -434,19 +411,19 @@ document.addEventListener(
         memberName.innerHTML = memberProfile.name
         memberTeam.innerHTML = memberProfile.workspace
 
-        /* Get sprint timeline details */
-        const sprintTimeline = getSprintTimeline()
-        if (sprintTimeline === false) {
-          sprintStart.innerHTML = 'No'
-          sprintEnd.innerHTML = 'Started'
-          sprintRemaining.innerHTML = 'Iterations'
-        } else {
+        /* Get iteration timeline details */
+        const iterationTimeline = getIterationTimeline()
+        if (iterationTimeline) {
           const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
           // update page text with readable dates
-          sprintStart.innerHTML = 'Start: ' + months[sprintTimeline.start_date.getMonth()] + ' ' + sprintTimeline.start_date.getDate()
-          sprintEnd.innerHTML = 'End: ' + months[sprintTimeline.end_date.getMonth()] + ' ' + sprintTimeline.end_date.getDate()
-          sprintRemaining.innerHTML = 'Remaining: ' + sprintTimeline.days_remaining + ' days'
+          iterationStart.innerHTML = 'Start: ' + months[iterationTimeline.start_date.getMonth()] + ' ' + iterationTimeline.start_date.getDate()
+          iterationEnd.innerHTML = 'End: ' + months[iterationTimeline.end_date.getMonth()] + ' ' + iterationTimeline.end_date.getDate()
+          iterationRemaining.innerHTML = 'Remaining: ' + iterationTimeline.days_remaining + ' days'
+        } else {
+          iterationStart.innerHTML = 'No'
+          iterationEnd.innerHTML = 'Started'
+          iterationRemaining.innerHTML = 'Iterations'
         }
 
         /* Get top warriors and update text */
@@ -487,6 +464,35 @@ document.addEventListener(
         getBattleLog().map(story => {
           addToBattleLogTab(story)
         })
+      })
+      .catch((e) => {
+        switch (e.message) {
+          case ERR_MSG_INTERNET:
+            // Respond to internet error
+            /* TODO: UI */
+            break
+          case ERR_MSG_INVALID_API_TOKEN:
+            signout()
+            /* TODO: UI */
+            break
+          case ERR_MSG_NO_ACTIVE_ITERATION:
+            // Respond to iterations being turned off or no iteration set up
+            /* TODO: UI */
+            break
+          case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
+            // Respond to quota exceeded
+            /* TODO: UI */
+            break
+          case ERR_MSG_BROWSER_STORAGE:
+            // Respond to error reading/writing to browser storage
+            /* TODO: UI */
+            break
+          case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
+          default:
+            // Respond to unknown error
+            /* TODO: UI */
+            break
+        }
       })
   }
 ) // addEventListener()
