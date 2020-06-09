@@ -361,84 +361,6 @@ body {
   color: rgba(255,255,255,.5);
   text-transform: uppercase;
 }
-#membersListContainer #membersListButton {
-  position: absolute;
-  right: -32px;
-  bottom: 50%;
-  transform: translateY(50%);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background: rgba(255,255,255,.2);
-  color: #ffffff;
-  height: 24px;
-  width: 24px;
-  border-radius: 100px;
-  transition: all .2s linear;
-}
-#membersListContainer #membersListButton div {
-  display: none;
-}
-#membersListContainer.show #membersListButton span {
-  display: none;
-}
-#membersListContainer.show #membersListButton div {
-  display: block;
-}
-#membersListContainer #membersListButton:hover {
-  background: rgba(255,255,255,.35);
-}
-
-#membersListContainer #membersList {
-  visibility: hidden;
-  position: absolute;
-  bottom: 32px;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  height: 0px;
-  width: 200px;
-  overflow-y: scroll;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  padding: 8px;
-  transition: all .2s ease-in-out;
-}
-#membersListContainer.show #membersList {
-  visibility: visible;
-  height: 200px;
-}
-#membersList .member {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  text-align: left;
-  font-weight: normal;
-  font-size: 11px;
-  padding: 4px 0;
-}
-#membersList .member .honor {
-  padding: 8px;
-  color: #ffc400;
-  font-weight: bold;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  border-radius: 8px;
-  border: 2px solid #ffc400;
-  transition: all .2s linear;
-}
-#membersList .member .honor:hover {
-  background: #ffc400;
-  color: #ffffff;
-}
-
 
 .panel {
   height: 50%;
@@ -558,7 +480,74 @@ body {
   color: #34495e;
 }
 
+.story:last-child {
+  margin-bottom: 100px
+}
+
 .action {
   padding: 8px;
   border-bottom: 1px solid rgba(0,0,0,.1);
+}
+
+.action:last-child {
+  margin-bottom: 100px
+}
+
+#team .member {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  /*justify-content: space-between;*/
+  align-items: center;
+  text-align: left;
+  font-weight: normal;
+  font-size: 11px;
+  padding: 4px 0;
+}
+
+#team .member .honor {
+  padding: 8px;
+  color: #ffc400;
+  font-weight: bold;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 8px;
+  border: 2px solid #ffc400;
+  transition: all .2s linear;
+}
+#team .member .honor:hover {
+  background: #ffc400;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.badge {
+  position: relative;
+  display: inline-block;
+  border-bottom: none;
+}
+
+.badge img{
+  width: 24px;
+  height: auto;
+}
+
+.badge .hovertext{
+  visibility: hidden;
+  width: 120px;
+  background-color: gray;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 105%;
+}
+
+.badge:hover .hovertext{
+  visibility: visible;
 }

@@ -1,11 +1,11 @@
 import {
-  memberLogin,
-  honorDatabaseMember,
-  workspaceRef
+    memberLogin,
+    honorDatabaseMember,
+    workspaceRef
 } from '../src/db/firebase'
 import {
-  setup,
-  getAllMembers
+    setup,
+    getAllMembers
 } from '../src/popup-backend'
 
 import * as realFetch from 'node-fetch'
@@ -16,12 +16,12 @@ import * as realFetch from 'node-fetch'
  * remove it; like normal fetch, but doesn't use CORS proxy.
  */
 const fetchMock = jest.fn().mockImplementation((resource, init = {}) => {
-  const corsProxyUrl = 'https://cors-anywhere.herokuapp.com'
-  const corsPrefix = corsProxyUrl + '/'
-  if (resource.startsWith(corsPrefix)) {
-    resource = resource.substring(corsPrefix.length)
-  }
-  return realFetch(resource, init)
+    const corsProxyUrl = 'https://cors-anywhere.herokuapp.com'
+    const corsPrefix = corsProxyUrl + '/'
+    if (resource.startsWith(corsPrefix)) {
+        resource = resource.substring(corsPrefix.length)
+    }
+    return realFetch(resource, init)
 })
 
 global.fetch = fetchMock
@@ -38,36 +38,36 @@ const myName = '_Test User_'
  * and set mocks.
  */
 const chromeStorage = {
-  api_token: testAPIToken,
-  member_id: memberID,
-  workspace: workspace,
-  name: myName
+    api_token: testAPIToken,
+    member_id: memberID,
+    workspace: workspace,
+    name: myName
 }
 
 /**
  * Mocks a successful (no storage error) behavior of chrome.sync.storage.get
  */
 const chromeStorageGetMock = jest.fn().mockImplementation((keys = null, callback) => {
-  let items = null
-  if (!keys) {
-    // If keys is null, return everything in storage
-    items = chromeStorage
-  } else if (typeof keys === 'string') {
-    // If keys is a string specifying one key, return only that key-value pair
-    // If the key doesn't exist in storage, return empty object
-    items = Object.prototype.hasOwnProperty.call(chromeStorage, keys)
-      ? { [keys]: chromeStorage[keys] }
-      : {}
-  } else if (Array.isArray(keys)) {
-    // If keys is an array, return all of the key-value pairs found in storage
-    items = {}
-    keys.map(k => {
-      if (Object.prototype.hasOwnProperty.call(chromeStorage, k)) {
-        items[k] = chromeStorage[k]
-      }
-    })
-  }
-  callback(items)
+    let items = null
+    if (!keys) {
+        // If keys is null, return everything in storage
+        items = chromeStorage
+    } else if (typeof keys === 'string') {
+        // If keys is a string specifying one key, return only that key-value pair
+        // If the key doesn't exist in storage, return empty object
+        items = Object.prototype.hasOwnProperty.call(chromeStorage, keys)
+            ? { [keys]: chromeStorage[keys] }
+            : {}
+    } else if (Array.isArray(keys)) {
+        // If keys is an array, return all of the key-value pairs found in storage
+        items = {}
+        keys.map(k => {
+            if (Object.prototype.hasOwnProperty.call(chromeStorage, k)) {
+                items[k] = chromeStorage[k]
+            }
+        })
+    }
+    callback(items)
 })
 
 const chromeStorageSetMock = jest.fn().mockImplementation(() => console.log('TODO'))
@@ -83,16 +83,16 @@ const chromeStorageClearMock = jest.fn().mockImplementation(() => console.log('T
  * undefined.
  */
 const chromeMock = {
-  storage: {
-    sync: {
-      get: chromeStorageGetMock,
-      set: chromeStorageSetMock,
-      clear: chromeStorageClearMock
+    storage: {
+        sync: {
+            get: chromeStorageGetMock,
+            set: chromeStorageSetMock,
+            clear: chromeStorageClearMock
+        }
+    },
+    runtime: {
+        lastError: undefined
     }
-  },
-  runtime: {
-    lastError: undefined
-  }
 }
 
 global.chrome = chromeMock
@@ -112,193 +112,190 @@ const users = [user1ID, user2ID, user3ID, user4ID, user5ID]
 
 describe('Test suite for firebase.js', () => {
 
-  // Perform the setup before any test
-  beforeAll(async () => {
-    await setup();
-  });
+    // Perform the setup before any test
+    beforeAll(async () => {
+        await setup();
+    });
 
-  // Before each test, generate a new database for the test
-  beforeEach(async () => {
-    // Log in the user using the firebase.js script
-    await memberLogin(user1ID, getAllMembers().map(member => { return member.id }), workspace /*, iterationId */)
-  })
-
-  // After each test, destroy the test database entry
-  afterEach(() => {
-    // Clear the test database to keep each test clean
-    workspaceRef.remove()
-  })
-
-    
-  /**
-   * Unit Test 1
-   * We are creating a user that will have no honors, so the honoredBy should be empty or null
-   */
-  it('Test Member Login for USER 1', async(done) => {
-    // Grab the values of the current user in the db
-    workspaceRef.child(2).child(user1ID).once('value').then((dataSnapshot) => {
-      // Save variables to test, then clear db
-      var honoredByTest = dataSnapshot.val().honoredBy
-      var honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
-
-      // Expect the honored_by to be empty (false)
-      expect(honoredByTest).toBe(false)
-      // Expect the remaining recognitions to be 3
-      expect(honorsRemainingTest).toBe(3)
-
-      done()
-    })
-  })
-
-
-  /**
-   * Unit Test 2
-   * USER 1 will honor USER 2 once
-   */
-  it('Test usage of honorDatabaseMember once', async(done) => {
-
-    // Perform the honoring
-    await honorDatabaseMember(user1ID, user2ID)
-
-    // First check that USER1 sent the honor
-    await workspaceRef.child(2).child(user1ID).once('value', (dataSnapshot) => {
-      // Save variables to test, then clear db
-      var honoredByTest1 = dataSnapshot.val().honoredBy
-      var honorsRemainingTest1 = dataSnapshot.val().honorRecognitionsRemaining
-
-      // Expect the honoredBy to be empty (false)
-      expect(honoredByTest1).toBe(false)
-      // Expect the remaining recognitions to be 2
-      expect(honorsRemainingTest1).toBe(2)
+    // Before each test, generate a new database for the test
+    beforeEach(async () => {
+        // Log in the user using the firebase.js script
+        await memberLogin(user1ID, getAllMembers().map(member => { return member.id }), workspace /*, iterationId */)
     })
 
-    // Now check that USER2 received the honor
-    workspaceRef.child(2).child(user2ID).once('value', (dataSnapshot) => {
-      // Save variables to test, then clear db
-      var honoredByTest2 = dataSnapshot.val().honoredBy
-      var honorsRemainingTest2 = dataSnapshot.val().honorRecognitionsRemaining
-
-      // Expect the honoredBy to have 1 honor by user1
-      expect(honoredByTest2).toHaveProperty(user1ID)
-      // Expect the remaining recognitions to be 3
-      expect(honorsRemainingTest2).toBe(3)
-
-      done()
-    })
-  })
-
-
-
-  /**
-   * Unit Test 3
-   * USER 1 will honor USER 2 TWICE
-   * End result should be the same as Unit Test 2
-   */
-  it('Test usage of honorDatabaseMember twice', async(done) => {
-
-    // Perform the honoring
-    await honorDatabaseMember(user1ID, user2ID) // First honoring
-    await honorDatabaseMember(user1ID, user2ID) // Second honoring
-
-    // First check that USER1 sent the honor and still has 2 honors
-    await workspaceRef.child(2).child(user1ID).once('value', (dataSnapshot) => {
-      var honoredByTest1 = dataSnapshot.val().honoredBy
-      var honorsRemainingTest1 = dataSnapshot.val().honorRecognitionsRemaining
-
-      // Expect the honoredBy to be empty (false)
-      expect(honoredByTest1).toBe(false)
-      // Expect the remaining recognitions to be 2, second honor did not get used up
-      expect(honorsRemainingTest1).toBe(2)  
+    // After each test, destroy the test database entry
+    afterEach(() => {
+        // Clear the test database to keep each test clean
+        workspaceRef.remove()
     })
 
-    // Now check that USER2 received a single honor
-    workspaceRef.child(2).child(user2ID).once('value', (dataSnapshot) => {
-      var honoredByTest2 = dataSnapshot.val().honoredBy
-      var honorsRemainingTest2 = dataSnapshot.val().honorRecognitionsRemaining
-
-      // Expect the honoredBy to have only 1 honor by user1
-      expect(honoredByTest2).toHaveProperty(user1ID)
-      // Expect the remaining recognitions to be 3
-      expect(honorsRemainingTest2).toBe(3)
-
-      done()
-    })
-  })
-  
-
-
-  /**
-   * Unit Test 4
-   * USER 1 attempts to honor 4 people (USER 2, USER 3, USER 4, USER 5)
-   * Only USER's 2,3,4 should get the honors because of the 3 honor limit
-   */
-  it('Test usage of honorDatabaseMember once', async(done) => {
-
-    // Perform the honoring
-    await honorDatabaseMember(user1ID, user2ID)  // First honor (USER1->USER2)
-    await honorDatabaseMember(user1ID, user3ID)  // Second honor (USER1->USER3)
-    await honorDatabaseMember(user1ID, user4ID)  // Third honor (USER1->USER4)
-    await honorDatabaseMember(user1ID, user5ID)  // Fourth honor (USER1->USER5)
-
-    var honoredByTest
-    var honorsRemainingTest
-
-    // First check that USER1 has 0 honors
-    await workspaceRef.child(2).child(user1ID).once('value', (dataSnapshot) => {
-      honoredByTest = dataSnapshot.val().honoredBy
-      honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
-
-      // Expect the honoredBy to be empty (false)
-      expect(honoredByTest).toBe(false)
-      // Expect the remaining recognitions to be 2, second honor did not get used up
-      expect(honorsRemainingTest).toBe(0)
-
-      
-    })
 
     /**
-     * Recursive function that will go through each user and check the honors
-     * @param {int} currUser - The current user number to check values for (expected 1 - 4)
+     * Unit Test 1
+     * We are creating a user that will have no honors, so the honoredBy should be empty or null
      */
-    const checkUser = (currUser) => {
-      // Just keep going recursively for all non USER5
-      if (currUser < 4) {
-        // Check that USER5 did NOT receive any honors
-        workspaceRef.child(2).child(users[currUser]).once('value', (dataSnapshot) => {
-          honoredByTest = dataSnapshot.val().honoredBy
-          honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
+    it('Test Member Login for USER 1', async (done) => {
+        // Grab the values of the current user in the db
+        workspaceRef.child(2).child(user1ID).once('value').then((dataSnapshot) => {
+            // Save variables to test, then clear db
+            var honoredByTest = dataSnapshot.val().honoredBy
+            var honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
 
-          // Expect the honoredBy to have only 1 honor by user1
-          expect(honoredByTest).toHaveProperty(user1ID)
-          // Expect the remaining recognitions to be 3
-          expect(honorsRemainingTest).toBe(3)
+            // Expect the honored_by to be empty (false)
+            expect(honoredByTest).toBe(false)
+            // Expect the remaining recognitions to be 3
+            expect(honorsRemainingTest).toBe(3)
 
-          checkUser(currUser + 1)
+            done()
         })
-      } else {
-        // Now check that USER 5 did not receive any honors
-        workspaceRef.child(2).child(user5ID).once('value', (dataSnapshot) => {
-          honoredByTest = dataSnapshot.val().honoredBy
-          honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
+    })
 
-          // Expect USER5 to not have any honors because USER1 ran out
-          expect(honoredByTest).toBe(false)
-          // Expect the remaining recognitions to be 3
-          expect(honorsRemainingTest).toBe(3)
 
-          done()
+    /**
+     * Unit Test 2
+     * USER 1 will honor USER 2 once
+     */
+    it('Test usage of honorDatabaseMember once', async (done) => {
+
+        // Perform the honoring
+        await honorDatabaseMember(user1ID, user2ID)
+
+        // First check that USER1 sent the honor
+        await workspaceRef.child(2).child(user1ID).once('value', (dataSnapshot) => {
+            // Save variables to test, then clear db
+            var honoredByTest1 = dataSnapshot.val().honoredBy
+            var honorsRemainingTest1 = dataSnapshot.val().honorRecognitionsRemaining
+
+            // Expect the honoredBy to be empty (false)
+            expect(honoredByTest1).toBe(false)
+            // Expect the remaining recognitions to be 2
+            expect(honorsRemainingTest1).toBe(2)
         })
-      }
-    }
 
-    // Call the recursive function
-    checkUser(1)
-  })
+        // Now check that USER2 received the honor
+        workspaceRef.child(2).child(user2ID).once('value', (dataSnapshot) => {
+            // Save variables to test, then clear db
+            var honoredByTest2 = dataSnapshot.val().honoredBy
+            var honorsRemainingTest2 = dataSnapshot.val().honorRecognitionsRemaining
+
+            // Expect the honoredBy to have 1 honor by user1
+            expect(honoredByTest2).toHaveProperty(user1ID)
+            // Expect the remaining recognitions to be 3
+            expect(honorsRemainingTest2).toBe(3)
+
+            done()
+        })
+    })
+
+
+
+    /**
+     * Unit Test 3
+     * USER 1 will honor USER 2 TWICE
+     * End result should be the same as Unit Test 2
+     */
+    it('Test usage of honorDatabaseMember twice', async (done) => {
+
+        // Perform the honoring
+        await honorDatabaseMember(user1ID, user2ID) // First honoring
+        await honorDatabaseMember(user1ID, user2ID) // Second honoring
+
+        // First check that USER1 sent the honor and still has 2 honors
+        await workspaceRef.child(2).child(user1ID).once('value', (dataSnapshot) => {
+            var honoredByTest1 = dataSnapshot.val().honoredBy
+            var honorsRemainingTest1 = dataSnapshot.val().honorRecognitionsRemaining
+
+            // Expect the honoredBy to be empty (false)
+            expect(honoredByTest1).toBe(false)
+            // Expect the remaining recognitions to be 2, second honor did not get used up
+            expect(honorsRemainingTest1).toBe(2)
+        })
+
+        // Now check that USER2 received a single honor
+        workspaceRef.child(2).child(user2ID).once('value', (dataSnapshot) => {
+            var honoredByTest2 = dataSnapshot.val().honoredBy
+            var honorsRemainingTest2 = dataSnapshot.val().honorRecognitionsRemaining
+
+            // Expect the honoredBy to have only 1 honor by user1
+            expect(honoredByTest2).toHaveProperty(user1ID)
+            // Expect the remaining recognitions to be 3
+            expect(honorsRemainingTest2).toBe(3)
+
+            done()
+        })
+    })
+
+
+
+    /**
+     * Unit Test 4
+     * USER 1 attempts to honor 4 people (USER 2, USER 3, USER 4, USER 5)
+     * Only USER's 2,3,4 should get the honors because of the 3 honor limit
+     */
+    it('Test usage of honorDatabaseMember once', async (done) => {
+
+        // Perform the honoring
+        await honorDatabaseMember(user1ID, user2ID)  // First honor (USER1->USER2)
+        await honorDatabaseMember(user1ID, user3ID)  // Second honor (USER1->USER3)
+        await honorDatabaseMember(user1ID, user4ID)  // Third honor (USER1->USER4)
+        await honorDatabaseMember(user1ID, user5ID)  // Fourth honor (USER1->USER5)
+
+        var honoredByTest
+        var honorsRemainingTest
+
+        // First check that USER1 has 0 honors
+        await workspaceRef.child(2).child(user1ID).once('value', (dataSnapshot) => {
+            honoredByTest = dataSnapshot.val().honoredBy
+            honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
+
+            // Expect the honoredBy to be empty (false)
+            expect(honoredByTest).toBe(false)
+            // Expect the remaining recognitions to be 2, second honor did not get used up
+            expect(honorsRemainingTest).toBe(0)
+
+
+        })
+
+        /**
+         * Recursive function that will go through each user and check the honors
+         * @param {int} currUser - The current user number to check values for (expected 1 - 4)
+         */
+        const checkUser = (currUser) => {
+            // Just keep going recursively for all non USER5
+            if (currUser < 4) {
+                // Check that USER5 did NOT receive any honors
+                workspaceRef.child(2).child(users[currUser]).once('value', (dataSnapshot) => {
+                    honoredByTest = dataSnapshot.val().honoredBy
+                    honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
+
+                    // Expect the honoredBy to have only 1 honor by user1
+                    expect(honoredByTest).toHaveProperty(user1ID)
+                    // Expect the remaining recognitions to be 3
+                    expect(honorsRemainingTest).toBe(3)
+
+                    checkUser(currUser + 1)
+                })
+            } else {
+                // Now check that USER 5 did not receive any honors
+                workspaceRef.child(2).child(user5ID).once('value', (dataSnapshot) => {
+                    honoredByTest = dataSnapshot.val().honoredBy
+                    honorsRemainingTest = dataSnapshot.val().honorRecognitionsRemaining
+
+                    // Expect USER5 to not have any honors because USER1 ran out
+                    expect(honoredByTest).toBe(false)
+                    // Expect the remaining recognitions to be 3
+                    expect(honorsRemainingTest).toBe(3)
+
+                    done()
+                })
+            }
+        }
+
+        // Call the recursive function
+        checkUser(1)
+    })
 
 })
-
-
-
 
 
 
