@@ -4,11 +4,7 @@ const extensionLoginHtml = `login.html`; // The main page of our extension
 const extensionPopupHtml = `popup.html`;
 
 const testAPIToken = '5ed2b278-d7a6-4344-b33f-94b8901aa75a'
-const memberID = '5ecdd3de-0125-4888-802a-5d3ba46ca0dc'
-const workspace = 'quarantest8'
-const myName = '_Test User_'
 const waitForNavigationTimeout = 3000;
-const expectPuppeteer = require('expect-puppeteer');
 const puppeteer = require('puppeteer');
 var extensionPage;
 var browser;
@@ -21,7 +17,7 @@ describe('Login error handling', () => {
     // Before anything open a new browser with our extension enabled
     beforeAll(async () => {
         // describe path to our extension
-        const pathToExtension = require('path').join(__dirname, '../dist');
+        const pathToExtension = require('path').join(__dirname, extensionPath);
         browser = await puppeteer.launch({
             headless: false,
             args: [

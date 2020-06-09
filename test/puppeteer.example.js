@@ -1,6 +1,5 @@
 /* eslint-disable */
 const puppeteer = require('puppeteer')
-const assert = require('assert')
 
 const extensionPath = '../../../../../dist'; // This is the path to the manifext.json file
 const extensionID = `cngkocoehccomngohodhpmlpekpdjppj`; // This extension ID might not work for you, but if it does, feel free to remove this comment :)

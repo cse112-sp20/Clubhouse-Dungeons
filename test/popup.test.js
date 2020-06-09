@@ -4,11 +4,6 @@ const extensionLoginHtml = `login.html`; // The main page of our extension
 const extensionPopupHtml = `popup.html`;
 
 const testAPIToken = '5ed2b278-d7a6-4344-b33f-94b8901aa75a'
-const memberID = '5ecdd3de-0125-4888-802a-5d3ba46ca0dc'
-const workspace = 'quarantest8'
-const myName = '_Test User_'
-const waitForNavigationTimeout = 3000;
-const expectPuppeteer = require('expect-puppeteer');
 const puppeteer = require('puppeteer');
 var extensionPage;
 var testContainer;
@@ -19,7 +14,7 @@ describe('Login intended behavior', () => {
     // Before anything open a new browser with our extension enabled
     beforeAll(async () => {
         // describe path to our extension
-        const pathToExtension = require('path').join(__dirname, '../dist');
+        const pathToExtension = require('path').join(__dirname, extensionPath);
         //open a new browser
         browser = await puppeteer.launch({
             headless: false,
@@ -29,9 +24,11 @@ describe('Login intended behavior', () => {
             ]
         });
 
+        // open our extension in a new page
         extensionPage = await browser.newPage();
         await extensionPage.goto(`chrome-extension://${extensionID}/${extensionLoginHtml}`);
 
+        // type in API Token for our test Workspace
         await extensionPage.type('#apiEntry', testAPIToken);
 
         // click the button then wait for navigation
@@ -42,6 +39,7 @@ describe('Login intended behavior', () => {
             fail('Login button not correctly redirecting')
         });
 
+        // close this page
         await extensionPage.close();
     });
 
@@ -78,7 +76,7 @@ describe('Login intended behavior', () => {
      * Unit Test 1
      * Testing profileContainer Button when Open
      */
-    it('Test "profileContainer" Tab button', async (  ) => {
+    it('Test "profileContainer" Tab button when Open', async (  ) => {
         await extensionPage.click('#profileContainer');
 
         await extensionPage.click('#profileContainer');
@@ -92,7 +90,7 @@ describe('Login intended behavior', () => {
      * Unit Test 2
      * Testing profileContainer Button when Closed
      */
-    it('Test "profileContainer" Tab button', async () => {
+    it('Test "profileContainer" Tab button when Closed', async () => {
         await extensionPage.click('#profileContainer');
 
         testContainer = await extensionPage.$('#profileContainer');
@@ -100,42 +98,44 @@ describe('Login intended behavior', () => {
 
 
     });
-
+    
     /**
      * Unit Test 3
-     * Testing membersList Button when Open
-     */
-    it('Test "membersList" Tab button', async (  ) => {
-        await extensionPage.click('#membersListButton');
-
-        await extensionPage.click('#membersListButton');
-        testContainer = await extensionPage.$('#membersListContainer');
-        expect(testContainer['_remoteObject']['description']).not.toContain('show');
-
-
-    });
-    
-    /**
-     * Unit Test 4
-     * Testing membersList Button when Closed
-     */
-    it('Test "membersList" Tab button', async (  ) => {
-        await extensionPage.click('#membersListButton');
-
-        testContainer = await extensionPage.$('#membersListContainer');
-        expect(testContainer['_remoteObject']['description']).toContain('show');
-
-
-    });
-    
-    /**
-     * Unit Test 5
      * Testing myStories Tab
      */
-    it('Test "myStories" Tab button', async (  ) => {
-        await extensionPage.click('#myStoriesTab');
+    it('Test "Stories" Tab button', async () => {
 
-        testContainer = await extensionPage.$('#myStories');
+        await extensionPage.click('#teamTab')
+
+        await extensionPage.click('#storiesTab');
+
+        testContainer = await extensionPage.$('#storiesTab');
+        expect(testContainer['_remoteObject']['description']).toContain('selected');
+
+
+    });
+
+    /**
+     * Unit Test 4
+     * Testing allStories Tab
+     */
+    it('Test "Team" Tab button', async (  ) => {
+        await extensionPage.click('#teamTab');
+
+        testContainer = await extensionPage.$('#teamTab');
+        expect(testContainer['_remoteObject']['description']).toContain('selected');
+
+
+    });
+
+    /**
+     * Unit Test 5
+     * Testing battleLog Tab
+     */
+    it('Test "battleLog" Tab button', async (  ) => {
+        await extensionPage.click('#battleLogTab');
+
+        testContainer = await extensionPage.$('#battleLogTab');
         expect(testContainer['_remoteObject']['description']).toContain('selected');
 
 
@@ -143,28 +143,22 @@ describe('Login intended behavior', () => {
 
     /**
      * Unit Test 6
-     * Testing allStories Tab
+     * Testing Signout button
+     * MUST BE LAST TEST
      */
-    it('Test "allStories" Tab button', async (  ) => {
-        await extensionPage.click('#allStoriesTab');
+    it('Test Sign out Button', async () => {
+        await extensionPage.click('#profileContainer');
 
-        testContainer = await extensionPage.$('#allStories');
-        expect(testContainer['_remoteObject']['description']).toContain('selected');
+        await Promise.all([
+            extensionPage.waitForNavigation(), // The promise resolves after navigation has finished
+            extensionPage.click('#signoutButton')
+        ]).catch((error) => {
+            fail('Sign Out button not correctly redirecting')
+        });
+
+
+        expect(extensionPage.url()).toMatch(`chrome-extension://${extensionID}/${extensionLoginHtml}`);
 
 
     });
-
-    /**
-     * Unit Test 7
-     * Testing battleLog Tab
-     */
-    it('Test "battleLog" Tab button', async (  ) => {
-        await extensionPage.click('#battleLogTab');
-
-        testContainer = await extensionPage.$('#battleLog');
-        expect(testContainer['_remoteObject']['description']).toContain('selected');
-
-
-    });
-
 })
