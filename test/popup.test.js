@@ -69,7 +69,6 @@ describe('Login intended behavior', () => {
 
         expect(extensionPage.url()).toMatch(`chrome-extension://${extensionID}/${extensionPopupHtml}`);
         //await expect(extensionPage.url()).toMatch('wrong');
-
     });
 
     /**
@@ -78,11 +77,10 @@ describe('Login intended behavior', () => {
      */
     it('Test "profileContainer" Tab button when Open', async (  ) => {
         await extensionPage.click('#profileContainer');
-
         await extensionPage.click('#profileContainer');
+
         testContainer = await extensionPage.$('#profileContainer');
         expect(testContainer['_remoteObject']['description']).toContain('closed');
-
 
     });
 
@@ -96,7 +94,6 @@ describe('Login intended behavior', () => {
         testContainer = await extensionPage.$('#profileContainer');
         expect(testContainer['_remoteObject']['description']).toContain('open');
 
-
     });
     
     /**
@@ -104,14 +101,11 @@ describe('Login intended behavior', () => {
      * Testing myStories Tab
      */
     it('Test "Stories" Tab button', async () => {
-
         await extensionPage.click('#teamTab')
-
         await extensionPage.click('#storiesTab');
 
         testContainer = await extensionPage.$('#storiesTab');
         expect(testContainer['_remoteObject']['description']).toContain('selected');
-
 
     });
 
@@ -125,7 +119,6 @@ describe('Login intended behavior', () => {
         testContainer = await extensionPage.$('#teamTab');
         expect(testContainer['_remoteObject']['description']).toContain('selected');
 
-
     });
 
     /**
@@ -137,7 +130,6 @@ describe('Login intended behavior', () => {
 
         testContainer = await extensionPage.$('#battleLogTab');
         expect(testContainer['_remoteObject']['description']).toContain('selected');
-
 
     });
 
@@ -156,9 +148,6 @@ describe('Login intended behavior', () => {
             fail('Sign Out button not correctly redirecting')
         });
 
-
         expect(extensionPage.url()).toMatch(`chrome-extension://${extensionID}/${extensionLoginHtml}`);
-
-
     });
 })
