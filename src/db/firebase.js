@@ -265,7 +265,7 @@ const memberLogin = async (memberId, allMemberIds, workspace, iterationId) => {
   member = getMember(memberId)
 
   // Set the local member object's honored_by attribute
-  memberRef.on('value', (dataSnapshot) => {
+  memberRef.once('value', (dataSnapshot) => {
     if (dataSnapshot.exists()) {
       member.honoredBy = dataSnapshot.val().honored_by
       member.honorRecognitionsRemaining = dataSnapshot.val().honorRecognitionsRemaining
