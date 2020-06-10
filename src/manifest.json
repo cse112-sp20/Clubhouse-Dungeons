@@ -4,12 +4,12 @@
   "name": "Clubhouse Dungeons",
   "description": "Gamify your Clubhouse Experience",
   "icons": {
-    "16": "images/quaranteam8logo16.png",
-    "48": "images/quaranteam8logo48.png",
-    "128": "images/quaranteam8logo128.png"
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
   },
   "browser_action": {
-    "default_icon": "images/quaranteam8logo.png",
+    "default_icon": "images/icon128.png",
     "default_popup": "login.html",
     "default_title": "Quaranteam-8"
   },
