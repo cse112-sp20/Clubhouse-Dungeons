@@ -110,11 +110,10 @@ const topWarriorNames = ['_Test User_', 'Dorian Maldonado']
 const topWarriorPoints = [10, 4]
 
 describe('Test suite for popup-backend.js', () => {
-
   // Perform the setup before any test
   beforeAll(async () => {
-    await setup();
-  });
+    await setup()
+  })
 
   /**
    * Unit Test 1
@@ -122,7 +121,6 @@ describe('Test suite for popup-backend.js', () => {
    * Checks if the count of test stories are correct and that they are the correct ids
    */
   it('Test MY Incomplete Stories', done => {
-    
     // The only story that has been assigned to this test user as of right now is story 56
     const incompleteStories = getMyIncompleteStories()
     expect(incompleteStories.length).toBe(myIncompleteIDs.length) // Make sure the number of incomplete is correct
@@ -134,8 +132,6 @@ describe('Test suite for popup-backend.js', () => {
 
     done()
   })
-
-
 
   /**
    * Unit Test 2
@@ -155,7 +151,6 @@ describe('Test suite for popup-backend.js', () => {
 
     done()
   })
-
 
   /**
    * Unit Test 3
@@ -178,7 +173,6 @@ describe('Test suite for popup-backend.js', () => {
     done()
   })
 
-
   /**
    * Unit Test 4:
    * Checks if getMemberName returns correct name
@@ -188,7 +182,7 @@ describe('Test suite for popup-backend.js', () => {
     name = getMemberName(memberID)
     expect(name).toMatch(myName)
     done()
-  }) 
+  })
 
   /**
    * Unit Test 5:
@@ -202,8 +196,6 @@ describe('Test suite for popup-backend.js', () => {
     done()
   })
 
-
-
   /**
    * Unit Test 6:
    * Checks the completed and total story values for health bar
@@ -214,8 +206,6 @@ describe('Test suite for popup-backend.js', () => {
     expect(total).toBe(totalHealth)
     done()
   })
-
-
 
   /**
    * Unit Test 7:
@@ -242,4 +232,3 @@ describe('Test suite for popup-backend.js', () => {
     done()
   })
 })
-
