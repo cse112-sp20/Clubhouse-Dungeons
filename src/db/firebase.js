@@ -283,25 +283,25 @@ const memberLogin = async (memberId, allMemberIds, workspace, iterationId) => {
  * @param {!string} workspace - The key identifying the workspace the member is in
  * @returns {Object}
  */
-const getBoss = async (workspace) => {
+// const getBoss = async (workspace) => {
 
-  workspaceRef = WORKSPACES_REF.child(workspace)
-  const bossInfo = {}
-  await workspaceRef.once('value')
-    .then((snapshot) => {
-      if (snapshot.child('boss').exists()) {
-        bossInfo.boss = snapshot.val().boss
-      }
-      if (snapshot.child('healthTotal').exists()) {
-        bossInfo.healthTotal = snapshot.val().healthTotal
-      }
-      if (snapshot.child('health').exists()) {
-        bossInfo.health = snapshot.val().health
-      }
-    })
-  console.log(bossInfo)
-  return bossInfo
-}
+//   workspaceRef = WORKSPACES_REF.child(workspace)
+//   const bossInfo = {}
+//   await workspaceRef.once('value')
+//     .then((snapshot) => {
+//       if (snapshot.child('boss').exists()) {
+//         bossInfo.boss = snapshot.val().boss
+//       }
+//       if (snapshot.child('healthTotal').exists()) {
+//         bossInfo.healthTotal = snapshot.val().healthTotal
+//       }
+//       if (snapshot.child('health').exists()) {
+//         bossInfo.health = snapshot.val().health
+//       }
+//     })
+//   console.log(bossInfo)
+//   return bossInfo
+// }
 
 /**
  *
@@ -309,25 +309,25 @@ const getBoss = async (workspace) => {
  * @param {!string} workspace - The key identifying the workspace the member is in
  * @param {!number} damage - The damage (story points) to be done to the boss
  */
-const damageBoss = async (workspace, damage) => {
-  workspaceRef = WORKSPACES_REF.child(workspace)
-  const bossInfo = await getBoss(workspace)
-  // If the damage brings health to below 0 the boss has been defeated
-  if (bossInfo.health - damage < 1) {
-    // Move team to next boss
-    const bossHealth = Math.floor(Math.random() * 50) + 50
-    return await workspaceRef.update({
-      boss: bossInfo.boss + 1,
-      healthTotal: bossHealth,
-      health: bossHealth
-    })
-  } else {
-    // Otherwise deal damage to the current boss
-    return await workspaceRef.update({
-      health: bossInfo.health - damage
-    })
-  }
-}
+// const damageBoss = async (workspace, damage) => {
+//   workspaceRef = WORKSPACES_REF.child(workspace)
+//   const bossInfo = await getBoss(workspace)
+//   // If the damage brings health to below 0 the boss has been defeated
+//   if (bossInfo.health - damage < 1) {
+//     // Move team to next boss
+//     const bossHealth = Math.floor(Math.random() * 50) + 50
+//     return await workspaceRef.update({
+//       boss: bossInfo.boss + 1,
+//       healthTotal: bossHealth,
+//       health: bossHealth
+//     })
+//   } else {
+//     // Otherwise deal damage to the current boss
+//     return await workspaceRef.update({
+//       health: bossInfo.health - damage
+//     })
+//   }
+// }
 
 /**
  * Check to see if the passed in key already exists within the passed in reference
@@ -353,4 +353,4 @@ const checkIfExists = async (nodeRef, key) => {
   return exists
 }
 
-export { memberLogin, honorDatabaseMember, getBoss, damageBoss, getHonoredByMap, workspaceRef }
+export { memberLogin, honorDatabaseMember, getHonoredByMap, workspaceRef }

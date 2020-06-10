@@ -574,27 +574,6 @@ const initBossMap = async () => {
  * Calculate the amount of health the boss has left and display it as a health
  * bar in the DOM
  */
-// const updateHealthBar = async () => {
-//   // Reset health text
-//   healthText.innerHTML = ''
-//   /* Set progress bar values */
-//   const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace)
-//   monster.src = 'images/boss/' + boss + '.png'
-//   healthLeft.style.width = (health / healthTotal) * 100 + '%'
-//   healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
-
-//   /* Set progress bar color change */
-//   const greenThreshold = (2 / 5) * health
-//   const yellowThreshold = (1 / 5) * health
-//   healthLeft.className += (health - healthTotal > greenThreshold) ? 'healthBarGreenState'
-//     : (health - healthTotal > yellowThreshold) ? 'healthBarYellowState'
-//       : 'healthBarRedState'
-// }
-
-/**
- * Calculate the amount of health the boss has left and display it as a health
- * bar in the DOM
- */
 function updateHealthBar () {
   /* Set progress bar values */
   const { completed, total } = getProgress()
@@ -612,6 +591,28 @@ function updateHealthBar () {
     : (total - completed > yellowThreshold) ? 'healthBarYellowState'
       : 'healthBarRedState'
 }
+
+
+/**
+ * Calculate the amount of health the boss has left and display it as a health
+ * bar in the DOM
+ */
+// const updateHealthBar = async () => {
+//   // Reset health text
+//   healthText.innerHTML = ''
+//   /* Set progress bar values */
+//   const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace)
+//   monster.src = 'images/boss/' + boss + '.png'
+//   healthLeft.style.width = (health / healthTotal) * 100 + '%'
+//   healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
+
+//   /* Set progress bar color change */
+//   const greenThreshold = (2 / 5) * health
+//   const yellowThreshold = (1 / 5) * health
+//   healthLeft.className += (health - healthTotal > greenThreshold) ? 'healthBarGreenState'
+//     : (health - healthTotal > yellowThreshold) ? 'healthBarYellowState'
+//       : 'healthBarRedState'
+// }
 
 /**
  * Deal damage to the boss by calling appropriate Firebase function
