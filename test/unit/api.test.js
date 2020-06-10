@@ -232,3 +232,8 @@ describe('Test suite for popup-backend.js', () => {
     done()
   })
 })
+
+export{
+  fetchMock,
+  chromeMock
+}
