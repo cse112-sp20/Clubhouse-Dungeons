@@ -21,7 +21,7 @@
     "docs:build": "npm run docs:build:api & npm run docs:build:test",
     "docs:build:api": "node scripts/apiDoc.js > docs/API_Documentation.md",
     "docs:build:test": "node scripts/testDoc.js > docs/Test_Documentation.md",
-    "all": "npm run lint && npm run test && npm run docs:build && npm run build"
+    "all": "npm run lint && npm run build && npm run test && npm run docs:build"
   },
   "author": "quaranteam8",
   "license": "ISC",
