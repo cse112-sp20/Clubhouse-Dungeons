@@ -138,6 +138,14 @@ body {
   color: rgba(255,255,255,1);
   padding: 10px 3%;
 }
+#iterationTimelineContainer {
+  padding-left: 48px;
+  color: rgba(255,255,255,.5);
+  font-size: 9px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 
 #profileContainer {
   position: relative;
@@ -185,7 +193,7 @@ body {
 #memberProfile #memberTeam {
   font-size: 9px;
   font-weight: bold;
-  color: rgba(255,255,255,.3);
+  color: rgba(255,255,255,.5);
   text-transform: uppercase;
   letter-spacing: 1px;
   padding: 2px 10px;
