@@ -242,7 +242,7 @@ const memberLogin = async (memberId, allMemberIds, workspace, iterationId) => {
     // const bossHealth =  Math.floor(Math.random() * 50) + 50;
     const workspaceDbObj = {
       [workspace]: {
-        [currentIterationId]: buildMemberHonoredByObj(),
+        [currentIterationId]: buildMemberHonoredByObj()
       }
     }
     await WORKSPACES_REF.update(workspaceDbObj)
