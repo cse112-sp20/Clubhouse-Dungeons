@@ -1,7 +1,8 @@
 import {
   memberLogin,
   honorDatabaseMember,
-  workspaceRef
+  workspaceRef,
+  memberRef
 } from '../../src/db/firebase'
 import {
   setup,
