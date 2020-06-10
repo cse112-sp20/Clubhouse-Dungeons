@@ -53,8 +53,8 @@
 /**
  * @typedef {object} Iteration - Iteration object that contains all info about an iteration from Clubhouse
  * @property {number} id - ID of the iteration
- * @property {Date} start_date - The starting date of the iteration
- * @property {Date} end_date - The ending date of the iteration
+ * @property {string} start_date - String representation (format 'yyyy-mm-dd') of the starting date of the iteration
+ * @property {string} end_date - String representation (format 'yyyy-mm-dd') of the ending date of the iteration
  * @property {string} status - The current status of the iteration. Can be 'started', 'unstarted' or 'done'
  */
 

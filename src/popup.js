@@ -415,13 +415,14 @@ document.addEventListener(
         if (iterationTimeline) {
           const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
-          // update page text with readable dates
           const startMonth = months[iterationTimeline.start_date.getMonth()]
           const startDay = iterationTimeline.start_date.getDate()
           const endMonth = months[iterationTimeline.end_date.getMonth()]
           const endDay = iterationTimeline.end_date.getDate()
           iterationRange.innerHTML = `${startMonth} ${startDay} - ${endMonth} ${endDay}`
-          iterationRemaining.innerHTML = `${iterationTimeline.days_remaining} days remaining`
+
+          const daysRemaining = iterationTimeline.days_remaining
+          iterationRemaining.innerHTML = `${daysRemaining} ${daysRemaining === 1 ? 'day' : 'days'} remaining`
         } else {
           iterationRange.innerHTML = 'No current iteration'
         }
