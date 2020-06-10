@@ -239,13 +239,10 @@ const memberLogin = async (memberId, allMemberIds, workspace, iterationId) => {
   const workspaceExists = await checkIfExists(WORKSPACES_REF, workspace)
   if (!workspaceExists) {
     // Create the workspace with current iteration and new boss
-    const bossHealth =  Math.floor(Math.random() * 50) + 50;
+    // const bossHealth =  Math.floor(Math.random() * 50) + 50;
     const workspaceDbObj = {
       [workspace]: {
         [currentIterationId]: buildMemberHonoredByObj(),
-        boss: 0,
-        totalHealth: bossHealth,
-        health: bossHealth
       }
     }
     await WORKSPACES_REF.update(workspaceDbObj)
