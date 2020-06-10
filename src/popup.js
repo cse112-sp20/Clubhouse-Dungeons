@@ -60,16 +60,10 @@ const battleLogTab = document.getElementById('battleLogTab')
 
 // Containers for actual elements
 const stories = document.getElementById('stories')
-// const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
 const team = document.getElementById('team')
 
-// Event listener for open honor menu
-// const membersList = document.getElementById('membersList')
-// const membersListContainer = document.getElementById('membersListContainer')
-// const membersListButton = document.getElementById('membersListButton')
-// membersListButton.addEventListener('click', () => toggleMembersList())
-
+// Boss map
 const bossMap = document.getElementById('bossMap')
 const bossMapContent = document.getElementById('bossMapContent')
 const openBossMap = document.getElementById('openBossMap')
