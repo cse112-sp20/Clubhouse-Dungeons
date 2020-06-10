@@ -25,7 +25,7 @@ import {
 import {
   honorDatabaseMember,
   getHonoredByMap,
-  memberLogin
+  memberLogin,
   getBoss,
   damageBoss
 } from './db/firebase'
@@ -65,10 +65,10 @@ const battleLog = document.getElementById('battleLog')
 const team = document.getElementById('team')
 
 // Event listener for open honor menu
-const membersList = document.getElementById('membersList')
-const membersListContainer = document.getElementById('membersListContainer')
-const membersListButton = document.getElementById('membersListButton')
-membersListButton.addEventListener('click', () => toggleMembersList())
+// const membersList = document.getElementById('membersList')
+// const membersListContainer = document.getElementById('membersListContainer')
+// const membersListButton = document.getElementById('membersListButton')
+// membersListButton.addEventListener('click', () => toggleMembersList())
 
 const bossMap = document.getElementById('bossMap')
 const bossMapContent = document.getElementById('bossMapContent')
