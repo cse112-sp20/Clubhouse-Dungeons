@@ -12,7 +12,6 @@ import {
   getProgress,
   getIterationTimeline,
   getCurrentIterationId,
-  completeStory,
   getCurrentIterationIndex
 } from './popup-backend'
 import {
@@ -529,43 +528,43 @@ document.addEventListener(
  */
 const initBossMap = async () => {
   // const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace);
-  const { completed, total } = getProgress();
-  const healthTotal = total;
-  const health = total - completed;
-  const boss = getCurrentIterationIndex();
-  const numBosses = 10;
+  const { completed, total } = getProgress()
+  const healthTotal = total
+  const health = total - completed
+  const boss = getCurrentIterationIndex()
+  const numBosses = 10
   // Iterate through all the bosses, adding each to the map
   for (let i = numBosses; i >= 0; i--) {
-    const bossDiv = document.createElement('div');
-    bossDiv.classList.add('boss');
+    const bossDiv = document.createElement('div')
+    bossDiv.classList.add('boss')
     // If this boss is the current boss apply active style
-    if (boss == i) {
-      bossDiv.classList.add('active');
-      const miniHealthBar = document.createElement('div');
-      const miniHealthBarFill = document.createElement('div');
-      miniHealthBar.classList.add('mini-health');
-      miniHealthBarFill.classList.add('mini-health-fill');
-      miniHealthBarFill.style.width = ((health / healthTotal) * 100) + '%';
-      miniHealthBar.appendChild(miniHealthBarFill);
-      bossDiv.appendChild(miniHealthBar);
+    if (boss === i) {
+      bossDiv.classList.add('active')
+      const miniHealthBar = document.createElement('div')
+      const miniHealthBarFill = document.createElement('div')
+      miniHealthBar.classList.add('mini-health')
+      miniHealthBarFill.classList.add('mini-health-fill')
+      miniHealthBarFill.style.width = ((health / healthTotal) * 100) + '%'
+      miniHealthBar.appendChild(miniHealthBarFill)
+      bossDiv.appendChild(miniHealthBar)
     } else if (boss > i) {
       // If boss is greater than this boss it's already been defeated
-      bossDiv.classList.add('dead');
-      const crossDiv = document.createElement('div');
-      crossDiv.classList.add('cross');
+      bossDiv.classList.add('dead')
+      const crossDiv = document.createElement('div')
+      crossDiv.classList.add('cross')
       crossDiv.innerHTML = '<span>&#10005;</span>'
-      bossDiv.appendChild(crossDiv);
+      bossDiv.appendChild(crossDiv)
     } else {
-      bossDiv.classList.add('locked');
+      bossDiv.classList.add('locked')
     }
-    const bossImg = document.createElement('img');
-    bossImg.src = 'images/boss/' + i + '.png';
-    bossDiv.appendChild(bossImg);
-    bossMapContent.appendChild(bossDiv);
-    if (i != 0) {
-      const trailDiv = document.createElement('div');
-      trailDiv.classList.add('trail');
-      bossMapContent.appendChild(trailDiv); 
+    const bossImg = document.createElement('img')
+    bossImg.src = 'images/boss/' + i + '.png'
+    bossDiv.appendChild(bossImg)
+    bossMapContent.appendChild(bossDiv)
+    if (i !== 0) {
+      const trailDiv = document.createElement('div')
+      trailDiv.classList.add('trail')
+      bossMapContent.appendChild(trailDiv)
     }
   }
 }
@@ -577,9 +576,9 @@ const initBossMap = async () => {
 function updateHealthBar () {
   /* Set progress bar values */
   const { completed, total } = getProgress()
-  const healthTotal = total;
-  const health = total - completed;
-  const boss = getCurrentIterationIndex();
+  const healthTotal = total
+  const health = total - completed
+  const boss = getCurrentIterationIndex()
   monster.src = 'images/boss/' + boss + '.png'
   healthLeft.style.width = (health / healthTotal) * 100 + '%'
   healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
@@ -591,7 +590,6 @@ function updateHealthBar () {
     : (total - completed > yellowThreshold) ? 'healthBarYellowState'
       : 'healthBarRedState'
 }
-
 
 /**
  * Calculate the amount of health the boss has left and display it as a health
@@ -616,7 +614,7 @@ function updateHealthBar () {
 
 /**
  * Deal damage to the boss by calling appropriate Firebase function
- * 
+ *
  * @param {!number} damage - amount of damage (story points) being done
  */
 // function doDamage(damage) {

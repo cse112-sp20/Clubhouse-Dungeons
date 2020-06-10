@@ -278,7 +278,7 @@ const memberLogin = async (memberId, allMemberIds, workspace, iterationId) => {
  * Retreive information about the team's boss
  *
  * @param {!string} workspace - The key identifying the workspace the member is in
- * @returns {Object}
+ * @returns {object}
  */
 // const getBoss = async (workspace) => {
 

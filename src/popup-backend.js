@@ -304,7 +304,6 @@ const getCurrentIterationId = () => CURRENT_ITERATION.id
  */
 const getCurrentIterationIndex = () => CURRENT_ITERATION.index
 
-
 /**
  * Get the SETUP promise. If SETUP hasn't been initialized yet, create it.
  * Otherwise, return the existing promise - do not recreate/restart it.
