@@ -2,7 +2,7 @@
 Codacy and Code Climate are used to automate code reviewing and track issues from pull requests in order to minimize the project’s technical debt. 
 Both have been configured to match the style guidelines we defined in eslint.
 
-### Test Coverage
+## Test Coverage
 To generate test coverage run the command `npm run test:coverage`
 
 This outputs multiple formats of the test coverage including:
