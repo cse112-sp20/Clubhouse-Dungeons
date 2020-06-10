@@ -18,11 +18,8 @@ import{
 global.fetchMock = fetchMock
 global.chromeMock = chromeMock
 
-const testAPIToken = '5ed2b278-d7a6-4344-b33f-94b8901aa75a'
-const memberID = '5ecdd3de-0125-4888-802a-5d3ba46ca0dc'
 const workspace = 'quarantest8'
 const iterationId = 48
-const myName = '_Test User_'
 
 
 // Test User ID's
