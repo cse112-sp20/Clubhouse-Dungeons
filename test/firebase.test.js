@@ -9,24 +9,14 @@ import {
     getAllMembers
 } from '../src/popup-backend'
 
-import * as realFetch from 'node-fetch'
+import{
+    fetchMock,
+    chromeMock
+} from './api.test.js'
 
-/** FETCH MOCK */
-/**
- * Like normal fetch, but if resource URL starts with Heroku CORS proxy address,
- * remove it; like normal fetch, but doesn't use CORS proxy.
- */
-const fetchMock = jest.fn().mockImplementation((resource, init = {}) => {
-    const corsProxyUrl = 'https://cors-anywhere.herokuapp.com'
-    const corsPrefix = corsProxyUrl + '/'
-    if (resource.startsWith(corsPrefix)) {
-        resource = resource.substring(corsPrefix.length)
-    }
-    return realFetch(resource, init)
-})
 
-global.fetch = fetchMock
-/** FETCH MOCK */
+global.fetchMock = fetchMock
+global.chromeMock = chromeMock
 
 const testAPIToken = '5ed2b278-d7a6-4344-b33f-94b8901aa75a'
 const memberID = '5ecdd3de-0125-4888-802a-5d3ba46ca0dc'
@@ -34,71 +24,6 @@ const workspace = 'quarantest8'
 const iterationId = 48
 const myName = '_Test User_'
 
-/** CHROME STORAGE MOCK */
-/**
- * Local version of storage (mocking chrome.storage.sync) to be used by the get
- * and set mocks.
- */
-const chromeStorage = {
-    api_token: testAPIToken,
-    member_id: memberID,
-    workspace: workspace,
-    name: myName
-}
-
-/**
- * Mocks a successful (no storage error) behavior of chrome.sync.storage.get
- */
-const chromeStorageGetMock = jest.fn().mockImplementation((keys = null, callback) => {
-    let items = null
-    if (!keys) {
-        // If keys is null, return everything in storage
-        items = chromeStorage
-    } else if (typeof keys === 'string') {
-        // If keys is a string specifying one key, return only that key-value pair
-        // If the key doesn't exist in storage, return empty object
-        items = Object.prototype.hasOwnProperty.call(chromeStorage, keys)
-            ? { [keys]: chromeStorage[keys] }
-            : {}
-    } else if (Array.isArray(keys)) {
-        // If keys is an array, return all of the key-value pairs found in storage
-        items = {}
-        keys.map(k => {
-            if (Object.prototype.hasOwnProperty.call(chromeStorage, k)) {
-                items[k] = chromeStorage[k]
-            }
-        })
-    }
-    callback(items)
-})
-
-const chromeStorageSetMock = jest.fn().mockImplementation(() => console.log('TODO'))
-
-const chromeStorageClearMock = jest.fn().mockImplementation(() => console.log('TODO'))
-
-/**
- * Local version of chrome (mocking chrome). Used to access
- * chrome.storage.sync.get, chrome.storage.sync.set,
- * chrome.storage.sync.clear, and chrome.runtime.lastError.
- *
- * If there is a storage error, then chrome.runtime.lastError should not be
- * undefined.
- */
-const chromeMock = {
-    storage: {
-        sync: {
-            get: chromeStorageGetMock,
-            set: chromeStorageSetMock,
-            clear: chromeStorageClearMock
-        }
-    },
-    runtime: {
-        lastError: undefined
-    }
-}
-
-global.chrome = chromeMock
-/** CHROME STORAGE MOCK */
 
 // Test User ID's
 const user1ID = '5ed2c520-5486-4d9d-9882-3067306a2700'
@@ -125,12 +50,10 @@ describe('Test suite for firebase.js', () => {
 
     // After each test, destroy the test database entry
     afterEach(() => {
-        memberRef.off()
         // Clear the test database to keep each test clean
         workspaceRef.remove()
-        
+        memberRef.off()
     })
-
 
     /**
      * Unit Test 1
@@ -232,7 +155,7 @@ describe('Test suite for firebase.js', () => {
      * USER 1 attempts to honor 4 people (USER 2, USER 3, USER 4, USER 5)
      * Only USER's 2,3,4 should get the honors because of the 3 honor limit
      */
-    it('Test usage of honorDatabaseMember once', async (done) => {
+    it('Test usage of honorDatabaseMember on 4 different users', async (done) => {
         // Perform the honoring
         await honorDatabaseMember(user1ID, user2ID)  // First honor (USER1->USER2)
         await honorDatabaseMember(user1ID, user3ID)  // Second honor (USER1->USER3)
