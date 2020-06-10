@@ -12,7 +12,8 @@ import {
   getProgress,
   getIterationTimeline,
   getCurrentIterationId,
-  completeStory
+  completeStory,
+  getCurrentIterationIndex
 } from './popup-backend'
 import {
   ERR_MSG_INTERNET,
@@ -25,9 +26,7 @@ import {
 import {
   honorDatabaseMember,
   getHonoredByMap,
-  memberLogin,
-  getBoss,
-  damageBoss
+  memberLogin
 } from './db/firebase'
 
 // Iteration timeline elements
@@ -201,7 +200,7 @@ function onCompleteStory (story) {
 
       // add the completed story to the top of the battleLog tab
       addToBattleLogTab(story, true)
-      doDamage(story.estimate)
+      // doDamage(story.estimate)
     })
     .catch((e) => {
       switch (e.message) {
@@ -529,7 +528,11 @@ document.addEventListener(
  * Populate the map with bosses
  */
 const initBossMap = async () => {
-  const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace);
+  // const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace);
+  const { completed, total } = getProgress();
+  const healthTotal = total;
+  const health = total - completed;
+  const boss = getCurrentIterationIndex();
   const numBosses = 10;
   // Iterate through all the bosses, adding each to the map
   for (let i = numBosses; i >= 0; i--) {
@@ -571,20 +574,42 @@ const initBossMap = async () => {
  * Calculate the amount of health the boss has left and display it as a health
  * bar in the DOM
  */
-const updateHealthBar = async () => {
-  // Reset health text
-  healthText.innerHTML = ''
+// const updateHealthBar = async () => {
+//   // Reset health text
+//   healthText.innerHTML = ''
+//   /* Set progress bar values */
+//   const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace)
+//   monster.src = 'images/boss/' + boss + '.png'
+//   healthLeft.style.width = (health / healthTotal) * 100 + '%'
+//   healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
+
+//   /* Set progress bar color change */
+//   const greenThreshold = (2 / 5) * health
+//   const yellowThreshold = (1 / 5) * health
+//   healthLeft.className += (health - healthTotal > greenThreshold) ? 'healthBarGreenState'
+//     : (health - healthTotal > yellowThreshold) ? 'healthBarYellowState'
+//       : 'healthBarRedState'
+// }
+
+/**
+ * Calculate the amount of health the boss has left and display it as a health
+ * bar in the DOM
+ */
+function updateHealthBar () {
   /* Set progress bar values */
-  const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace)
+  const { completed, total } = getProgress()
+  const healthTotal = total;
+  const health = total - completed;
+  const boss = getCurrentIterationIndex();
   monster.src = 'images/boss/' + boss + '.png'
   healthLeft.style.width = (health / healthTotal) * 100 + '%'
   healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
 
   /* Set progress bar color change */
-  const greenThreshold = (2 / 5) * health
-  const yellowThreshold = (1 / 5) * health
-  healthLeft.className += (health - healthTotal > greenThreshold) ? 'healthBarGreenState'
-    : (health - healthTotal > yellowThreshold) ? 'healthBarYellowState'
+  const greenThreshold = (2 / 5) * total
+  const yellowThreshold = (1 / 5) * total
+  healthLeft.className += (total - completed > greenThreshold) ? 'healthBarGreenState'
+    : (total - completed > yellowThreshold) ? 'healthBarYellowState'
       : 'healthBarRedState'
 }
 
@@ -593,6 +618,6 @@ const updateHealthBar = async () => {
  * 
  * @param {!number} damage - amount of damage (story points) being done
  */
-function doDamage(damage) {
-  damageBoss(getMemberProfile().workspace, damage).then(() => updateHealthBar())
-}
+// function doDamage(damage) {
+//   damageBoss(getMemberProfile().workspace, damage).then(() => updateHealthBar())
+// }
