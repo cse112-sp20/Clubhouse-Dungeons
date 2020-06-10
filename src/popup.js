@@ -28,8 +28,7 @@ import {
 } from './db/firebase'
 
 // Iteration timeline elements
-const iterationStart = document.getElementById('iterationStart')
-const iterationEnd = document.getElementById('iterationEnd')
+const iterationRange = document.getElementById('iterationRange')
 const iterationRemaining = document.getElementById('iterationRemaining')
 
 // Member profile button and info
@@ -417,13 +416,14 @@ document.addEventListener(
           const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
           // update page text with readable dates
-          iterationStart.innerHTML = 'Start: ' + months[iterationTimeline.start_date.getMonth()] + ' ' + iterationTimeline.start_date.getDate()
-          iterationEnd.innerHTML = 'End: ' + months[iterationTimeline.end_date.getMonth()] + ' ' + iterationTimeline.end_date.getDate()
-          iterationRemaining.innerHTML = 'Remaining: ' + iterationTimeline.days_remaining + ' days'
+          const startMonth = months[iterationTimeline.start_date.getMonth()]
+          const startDay = iterationTimeline.start_date.getDate()
+          const endMonth = months[iterationTimeline.end_date.getMonth()]
+          const endDay = iterationTimeline.end_date.getDate()
+          iterationRange.innerHTML = `${startMonth} ${startDay} - ${endMonth} ${endDay}`
+          iterationRemaining.innerHTML = `${iterationTimeline.days_remaining} days remaining`
         } else {
-          iterationStart.innerHTML = 'No'
-          iterationEnd.innerHTML = 'Started'
-          iterationRemaining.innerHTML = 'Iterations'
+          iterationRange.innerHTML = 'No current iteration'
         }
 
         /* Get top warriors and update text */
