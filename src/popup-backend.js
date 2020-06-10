@@ -268,12 +268,17 @@ const getIterationTimeline = () => {
     return null
   }
 
-  // calculate days remaining based on current & end dates
-  var startDate = new Date(CURRENT_ITERATION.start_date)
-  var currDate = new Date()
-  var endDate = new Date(CURRENT_ITERATION.end_date)
-  var remaining = Math.ceil((endDate.getTime() - currDate.getTime()) / (1000 * 3600 * 24))
+  // CURRENT_ITERATION.start_date and CURRENT_ITERATION.end_date have format 'yyyy-mm-dd'
+  // The Date constructor expects the index of the month, not the number of the month
+  const startDateStrSplit = CURRENT_ITERATION.start_date.split('-')
+  const startDate = new Date(startDateStrSplit[0], startDateStrSplit[1] - 1, startDateStrSplit[2])
 
+  const endDateStrSplit = CURRENT_ITERATION.end_date.split('-')
+  const endDate = new Date(endDateStrSplit[0], endDateStrSplit[1] - 1, endDateStrSplit[2])
+
+  // calculate days remaining based on current & end dates
+  const currDate = new Date()
+  let remaining = Math.ceil((endDate.getTime() - currDate.getTime()) / (1000 * 3600 * 24))
   if (remaining < 0) { // if the iteration is late don't show negative days
     remaining = 0
   }
