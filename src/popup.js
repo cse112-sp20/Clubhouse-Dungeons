@@ -410,7 +410,8 @@ document.addEventListener(
                    * that pops up when the cursor hovers over the badge.
                    */
                   if (honoredByMap[member.id].length > 0) {
-                    honorBadge.innerHTML = '<img src="images/honorBadge.png" >'
+                    honorBadge.innerHTML = '<span class="honor-badge">&#9733;</span>' // Use HTML entity instead of png
+                    // honorBadge.innerHTML = '<img src="images/honorBadge.png" >'
                     hoverText.innerHTML = '<b><u>Honored by:</u></b>'
                     for (const m of honoredByMap[member.id]) {
                       hoverText.innerHTML += '<br>' + getFNameAndLInitial(getMemberName(m))
@@ -421,8 +422,8 @@ document.addEventListener(
                   honorButton.classList.add('honor')
                   honorButton.innerHTML = 'Honor'
                   honorButton.addEventListener('click', () => honorMember(member))
+                  memberName.appendChild(honorBadge)
                   memberDiv.appendChild(memberName)
-                  memberDiv.appendChild(honorBadge)
                   memberDiv.appendChild(honorButton)
                   team.appendChild(memberDiv)
                 })
