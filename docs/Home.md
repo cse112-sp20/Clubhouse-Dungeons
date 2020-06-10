@@ -1,4 +1,8 @@
 # Clubhouse Dungeons
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/94edb40a997842e993defc1bd247e1db)](https://www.codacy.com/gh/cse112-sp20/Quaranteam-8?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cse112-sp20/Quaranteam-8&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/94edb40a997842e993defc1bd247e1db)](https://www.codacy.com/gh/cse112-sp20/Quaranteam-8?utm_source=github.com&utm_medium=referral&utm_content=cse112-sp20/Quaranteam-8&utm_campaign=Badge_Coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e3bdb7ab134bd2fc4eef/maintainability)](https://codeclimate.com/github/cse112-sp20/Quaranteam-8/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/e3bdb7ab134bd2fc4eef/test_coverage)](https://codeclimate.com/github/cse112-sp20/Quaranteam-8/test_coverage)
+![Base Pipeline](https://github.com/cse112-sp20/Quaranteam-8/workflows/Base%20Pipeline/badge.svg?branch=develop)
+
 ## Summary
 
 In early 2020, COVID-19 began making headlines, and by March companies around the globe were faced with a decision - to move entirely remote, if possible, or to shut down until it was deemed safe to reopen again. <br/><br/>
@@ -25,6 +29,6 @@ Below, find everything you need to get started with Clubhouse Dungeons
 
 ***
 
-New to the team? Start with our [Onboarding Guide](https://github.com/cse112-sp20/Quaranteam-8/wiki/Onboarding-Guide).
-
-New user? Start with our Getting Started Guide.
+## What to Do Next?
+#### New to the team? Start with our [Onboarding Guide](https://github.com/cse112-sp20/Quaranteam-8/wiki/Onboarding-Guide).
+#### New User? Start with our [User Guide](https://github.com/cse112-sp20/Quaranteam-8/wiki/User-Guide).
