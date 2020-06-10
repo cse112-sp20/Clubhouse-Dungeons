@@ -2,11 +2,11 @@ import {
   memberLogin,
   honorDatabaseMember,
   workspaceRef
-} from '../src/db/firebase'
+} from '../../src/db/firebase'
 import {
   setup,
   getAllMembers
-} from '../src/popup-backend'
+} from '../../src/popup-backend'
 
 import * as realFetch from 'node-fetch'
 
