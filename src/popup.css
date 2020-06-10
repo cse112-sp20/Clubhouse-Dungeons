@@ -338,16 +338,8 @@ body {
   background: rgba(255,255,255,.2);
   border-radius: 8px;
   color: rgba(255,255,255,1);
-  padding: 8px 8px 8px 32px;
+  padding: 8px;
   margin: 8px 4px;
-}
-
-.top-warriors .top-warrior .number {
-  position: absolute;
-  top: 8px;
-  left: 10px;
-  font-size: 24px;
-  line-height: 24px;
 }
 
 .top-warriors .top-warrior .name {
