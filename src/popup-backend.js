@@ -1,7 +1,9 @@
 import {
-  fetchStoriesAsync,
+  fetchIterationsAsync,
+  fetchIterationStoriesAsync,
   fetchMembersAsync,
   completeStoryAsync,
+  ERR_MSG_NO_ACTIVE_ITERATION,
   ERR_MSG_BROWSER_STORAGE
 } from './api/clubhouse-api'
 
@@ -40,6 +42,14 @@ var MEMBER_MAP = null
  * @type {?Array<Story>}
  */
 var STORIES = null
+
+/**
+ * The current iteration that the signed-in member is in; the first 'started'
+ * iteration of all iterations.
+ *
+ * @type {?Iteration}
+ */
+var CURRENT_ITERATION = null
 
 /**
  * A promise to all global variables being initialized; promise that fulfills
@@ -141,6 +151,21 @@ const getTopWarriors = () => {
 }
 
 /**
+ * Get a member
+ *
+ * @param {string} memberId - Member ID of the member to get
+ * @returns {Member} The member
+ */
+const getMember = (memberId) => MEMBER_MAP[memberId]
+
+/**
+ * Get the signed-in member
+ *
+ * @returns {Member} Signed-in member
+ */
+const getSignedInMember = () => MEMBER_MAP[MEMBER_ID]
+
+/**
  * Get all team members.
  *
  * @returns {Array<Member>} Array of all members.
@@ -233,6 +258,46 @@ const getProgress = () => {
 }
 
 /**
+ * Get display information about the current iteration
+ *
+ * @returns {?IterationDisplay} Display information about the current iteration,
+ *   or null if CURRENT_ITERATION is null.
+ */
+const getIterationTimeline = () => {
+  if (!CURRENT_ITERATION) {
+    return null
+  }
+
+  // CURRENT_ITERATION.start_date and CURRENT_ITERATION.end_date have format 'yyyy-mm-dd'
+  // The Date constructor expects the index of the month, not the number of the month
+  const startDateStrSplit = CURRENT_ITERATION.start_date.split('-')
+  const startDate = new Date(startDateStrSplit[0], startDateStrSplit[1] - 1, startDateStrSplit[2])
+
+  const endDateStrSplit = CURRENT_ITERATION.end_date.split('-')
+  const endDate = new Date(endDateStrSplit[0], endDateStrSplit[1] - 1, endDateStrSplit[2])
+
+  // calculate days remaining based on current & end dates
+  const currDate = new Date()
+  let remaining = Math.ceil((endDate.getTime() - currDate.getTime()) / (1000 * 3600 * 24))
+  if (remaining < 0) { // if the iteration is late don't show negative days
+    remaining = 0
+  }
+
+  return {
+    start_date: startDate,
+    end_date: endDate,
+    days_remaining: remaining
+  }
+}
+
+/**
+ * Get the ID of the current iteration
+ *
+ * @returns {number} ID of the current iteration
+ */
+const getCurrentIterationId = () => CURRENT_ITERATION.id
+
+/**
  * Get the SETUP promise. If SETUP hasn't been initialized yet, create it.
  * Otherwise, return the existing promise - do not recreate/restart it.
  *
@@ -254,20 +319,28 @@ const setup = () => {
         MEMBER_ID = store.member_id
         WORKSPACE = store.workspace
 
-        Promise.all([
-          fetchStoriesAsync(API_TOKEN)
-            .then(stories => {
-              STORIES = stories
-            }),
-          fetchMembersAsync(API_TOKEN)
-            .then(members => {
-              MEMBER_MAP = {}
-              members.map(member => {
-                MEMBER_MAP[member.id] = member
-              })
-            })
-        ])
-          .then(() => {
+        fetchIterationsAsync(API_TOKEN)
+          .then(async iterations => {
+            CURRENT_ITERATION = iterations.find(iter => iter.status === 'started')
+
+            if (!CURRENT_ITERATION) {
+              throw Error(ERR_MSG_NO_ACTIVE_ITERATION)
+            }
+
+            await Promise.all([
+              fetchIterationStoriesAsync(API_TOKEN, CURRENT_ITERATION.id)
+                .then(stories => {
+                  STORIES = stories
+                }),
+              fetchMembersAsync(API_TOKEN)
+                .then(members => {
+                  MEMBER_MAP = {}
+                  members.map(member => {
+                    MEMBER_MAP[member.id] = member
+                  })
+                })
+            ])
+
             // Initalize member map points to 0
             for (const memberObj of Object.values(MEMBER_MAP)) {
               memberObj.points = 0
@@ -280,9 +353,10 @@ const setup = () => {
                 })
               }
             })
+
             resolve('setup resolved. All globals in api are setup')
           })
-          .catch((e) => {
+          .catch(e => {
             console.log(`Caught ${e.message} in setup. Rejecting with reason being the error`)
             reject(e)
           })
@@ -299,10 +373,14 @@ export {
   getAllIncompleteStories,
   getBattleLog,
   getTopWarriors,
+  getMember,
+  getSignedInMember,
   getAllMembers,
   getMemberName,
   getMemberProfile,
   getProgress,
+  getIterationTimeline,
+  getCurrentIterationId,
   setup,
   completeStory
 }

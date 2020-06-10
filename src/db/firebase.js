@@ -1,42 +1,42 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
-import { getMember } from '../api/api'
+import { getMember } from '../popup-backend'
 
 /**
- * TYPE DECLARATIONS
- *
  * @typedef Database - The Firebase Database service interface
- * @type {Object}
- * @property {Object} app - The app assoiated with the Database service instance
+ * @type {object}
+ * @property {object} app - The app assoiated with the Database service instance
  * @see https://firebase.google.com/docs/reference/js/firebase.database.Database
- *
- *
+ */
+
+/**
  * @typedef Reference - Represents a specific location in your Database and can be used for reading or writing data to that Database location
- * @type {Object}
+ * @type {object}
  * @property {?string} key - The last part of the Reference's path (key of a root Reference is null)
- * @property {?Object} parent - The parent location of a Reference (parent of a root Reference is null)
- * @property {Object} ref - Returns a Reference to the Query's location
- * @property {Object} root - The root Reference of the Database
+ * @property {?object} parent - The parent location of a Reference (parent of a root Reference is null)
+ * @property {object} ref - Returns a Reference to the Query's location
+ * @property {object} root - The root Reference of the Database
  * @see https://firebase.google.com/docs/reference/js/firebase.database.Reference
- *
- *
+ */
+
+/**
  * @typedef DataSnapshot - contains data from a Database location
- * @type {Object}
- * @property {?string} key - The key (last part of the path) of the location of this DataSnapshot
- * @property {Reference} ref - The Reference for the location that generated this DataSnapshot
+ * @type {object}
  * @see https://firebase.google.com/docs/reference/js/firebase.database.DataSnapshot
- *
- *
+ */
+
+/**
  * @typedef Member - a Clubhouse user who is a member of a specified workspace (i.e. usually used in the context of talking about a specific user that belongs to a specific workspace)
- * @type {Object}
+ * @type {object}
  * @property {!number} honorRecognitionsRemaining - The amount of times the Member can honor a different Member within the same Workspace (the Member being honored must be different each time)
- * @property {?Object.<string, boolean>} honoredBy - Object containing the keys of all users that have honored them
- *
- *
+ * @property {?object.<string, boolean>} honoredBy - Object containing the keys of all users that have honored them
+ */
+
+/**
  * @typedef Workspace - A Clubhouse workspace that is being used in our extension
- * @type {Object}
- * @property {Object.<number, Object} iterationId - The id of the current iteration the Workspace is in
- * @property {Object.<string, Member>} iterationId.members - Keys of all the Members that belong to the Workspace
+ * @type {object}
+ * @property {object.<number, object>} iterationId - The id of the current iteration the Workspace is in
+ * @property {object.<string, Member>} iterationId.members - Keys of all the Members that belong to the Workspace
  */
 
 /**
@@ -69,29 +69,31 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
+const HONOR_AMOUNT_LIMIT = 3
+
 /**
  * The reference to the Database service of our extension
  *
- * @const {Database}
+ * @constant {Database}
  */
 const DATABASE = firebase.database()
 
 /**
  * The root Reference of our Database
  *
- * @const {Reference}
+ * @constant {Reference}
  */
 const DATABASE_REF = DATABASE.ref()
 
 /**
  * The Reference to all the Workspaces in our Database
  *
- * @const {Reference}
+ * @constant {Reference}
  */
 const WORKSPACES_REF = DATABASE_REF.child('workspaces')
 
 /**
- * The Reference to the Workspace of the Member
+ * The Reference to signed in Member's specific Workspace
  *
  * @type {?Reference}
  */
@@ -105,10 +107,10 @@ var workspaceRef = null
 var currentIterationId = null
 
 /**
-* The Reference to the locally stored member inside the database
-*
-* @type {?Reference}
-*/
+ * The Reference to the locally stored member inside the database
+ *
+ * @type {?Reference}
+ */
 var memberRef = null
 
 /**
@@ -124,23 +126,23 @@ var member = null
  * @param {!string} memberId - The id of the (locally stored) Member currently logged in and using our extension
  * @param {!string} honoredMemberId - The id of the Member that the (locally stored) Member currently logged in and using our extension would like to honor (cannot equal memberId)
  */
-const honorDatabaseMember = (memberId, honoredMemberId) => {
+const honorDatabaseMember = async (memberId, honoredMemberId) => {
   if (memberId !== honoredMemberId) {
     console.log('members are different')
     // update the member and honoredMember at the same time in the database
     const updates = {}
 
     if (member.honorRecognitionsRemaining !== null &&
-          member.honorRecognitionsRemaining > 0) {
+      member.honorRecognitionsRemaining > 0) {
       const honoredMemberRef = workspaceRef.child(currentIterationId).child(honoredMemberId)
-      honoredMemberRef.once('value')
-        .then(dataSnapshot => {
+      await honoredMemberRef.once('value')
+        .then(async (dataSnapshot) => {
           // used to check if should update database instead of checking
           // if updates is {}
           let updateDB = false
           const honoredBy = dataSnapshot.val().honored_by
           if (honoredBy === false ||
-                !dataSnapshot.child(`honoredBy/${memberId}`).exists()) {
+            !dataSnapshot.child(`honoredBy/${memberId}`).exists()) {
             // member has not honored honoredMember before
             console.log('member is able to honor honoredMember')
 
@@ -159,7 +161,7 @@ const honorDatabaseMember = (memberId, honoredMemberId) => {
           }
           console.log('checking if should write to db: ' + updateDB)
           if (updateDB) {
-            workspaceRef.update(updates)
+            await workspaceRef.update(updates)
               .then(value => {
                 console.log('finished updating db')
               }, reason => { console.log(reason.message) })
@@ -175,17 +177,52 @@ const honorDatabaseMember = (memberId, honoredMemberId) => {
 }
 
 /**
+ * Get the lists of all Members that have honored the corresponding Member
+ * for every Member in the Workspace
+ *
+ * @async
+ * @param {string[]} allMemberIds - Array containing the ids of all the members within the workspace
+ * @returns {Promise<object.<string, string[]>>} a Promise resolved to an
+ * object mapping each member's id to an array of other member ids that have
+ * honored them. A member's array will be empty if they have not been honored
+ * by other members
+ */
+const getHonoredByMap = async allMemberIds => {
+  const HONORED_BY_MAP = {}
+
+  // check to make sure the workspace is not null
+  if (workspaceRef) {
+    await workspaceRef.child(currentIterationId).once('value')
+      .then(dataSnapshot => {
+        if (dataSnapshot.exists()) {
+          for (const member of allMemberIds) {
+            if (dataSnapshot.child(member).exists()) {
+              // get the keys of all the members that have honored this member
+              // and add them to the honored by map
+              HONORED_BY_MAP[member] = Object.keys(dataSnapshot.child(member).child('honoredBy').val())
+            } else {
+              console.log(`member "${member}" does not exist inside workspace iteration id ${currentIterationId}`)
+            }
+          }
+        }
+      })
+  } else {
+    console.log('Error. The database has not finished its intialization procedures yet. Please try again later.')
+  }
+  return HONORED_BY_MAP
+}
+
+/**
  * Checks if the member logging in is already within the database and adds them to the database if they are not. Also makes sure to get the Reference to the passed in workspace.
  *
  * @param {!string} memberId - The id of the member whose data we are storing
- * @param {!string[]} allMemberIds - Member ids of all members in the workspace
+ * @param {!Array<string>} allMemberIds - Member ids of all members in the workspace
  * @param {!string} workspace - The key identifying the workspace the member is in
  * @param {!number} iterationId - ID of the current iteration
  */
-const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */) => {
-  const PLACEHOLDER_ITERATION = 2
-  const HONOR_AMOUNT_LIMIT = 3
-  currentIterationId = PLACEHOLDER_ITERATION
+const memberLogin = async (memberId, allMemberIds, workspace, iterationId) => {
+  // Init currentIterationId
+  currentIterationId = iterationId
 
   const buildMemberHonoredByObj = () => {
     const dbObj = {}
@@ -232,7 +269,7 @@ const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */)
   member = getMember(memberId)
 
   // Set the local member object's honored_by attribute
-  memberRef.on('value', (dataSnapshot) => {
+  memberRef.once('value', (dataSnapshot) => {
     if (dataSnapshot.exists()) {
       member.honoredBy = dataSnapshot.val().honored_by
       member.honorRecognitionsRemaining = dataSnapshot.val().honorRecognitionsRemaining
@@ -316,4 +353,4 @@ const checkIfExists = async (nodeRef, key) => {
   return exists
 }
 
-export { memberLogin, honorDatabaseMember, getBoss, damageBoss }
+export { memberLogin, honorDatabaseMember, getBoss, damageBoss, getHonoredByMap, workspaceRef }
