@@ -8,6 +8,13 @@ We divided
 ## test
 Contains all source code for testing our project. This includes all our jest and puppeteer tests and two example test files(`test.example.js` and `puppeteer.example.js`) to demonstrate how Jest and Puppeteer tests work.
 
+### Structure
+We separate our tests by typs, unit tests and end-to-end puppeteer tests.
+
+Unit tests can be found in the `/test/unit/` directory.
+
+End-to-end puppeteer tests can be found in the `/test/puppeteer/` directory.
+
 ## docs
 Contains all markdown documents that appear in our Github Wiki.
 

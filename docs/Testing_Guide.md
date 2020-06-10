@@ -25,21 +25,15 @@
 ```
 
 3. Navigate into the newly created directory.
-4. [Puppeteer](https://developers.google.com/web/tools/puppeteer/) and [Jest](https://jestjs.io/) are needed to test the program. Download and install them by entering
-
-```shell
-> npm install puppeteer jest
-```
-
-5. Set up the program environment by entering
+4. [Puppeteer](https://developers.google.com/web/tools/puppeteer/) and [Jest](https://jestjs.io/) are needed to test the program. These are downloaded when you set up the program environment by entering
 
 ```shell
 > npm install
-> npm run build
 ```
 
 ## Repo Testing Structure
 All tests are written in the `test/` directory within the base directory. Each test file is named respective to the feature being tested and has the format name of `[feature_name].test.js`.
+Unit tests are all in the `test/unit/` directory and end-to-end puppeteer tests are all in the `test/puppeteer/` directory.
 
 All tests not yet on the master or develop branch should be in a branch with the format name of `test/[feature_to_be_tested]`.
 
@@ -47,7 +41,7 @@ Please follow these formats when creating branches for testing.
 
 ## Creating Unit Tests
 
-1. Navigate to the test folder. This is where the testing files are.
+1. Navigate to the unit test folder. This is where the testing files are.
 2. Find the `.test.js` file for the feature to be tested. If there is no file, create a new one named `[feature_name].test.js`.
 3. Write some unit tests in these formats.
 	1. An empty unit test looks like
@@ -83,7 +77,7 @@ Please follow these formats when creating branches for testing.
 
 ## Creating Integration/End-to-End Tests
 
-1. Navigate to the test folder. This is where the testing files are.
+1. Navigate to the puppeteer test folder. This is where the testing files are.
 2. Find the `.test.js` file for the feature to be tested. If there is no file, create a new file named `[feature_name].test.js`.
 3. Copy the constants to maintain extension ID and import puppeteer instructions.
 	```javascript
@@ -102,7 +96,7 @@ Please follow these formats when creating branches for testing.
 	describe('[feature_name]', () => {
 	    beforeAll(async () => {
 	        // Path to our extension
-	        const pathToExtension = require('path').join(__dirname, '../dist');
+	        const pathToExtension = require('path').join(__dirname, '../../dist');
 	        browser = await puppeteer.launch({
 	            headless: false,
 	            args: [
@@ -135,10 +129,19 @@ Please follow these formats when creating branches for testing.
 
 ## Running Tests
 
-Run all tests by entering
+To run unit tests either enter
 
 ```shell
 > npm run test
 ```
+or
+```shell
+> npm run test:unit
+```
 
-This will output how many tests have passed and failed, and how the failed tests failed.
+To run puppeteer tests enter
+```shell
+> npm run test:puppeteer
+```
+
+All these commands will output how many tests have passed and failed, and how the failed tests failed.

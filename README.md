@@ -11,13 +11,14 @@ By Quaranteam-8
 3.  Once you have node installed, go to the root of the repository and run <code>npm install</code>
 
 ## Basic Commands
-| Command               | Description                                                                                                      |
-|-----------------------|------------------------------------------------------------------------------------------------------------------|
-| `npm run build`       | Builds the chrome extension using the files in the `src/` directory and outputs the files into `dist/` directory |
-| `npm run lint`        | Runs Eslint on all js files in the `src/` and `test/` directories                                                |
-| `npm run test`        | Runs Jest on all test files in the `test/` directory                                                             |
-| `npm run docs:build`  | Generates documentation from jsdoc comments and outputs them into the `docs/` directory                          |
-| `npm run all`         | Runs all commands above                                                                                          |
-| `npm run clean`       | Deletes the `dist/` and `coverage/` directories if they are found                                                |
+| Command                  | Description                                                                                                      |
+|--------------------------|------------------------------------------------------------------------------------------------------------------|
+| `npm run build`          | Builds the chrome extension using the files in the `src/` directory and outputs the files into `dist/` directory |
+| `npm run lint`           | Runs Eslint on all js files in the `src/` and `test/` directories                                                |
+| `npm run test`           | Runs Jest on all unit test files in the `test/unit` directory                                                    |
+| `npm run test:puppeteer` | Runs Jest on all puppeteer test files in the `test/puppeteer` directory                                          |
+| `npm run docs:build`     | Generates documentation from jsdoc comments and outputs them into the `docs/` directory                          |
+| `npm run all`            | Runs all commands above                                                                                          |
+| `npm run clean`          | Deletes the `dist/` and `coverage/` directories if they are found                                                |
 
 ## For More Info Checkout Our [Wiki](https://github.com/cse112-sp20/Quaranteam-8/wiki)
