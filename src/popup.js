@@ -1,6 +1,5 @@
 import {
   setup,
-  completeStoriesAsync,
   getMyIncompleteStories,
   getAllIncompleteStories,
   getBattleLog,
@@ -12,7 +11,8 @@ import {
   getProgress,
   getIterationTimeline,
   getCurrentIterationId,
-  getCurrentIterationIndex
+  getCurrentIterationIndex,
+  completeStory
 } from './popup-backend'
 import {
   ERR_MSG_INTERNET,
@@ -189,7 +189,7 @@ function honorMember (honoredMember) {
  * @param {Story} story - Story that is being completed
  */
 function onCompleteStory (story) {
-  completeStoriesAsync(story.id)
+  completeStory(story.id)
     .then(story => {
       // Remove from my stories
       const storiesNode = getStoryNodeFromContainer(stories, story)
