@@ -350,4 +350,4 @@ const checkIfExists = async (nodeRef, key) => {
   return exists
 }
 
-export { memberLogin, honorDatabaseMember, getHonoredByMap, workspaceRef }
+export { memberLogin, honorDatabaseMember, getHonoredByMap, workspaceRef, memberRef }
