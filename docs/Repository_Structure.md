@@ -2,18 +2,36 @@
 
 ## src
 Contains all source code for the chrome extension
+### Structure TODO
+We divided
 
 ## test
-Contains all source code for testing our project
+Contains all source code for testing our project. This includes all our jest and puppeteer tests and two example test files(`test.example.js` and `puppeteer.example.js`) to demonstrate how Jest and Puppeteer tests work.
+
+### Structure
+We separate our tests by typs, unit tests and end-to-end puppeteer tests.
+
+Unit tests can be found in the `/test/unit/` directory.
+
+End-to-end puppeteer tests can be found in the `/test/puppeteer/` directory.
 
 ## docs
-Contains all markdown documents that appear in our Github Wiki
+Contains all markdown documents that appear in our Github Wiki.
+
+### Structure
+Included images are found in the `images/` while all src markdown files are in the root of `docs/`
+
+Refer to the [Documenation_Guide](https://github.com/cse112-sp20/Quaranteam-8/wiki/Documentation_Guide) for our teams documentation guidelines.
 
 ## scripts
-Contains all source files used by DevOps
+Contains all source files used by DevOps which includes js and hbs files used for generating automated documentation.
 
 ## dist
 Contains compiled version of the chrome extension that is built when you run `npm run build`
+
+### Structure
+This is a flattened version of our `src/` folder which has been compiled using webpack and babel to build unified js files for our extension.
+Images are in the `images/` directory.
 
 ## .github/workflows
 Contains all workflows in our pipeline that are run on Github.
@@ -22,6 +40,8 @@ Contains all workflows in our pipeline that are run on Github.
 All other files in the root of the repo are configuration files
 
 # Branch Structure
+Our team followed a simplified version of [GitFlow](https://datasift.github.io/gitflow/IntroducingGitFlow.html).
+
 ## Overall Naming Scheme
 *  All lowercase names
 *  Separate words with ‘-’
@@ -32,7 +52,7 @@ All other files in the root of the repo are configuration files
 *  `test/api`
 
 ## Master Branch
-This is a protected branch that holds the production version of our project.
+This is a protected branch that holds the public production version of our project. This matches the version that is on the Chrome Web Store.
 
 ### Pipelines Run
 
@@ -57,7 +77,6 @@ This is a protected branch that holds the most up to date development version of
 #### On Push(occurs after Pull Request is Merged)
 
 * Automated Github Wiki Documentation Update
-
 
 ## Feature Branches
 Create a feature branch when you want to start working on a new feature.

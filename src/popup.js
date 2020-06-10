@@ -9,11 +9,14 @@ import {
   getMemberName,
   getMemberProfile,
   getProgress,
+  getIterationTimeline,
+  getCurrentIterationId,
   completeStory
 } from './popup-backend'
 import {
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
+  ERR_MSG_NO_ACTIVE_ITERATION,
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
   ERR_MSG_BROWSER_STORAGE,
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
@@ -23,6 +26,10 @@ import {
   getHonoredByMap,
   memberLogin
 } from './db/firebase'
+
+// Iteration timeline elements
+const iterationRange = document.getElementById('iterationRange')
+const iterationRemaining = document.getElementById('iterationRemaining')
 
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
@@ -42,24 +49,19 @@ const signoutButton = document.getElementById('signoutButton')
 // const selectedTabBG = document.getElementById("selectedTabBG");
 
 // Tab elements
-const myStoriesTab = document.getElementById('myStoriesTab')
-const allStoriesTab = document.getElementById('allStoriesTab')
+const storiesTab = document.getElementById('storiesTab')
+const teamTab = document.getElementById('teamTab')
 const battleLogTab = document.getElementById('battleLogTab')
 
 // Containers for actual elements
-const myStories = document.getElementById('myStories')
-const allStories = document.getElementById('allStories')
+const stories = document.getElementById('stories')
+// const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
-
-// Event listener for open honor menu
-const membersList = document.getElementById('membersList')
-const membersListContainer = document.getElementById('membersListContainer')
-const membersListButton = document.getElementById('membersListButton')
-membersListButton.addEventListener('click', () => toggleMembersList())
+const team = document.getElementById('team')
 
 // Click event listeners for tabs
-myStoriesTab.addEventListener('click', () => selectTab(0))
-allStoriesTab.addEventListener('click', () => selectTab(1))
+storiesTab.addEventListener('click', () => selectTab(0))
+teamTab.addEventListener('click', () => selectTab(1))
 battleLogTab.addEventListener('click', () => selectTab(2))
 
 /**
@@ -129,13 +131,14 @@ function selectTab (tabIndex) {
   switch (tabIndex) {
     // My Stories
     case 0:
-      myStoriesTab.classList.add('selected')
-      myStories.classList.add('selected')
+      storiesTab.classList.add('selected')
+      stories.classList.add('selected')
+      // allStories.classList.add('selected')
       break
-    // All Stories
+    // Team Tab / Honor List
     case 1:
-      allStoriesTab.classList.add('selected')
-      allStories.classList.add('selected')
+      teamTab.classList.add('selected')
+      team.classList.add('selected')
       break
     // Battle Log
     case 2:
@@ -144,17 +147,6 @@ function selectTab (tabIndex) {
       break
 
     default:
-  }
-}
-
-/**
- * Toggle members list for honors
- */
-function toggleMembersList () {
-  if (membersListContainer.classList.contains('show')) {
-    membersListContainer.classList.remove('show')
-  } else {
-    membersListContainer.classList.add('show')
   }
 }
 
@@ -179,19 +171,13 @@ function onCompleteStory (story) {
   completeStory(story.id)
     .then(story => {
       // Remove from my stories
-      const myStoriesNode = getStoryNodeFromContainer(myStories, story)
-      if (myStoriesNode) {
-        myStories.removeChild(myStoriesNode)
+      const storiesNode = getStoryNodeFromContainer(stories, story)
+      if (storiesNode) {
+        stories.removeChild(storiesNode)
       }
 
-      // Remove from all stories
-      const allStoriesNode = getStoryNodeFromContainer(allStories, story)
-      if (allStoriesNode) {
-        allStories.removeChild(allStoriesNode)
-      }
-
-      // add the completed story to the battleLog tab
-      addToBattleLogTab(story)
+      // add the completed story to the top of the battleLog tab
+      addToBattleLogTab(story, true)
     })
     .catch((e) => {
       switch (e.message) {
@@ -261,11 +247,11 @@ const getStoryNodeFromContainer = (nodeContainer, story) => {
 }
 
 /**
- * Adds the passed in story to the myStories tab
+ * Adds the passed in story to the myStories section of the stories tab
  *
  * @param {Story} story the story to add to the myStories tab
  */
-const addToMyStoriesTab = story => {
+const addToMyStoriesSection = story => {
   const storyDiv = document.createElement('div')
   storyDiv.setAttribute('id', story.id)
   const storyButton = document.createElement('div')
@@ -282,53 +268,61 @@ const addToMyStoriesTab = story => {
 
   storyButton.addEventListener('click', () => onCompleteStory(story))
   storyDiv.prepend(storyButton)
-  myStories.appendChild(storyDiv)
+  stories.appendChild(storyDiv)
 }
 
 /**
- * Adds the passed in story to the allStories tab
+ * Adds the passed in story to the allStories section of the stories tab
  *
  * @param {Story} story the story to add to the allStories tab
  */
-const addToAllStoriesTab = story => {
+const addToAllStoriesSection = story => {
   const ownerNames = story.owner_ids.length > 0
     ? story.owner_ids.map(memberId => getMemberName(memberId))
     : ['Unassigned']
 
-  const storyDiv = document.createElement('div')
-  storyDiv.setAttribute('id', story.id)
-  const storyButton = document.createElement('div')
-  storyDiv.classList.add('story')
-  storyButton.classList.add('story-button')
-  storyButton.innerHTML = '<img src="images/sword.png" >'
-  storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
-
-  if (story.estimate) {
-    storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
-  } else {
-    storyDiv.innerHTML += '<div class="points"></div>'
-  }
-
+  let signedInOwner = false
+  const signedInOwnerName = getMemberName(getSignedInMember().id)
   const ownersDiv = document.createElement('div')
   ownersDiv.classList.add('owners')
   ownerNames.forEach(ownerName => {
+    if (ownerName === signedInOwnerName) {
+      signedInOwner = true
+    }
     const ownerDiv = document.createElement('div')
     ownerDiv.innerHTML = ownerName
     ownersDiv.append(ownerDiv)
   })
 
-  storyButton.addEventListener('click', () => onCompleteStory(story))
-  storyDiv.prepend(storyButton)
-  storyDiv.append(ownersDiv)
-  allStories.appendChild(storyDiv)
+  if (!signedInOwner) {
+    const storyDiv = document.createElement('div')
+    storyDiv.setAttribute('id', story.id)
+    const storyButton = document.createElement('div')
+    storyDiv.classList.add('story')
+    storyButton.classList.add('story-button')
+    storyButton.innerHTML = '<img src="images/sword.png" >'
+    storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+
+    if (story.estimate) {
+      storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+    } else {
+      storyDiv.innerHTML += '<div class="points"></div>'
+    }
+
+    storyButton.addEventListener('click', () => onCompleteStory(story))
+    storyDiv.prepend(storyButton)
+    storyDiv.append(ownersDiv)
+    stories.appendChild(storyDiv)
+  }
 }
 
 /**
  * Add the passed in story to the battleLog tab
  *
  * @param {Story} story the story to add to the battleLog tab
+ * @param {boolean} [addToTop=false] - whether to add the story to the top of the battleLog tab
  */
-const addToBattleLogTab = story => {
+const addToBattleLogTab = (story, addToTop = false) => {
   const ownerNames = story.owner_ids.length > 0
     ? story.owner_ids.map(memberId => getMemberName(memberId)).join(', ')
     : 'unassigned'
@@ -341,7 +335,12 @@ const addToBattleLogTab = story => {
     actionDiv.innerHTML = ownerNames + ' completed ' + story.name
   }
 
-  battleLog.appendChild(actionDiv)
+  if (addToTop) {
+    console.log('add to top of battleLog')
+    battleLog.prepend(actionDiv)
+  } else {
+    battleLog.appendChild(actionDiv)
+  }
 }
 
 /**
@@ -356,39 +355,54 @@ document.addEventListener(
   'DOMContentLoaded',
   () => {
     setup()
-      .catch((e) => {
-        switch (e.message) {
-          case ERR_MSG_INTERNET:
-            // Respond to internet error
-            /* TODO: UI */
-            break
-          case ERR_MSG_INVALID_API_TOKEN:
-            signout()
-            /* TODO: UI */
-            break
-          case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
-            // Respond to quota exceeded
-            /* TODO: UI */
-            break
-          case ERR_MSG_BROWSER_STORAGE:
-            // Respond to error reading/writing to browser storage
-            /* TODO: UI */
-            break
-          case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
-          default:
-            // Respond to unknown error
-            /* TODO: UI */
-            break
-        }
-      })
       .then(() => {
         const memberProfile = getMemberProfile()
-
         const allMemberIds = getAllMembers().map(member => member.id)
-        memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace)
+        memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace, getCurrentIterationId())
           .then(() => {
             // needs to wait for the database variables to be setup by memberLogin
             getHonoredByMap(allMemberIds)
+              .then((honoredByMap) => {
+                /*
+                 * For each member in the array returned by getAllMembers(),
+                 * create HTML 'div' elements (which includes the member name
+                 * and honor button) to add into the honorButton drop-down list.
+                 */
+                getAllMembers().map(member => {
+                  const memberDiv = document.createElement('div')
+                  memberDiv.classList.add('member')
+                  const memberName = document.createElement('div')
+                  memberName.innerHTML = member.profile.name
+                  const honorBadge = document.createElement('div')
+                  honorBadge.classList.add('badge')
+                  const hoverText = document.createElement('span')
+                  hoverText.classList.add('hovertext')
+
+                  /*
+                   * If the current member has an honored_by array that's greater
+                   * than 0, add the honorBadge image to the honorBadge div element
+                   * that will be appended to memberDiv. Also, for each member in
+                   * the current member's honored_by array, add them to the tooltip
+                   * that pops up when the cursor hovers over the badge.
+                   */
+                  if (honoredByMap[member.id].length > 0) {
+                    honorBadge.innerHTML = '<img src="images/honorBadge.png" >'
+                    hoverText.innerHTML = '<b><u>Honored by:</u></b>'
+                    for (const m of honoredByMap[member.id]) {
+                      hoverText.innerHTML += '<br>' + getFNameAndLInitial(getMemberName(m))
+                    }
+                    honorBadge.appendChild(hoverText)
+                  }
+                  const honorButton = document.createElement('div')
+                  honorButton.classList.add('honor')
+                  honorButton.innerHTML = 'Honor'
+                  honorButton.addEventListener('click', () => honorMember(member))
+                  memberDiv.appendChild(memberName)
+                  memberDiv.appendChild(honorBadge)
+                  memberDiv.appendChild(honorButton)
+                  team.appendChild(memberDiv)
+                })
+              })
           })
 
         /* Get member info for profile button */
@@ -396,7 +410,24 @@ document.addEventListener(
         memberName.innerHTML = memberProfile.name
         memberTeam.innerHTML = memberProfile.workspace
 
-        /* Get top warraiors and update text */
+        /* Get iteration timeline details */
+        const iterationTimeline = getIterationTimeline()
+        if (iterationTimeline) {
+          const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+          const startMonth = months[iterationTimeline.start_date.getMonth()]
+          const startDay = iterationTimeline.start_date.getDate()
+          const endMonth = months[iterationTimeline.end_date.getMonth()]
+          const endDay = iterationTimeline.end_date.getDate()
+          iterationRange.innerHTML = `${startMonth} ${startDay} - ${endMonth} ${endDay}`
+
+          const daysRemaining = iterationTimeline.days_remaining
+          iterationRemaining.innerHTML = `${daysRemaining} ${daysRemaining === 1 ? 'day' : 'days'} remaining`
+        } else {
+          iterationRange.innerHTML = 'No current iteration'
+        }
+
+        /* Get top warriors and update text */
         const topWarriors = getTopWarriors()
         while (topWarriors.length < 3) {
           topWarriors.push({ name: 'Empty', points: 0 })
@@ -413,36 +444,56 @@ document.addEventListener(
         updateHealthBar()
 
         /* Populate tabs */
+        // add My Stories heading to the stories tab
+        const myStoriesH1 = document.createElement('h1')
+        myStoriesH1.innerHTML = 'My Stories'
+        stories.appendChild(myStoriesH1)
+
         getMyIncompleteStories().map(story => {
-          addToMyStoriesTab(story)
+          addToMyStoriesSection(story)
         })
 
+        // add All Stories heading to the stories tab
+        const allStoriesH1 = document.createElement('h1')
+        allStoriesH1.innerHTML = 'All Stories'
+        stories.appendChild(allStoriesH1)
+
         getAllIncompleteStories().map(story => {
-          addToAllStoriesTab(story)
+          addToAllStoriesSection(story)
         })
 
         getBattleLog().map(story => {
           addToBattleLogTab(story)
         })
-
-        /*
-         * For each member in the array returned by getAllMembers(),
-         * create HTML 'div' elements (which includes the member name
-         * and honor button) to add into the honorButton drop-down list.
-         */
-        getAllMembers().map(member => {
-          const memberDiv = document.createElement('div')
-          memberDiv.classList.add('member')
-          const memberName = document.createElement('div')
-          memberName.innerHTML = member.profile.name
-          const honorButton = document.createElement('div')
-          honorButton.classList.add('honor')
-          honorButton.innerHTML = 'Honor'
-          honorButton.addEventListener('click', () => honorMember(member))
-          memberDiv.appendChild(memberName)
-          memberDiv.appendChild(honorButton)
-          membersList.appendChild(memberDiv)
-        })
+      })
+      .catch((e) => {
+        switch (e.message) {
+          case ERR_MSG_INTERNET:
+            // Respond to internet error
+            /* TODO: UI */
+            break
+          case ERR_MSG_INVALID_API_TOKEN:
+            signout()
+            /* TODO: UI */
+            break
+          case ERR_MSG_NO_ACTIVE_ITERATION:
+            // Respond to iterations being turned off or no iteration set up
+            /* TODO: UI */
+            break
+          case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
+            // Respond to quota exceeded
+            /* TODO: UI */
+            break
+          case ERR_MSG_BROWSER_STORAGE:
+            // Respond to error reading/writing to browser storage
+            /* TODO: UI */
+            break
+          case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
+          default:
+            // Respond to unknown error
+            /* TODO: UI */
+            break
+        }
       })
   }
 ) // addEventListener()

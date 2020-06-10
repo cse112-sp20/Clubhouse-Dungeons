@@ -1,4 +1,4 @@
-const extensionPath = '../dist'; // This is the path to the manifext.json file
+const extensionPath = '../../dist'; // This is the path to the manifext.json file
 const extensionID = `cngkocoehccomngohodhpmlpekpdjppj`; // This extension ID might not work for you, but if it does, feel free to remove this comment :)
 const extensionLoginHtml = `login.html`; // The main page of our extension
 const extensionPopupHtml = `popup.html`;
@@ -21,7 +21,7 @@ describe('Login error handling', () => {
     // Before anything open a new browser with our extension enabled
     beforeAll(async () => {
         // describe path to our extension
-        const pathToExtension = require('path').join(__dirname, '../dist');
+        const pathToExtension = require('path').join(__dirname, extensionPath);
         browser = await puppeteer.launch({
             headless: false,
             args: [
@@ -163,7 +163,7 @@ describe('Login intended behavior', () => {
     // Before anything open a new browser with our extension enabled
     beforeAll(async () => {
         // describe path to our extension
-        const pathToExtension = require('path').join(__dirname, '../dist');
+        const pathToExtension = require('path').join(__dirname, extensionPath);
         //open a new browser
         browser = await puppeteer.launch({
             headless: false,

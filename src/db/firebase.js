@@ -69,6 +69,8 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
+const HONOR_AMOUNT_LIMIT = 3
+
 /**
  * The reference to the Database service of our extension
  *
@@ -216,11 +218,11 @@ const getHonoredByMap = async allMemberIds => {
  * @param {!string} memberId - The id of the member whose data we are storing
  * @param {!Array<string>} allMemberIds - Member ids of all members in the workspace
  * @param {!string} workspace - The key identifying the workspace the member is in
+ * @param {!number} iterationId - ID of the current iteration
  */
-const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */) => {
-  const PLACEHOLDER_ITERATION = 2
-  const HONOR_AMOUNT_LIMIT = 3
-  currentIterationId = PLACEHOLDER_ITERATION
+const memberLogin = async (memberId, allMemberIds, workspace, iterationId) => {
+  // Init currentIterationId
+  currentIterationId = iterationId
 
   const buildMemberHonoredByObj = () => {
     const dbObj = {}
@@ -263,7 +265,7 @@ const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */)
   member = getMember(memberId)
 
   // Set the local member object's honored_by attribute
-  memberRef.on('value', (dataSnapshot) => {
+  memberRef.once('value', (dataSnapshot) => {
     if (dataSnapshot.exists()) {
       member.honoredBy = dataSnapshot.val().honored_by
       member.honorRecognitionsRemaining = dataSnapshot.val().honorRecognitionsRemaining

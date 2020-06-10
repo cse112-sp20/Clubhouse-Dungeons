@@ -15,6 +15,8 @@
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly",
+    "Iteration":"true",
+    "IterationDisplay":"true",
     "Member":"true",
     "Story":"true",
     "Project":"true",
