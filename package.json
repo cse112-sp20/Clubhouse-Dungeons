@@ -7,9 +7,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "jest test/",
-    "test:coverage": "jest test/ --coverage",
+    "test": "npm run test:unit",
+    "test:unit": "jest test/unit/",
+    "test:puppeteer": "npm run build:test && jest test/puppeteer/",
+    "test:coverage": "jest test/unit/ --coverage",
     "build": "webpack",
+    "build:test": "webpack --config test/puppeteer/test.config.js",
     "clean": "run-script-os",
     "clean:darwin:linux": "rm -rf dist coverage || true",
     "clean:win32": "rmdir /Q /S dist coverage || true",

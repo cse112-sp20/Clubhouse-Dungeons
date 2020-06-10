@@ -7,7 +7,7 @@ import {
   getMemberProfile,
   getProgress,
   setup
-} from '../src/popup-backend'
+} from '../../src/popup-backend'
 import * as realFetch from 'node-fetch'
 
 /** FETCH MOCK */
