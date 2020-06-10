@@ -543,3 +543,13 @@ body {
 .badge:hover .hovertext{
   visibility: visible;
 }
+
+.font {
+  font-family: 'Piedra', cursive;
+}
+
+#logo {
+  font-size: 30px;
+  color: black;
+}
+
