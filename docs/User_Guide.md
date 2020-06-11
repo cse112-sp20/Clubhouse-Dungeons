@@ -20,11 +20,11 @@ If you are starting a new clubhouse workspace, see the official Clubhouse docume
 *   [How to Add Stories to Iterations](https://help.clubhouse.io/hc/en-us/articles/360029262351-How-do-I-add-Stories-to-an-Iteration-)
 
 ## Setting Up Clubhouse Dungeons
-To open Clubhouse Dungeons, find the icon <img src="https://github.com/cse112-sp20/Quaranteam-8/blob/develop/docs/images/icon.png" width="48"> located in your Chrome extensions.
+To open Clubhouse Dungeons, find the icon <img src="/images/icon.png" width="48"> located in your Chrome extensions.
 When you open Clubhouse Dungeons for the first time, or you sign out of Clubhouse Dungeons, you will see the login page.
 
 <p align="center">
-<img src="https://github.com/cse112-sp20/Quaranteam-8/blob/develop/docs/images/login.png" width="500">
+<img src="images/login.png" width="500">
 </p>
 If you have your Clubhouse API token ready, you can enter it into the text box where it says “Clubhouse API key” and press enter.
 
@@ -35,7 +35,7 @@ If nothing happens after clicking the “Enter” button, double-check to make s
 ## Overview of Features
 ### Monster and Healthbar
 <p align="center">
-<img src="https://github.com/cse112-sp20/Quaranteam-8/blob/develop/docs/images/monster.png" width="500">
+<img src="images/monster.png" width="500">
 </p>
 
 Here is the monster for this week’s iteration. Your team will need to complete all the stories for this week’s iteration in order to defeat the monster.
@@ -44,38 +44,38 @@ Every story completion will be an attack against the monster and chip away at th
 
 ### Top Warriors
 <p align="center">
-<img src="https://github.com/cse112-sp20/Quaranteam-8/blob/develop/docs/images/warriors.png" width="500">
+<img src="images/warriors.png" width="500">
 </p>
 
 Here you will find the top warriors on the team that have contributed the most to the battle. The damage seen is the total amount of points from the stories you have completed in this iteration. Finish your stories and aim to become a top warrior.
 
 ### Tabs
 <p align="center">
-<img src="https://github.com/cse112-sp20/Quaranteam-8/blob/develop/docs/images/tabs.png" width="500">
+<img src="images/tabs.png" width="500">
 </p>
 
 #### Stories Tab
 <p align="center">
-<img src="https://github.com/cse112-sp20/Quaranteam-8/blob/develop/docs/images/stories.png" width="500">
+<img src="images/stories.png" width="500">
 </p>
 
 The stories tab will house all stories assigned to you in addition to the rest of the team’s stories toward. Here is where you will mark your story as completed and launch an attack against the monster.
 
 #### Team Tab
 <p align="center">
-<img src="https://github.com/cse112-sp20/Quaranteam-8/blob/develop/docs/images/team.png" width="500">
+<img src="images/team.png" width="500">
 </p>
 
 Here is where you can see a list of your team members. You will be able to honor a team member by clicking on the honor button and you will be able to view who honored you by hovering over the star. You can only honor 3 team members per iteration so use these for outstanding members of the team! 
 
 #### Battle Log Tab
 <p align="center">
-<img src="https://github.com/cse112-sp20/Quaranteam-8/blob/develop/docs/images/battle.png" width="500">
+<img src="images/battle.png" width="500">
 </p>
 Stay up to date with your team's battle. The Battle Log shows who has completed stories, and how much damage they have done to the monster. 
 
 ## Signing Out
 <p align="center">
-<img src="https://github.com/cse112-sp20/Quaranteam-8/blob/develop/docs/images/signout.png" width="500">
+<img src="images/signout.png" width="500">
 </p>
 When you want to sign out, just click your name on the top right corner and click signout. You will be redirected to the login page.
