@@ -11,6 +11,7 @@ import {
   getProgress,
   getIterationTimeline,
   getCurrentIterationId,
+  getCurrentIterationIndex,
   completeStory
 } from './popup-backend'
 import {
@@ -38,6 +39,8 @@ const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
 const memberTeam = document.getElementById('memberTeam')
 
+const monster = document.getElementById('monster')
+
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
 
@@ -55,9 +58,16 @@ const battleLogTab = document.getElementById('battleLogTab')
 
 // Containers for actual elements
 const stories = document.getElementById('stories')
-// const allStories = document.getElementById('allStories')
 const battleLog = document.getElementById('battleLog')
 const team = document.getElementById('team')
+
+// Boss map
+const bossMap = document.getElementById('bossMap')
+const bossMapContent = document.getElementById('bossMapContent')
+const openBossMap = document.getElementById('openBossMap')
+const closeBossMap = document.getElementById('closeBossMap')
+openBossMap.addEventListener('click', () => toggleBossMap())
+closeBossMap.addEventListener('click', () => toggleBossMap())
 
 // Click event listeners for tabs
 storiesTab.addEventListener('click', () => selectTab(0))
@@ -84,6 +94,17 @@ const signout = () => {
 
 /**
  * Show member profile menu
+ */
+const toggleBossMap = () => {
+  if (bossMap.classList.contains('open')) {
+    bossMap.classList.remove('open')
+  } else {
+    bossMap.classList.add('open')
+  }
+}
+
+/**
+ * Show or hide the boss map
  */
 const toggleMemberMenu = () => {
   if (profileContainer.classList.contains('closed')) {
@@ -178,6 +199,7 @@ function onCompleteStory (story) {
 
       // add the completed story to the top of the battleLog tab
       addToBattleLogTab(story, true)
+      // doDamage(story.estimate)
     })
     .catch((e) => {
       switch (e.message) {
@@ -386,7 +408,8 @@ document.addEventListener(
                    * that pops up when the cursor hovers over the badge.
                    */
                   if (honoredByMap[member.id].length > 0) {
-                    honorBadge.innerHTML = '<img src="images/honorBadge.png" >'
+                    honorBadge.innerHTML = '<span class="honor-badge">&#9733;</span>' // Use HTML entity instead of png
+                    // honorBadge.innerHTML = '<img src="images/honorBadge.png" >'
                     hoverText.innerHTML = '<b><u>Honored by:</u></b>'
                     for (const m of honoredByMap[member.id]) {
                       hoverText.innerHTML += '<br>' + getFNameAndLInitial(getMemberName(m))
@@ -397,8 +420,8 @@ document.addEventListener(
                   honorButton.classList.add('honor')
                   honorButton.innerHTML = 'Honor'
                   honorButton.addEventListener('click', () => honorMember(member))
+                  memberName.appendChild(honorBadge)
                   memberDiv.appendChild(memberName)
-                  memberDiv.appendChild(honorBadge)
                   memberDiv.appendChild(honorButton)
                   team.appendChild(memberDiv)
                 })
@@ -442,6 +465,8 @@ document.addEventListener(
         document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
 
         updateHealthBar()
+
+        initBossMap()
 
         /* Populate tabs */
         // add My Stories heading to the stories tab
@@ -499,14 +524,64 @@ document.addEventListener(
 ) // addEventListener()
 
 /**
+ * Populate the map with bosses
+ */
+const initBossMap = async () => {
+  // const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace);
+  const { completed, total } = getProgress()
+  const healthTotal = total
+  const health = total - completed
+  const boss = getCurrentIterationIndex()
+  const numBosses = 10
+  // Iterate through all the bosses, adding each to the map
+  for (let i = numBosses; i >= 0; i--) {
+    const bossDiv = document.createElement('div')
+    bossDiv.classList.add('boss')
+    // If this boss is the current boss apply active style
+    if (boss === i) {
+      bossDiv.classList.add('active')
+      const miniHealthBar = document.createElement('div')
+      const miniHealthBarFill = document.createElement('div')
+      miniHealthBar.classList.add('mini-health')
+      miniHealthBarFill.classList.add('mini-health-fill')
+      miniHealthBarFill.style.width = ((health / healthTotal) * 100) + '%'
+      miniHealthBar.appendChild(miniHealthBarFill)
+      bossDiv.appendChild(miniHealthBar)
+    } else if (boss > i) {
+      // If boss is greater than this boss it's already been defeated
+      bossDiv.classList.add('dead')
+      const crossDiv = document.createElement('div')
+      crossDiv.classList.add('cross')
+      crossDiv.innerHTML = '<span>&#10005;</span>'
+      bossDiv.appendChild(crossDiv)
+    } else {
+      bossDiv.classList.add('locked')
+    }
+    const bossImg = document.createElement('img')
+    bossImg.src = 'images/boss/' + i + '.png'
+    bossDiv.appendChild(bossImg)
+    bossMapContent.appendChild(bossDiv)
+    if (i !== 0) {
+      const trailDiv = document.createElement('div')
+      trailDiv.classList.add('trail')
+      bossMapContent.appendChild(trailDiv)
+    }
+  }
+}
+
+/**
  * Calculate the amount of health the boss has left and display it as a health
  * bar in the DOM
  */
 function updateHealthBar () {
   /* Set progress bar values */
   const { completed, total } = getProgress()
-  healthLeft.style.width = (completed / total) * 100 + '%'
-  healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
+  const healthTotal = total
+  const health = total - completed
+  const boss = getCurrentIterationIndex()
+  monster.src = 'images/boss/' + boss + '.png'
+  healthLeft.style.width = (health / healthTotal) * 100 + '%'
+  healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
 
   /* Set progress bar color change */
   const greenThreshold = (2 / 5) * total
@@ -515,3 +590,33 @@ function updateHealthBar () {
     : (total - completed > yellowThreshold) ? 'healthBarYellowState'
       : 'healthBarRedState'
 }
+
+/**
+ * Calculate the amount of health the boss has left and display it as a health
+ * bar in the DOM
+ */
+// const updateHealthBar = async () => {
+//   // Reset health text
+//   healthText.innerHTML = ''
+//   /* Set progress bar values */
+//   const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace)
+//   monster.src = 'images/boss/' + boss + '.png'
+//   healthLeft.style.width = (health / healthTotal) * 100 + '%'
+//   healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
+
+//   /* Set progress bar color change */
+//   const greenThreshold = (2 / 5) * health
+//   const yellowThreshold = (1 / 5) * health
+//   healthLeft.className += (health - healthTotal > greenThreshold) ? 'healthBarGreenState'
+//     : (health - healthTotal > yellowThreshold) ? 'healthBarYellowState'
+//       : 'healthBarRedState'
+// }
+
+/**
+ * Deal damage to the boss by calling appropriate Firebase function
+ *
+ * @param {!number} damage - amount of damage (story points) being done
+ */
+// function doDamage(damage) {
+//   damageBoss(getMemberProfile().workspace, damage).then(() => updateHealthBar())
+// }
