@@ -12,31 +12,44 @@
   <div class="battlefield" id="battlefield">
 
     <div class="nav">
-
-      <!-- Section in top left to display the current iteration details-->
-      <div id="iterationTimelineContainer">
-        <div id="iterationRange"></div>
-        <div id="iterationRemaining"></div>
+      <!-- Icon to open map -->
+      <div id="openBossMap">
+        <img src="images/map.png">
       </div>
-      <div id="profileContainer" class="closed">
-        <!-- Member profile info and button to open menu -->
-        <div id="memberProfile">
-          <div class="member-icon">
-            <img id="memberIcon" />
-          </div>
-          <div>
-            <div id="memberName"></div>
-            <div id="memberTeam"></div>
-          </div>
-          <span class="carrot">&#9662</span>
+      <div class="nav-wrap">
+        <!-- Section in top left to display the current iteration details-->
+        <div id="iterationTimelineContainer">
+          <div id="iterationRange"></div>
+          <div id="iterationRemaining"></div>
         </div>
+        <div id="profileContainer" class="closed">
+          <!-- Member profile info and button to open menu -->
+          <div id="memberProfile">
+            <div class="member-icon">
+              <img id="memberIcon" />
+            </div>
+            <div>
+              <div id="memberName"></div>
+              <div id="memberTeam"></div>
+            </div>
+            <span class="carrot">&#9662</span>
+          </div>
 
-        <!-- Member profile menu -->
-        <div id="memberMenu" class="hide">
-          <div id="signoutButton" class="menu-item">Signout</div>
+          <!-- Member profile menu -->
+          <div id="memberMenu" class="hide">
+            <div id="signoutButton" class="menu-item">Signout</div>
+          </div>
         </div>
       </div>
+    </div>
 
+
+    <!-- Map showing all bosses -->
+    <div id="bossMap">
+      <div id="bossMapContent">
+        <!-- <div id="trail"></div> -->
+        <div id="closeBossMap"><span>&#10005;</span></div>
+      </div>
     </div>
 
     <div class="boss-container">
@@ -82,10 +95,8 @@
     <div class="panel-item selected" id="stories">
     </div>
 
+    <!-- Team tab -->
     <div class="panel-item" id="team">
-    </div>
-    <!-- All stories -->
-    <div class="panel-item" id="allStories">
     </div>
 
     <!-- Log of all actions -->

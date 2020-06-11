@@ -3,8 +3,11 @@ body {
   font-family: sans-serif;
   margin: 0;
 
-  height: 600px;
+  height: 500px;
   width: 400px;
+}
+h1 {
+  font-size: 16px;
 }
 
 .login-container {
@@ -138,17 +141,17 @@ body {
   color: rgba(255,255,255,1);
   padding: 10px 3%;
 }
+#iterationTimelineContainer {
+  position:relative;
+  color: rgba(255,255,255,.5);
+  font-size: 9px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 
 #profileContainer {
   position: relative;
-}
-
-#profileContainer.closed {
-
-}
-
-#profileContainer.open {
-  
 }
 
 #memberProfile {
@@ -193,7 +196,7 @@ body {
 #memberProfile #memberTeam {
   font-size: 9px;
   font-weight: bold;
-  color: rgba(255,255,255,.3);
+  color: rgba(255,255,255,.5);
   text-transform: uppercase;
   letter-spacing: 1px;
   padding: 2px 10px;
@@ -249,6 +252,114 @@ body {
 }
 .menu-item:hover {
   background: rgba(0,0,0,0.2);
+}
+
+#openBossMap {
+  position: relative;
+  height: 40px;
+  width: 40px;
+  z-index: 7;
+}
+#openBossMap img {
+  position:relative;
+  max-height: 50%;
+  max-width: 50%;
+  margin: 25%;
+}
+#bossMap {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 90%;
+  margin: 5%;
+  z-index: 8;
+  border: 4px solid #c58839;
+  background: #dec47e;
+  box-sizing: content-box;
+}
+#bossMap.open {
+  display: block;
+}
+#bossMapContent {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+#closeBossMap {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  margin: 5%;
+  padding-right: 16px;
+  padding-top:8px;
+  color: rgba(255,255,255,.7);
+  /* background: rgba(0,0,0,0.3); */
+  border-radius: 500px;
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  line-height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#closeBossMap:hover {
+  color: rgba(255,255,255,1);
+}
+
+#bossMapContent .trail {
+  position: relative;
+  border-left: 4px dashed rgba(0,0,0,1);
+  min-height: 64px;
+  height: 64px;
+}
+
+#bossMapContent .boss {
+  position: relative;
+  height: 64px;
+  margin: 8px 0;
+}
+#bossMapContent .boss img {
+  max-height: 100%;
+}
+#bossMapContent .boss.active {
+
+}
+#bossMapContent .boss.active .mini-health {
+  width: 100%;
+  height: 6px;
+  padding: 1px;
+  border-radius: 500px;
+  background: rgba(0,0,0,0.9);
+}
+#bossMapContent .boss.active .mini-health .mini-health-fill {
+  height: 6px;
+  border-radius: 500px;
+  background: #c0392b;
+}
+#bossMapContent .boss.dead {
+  opacity: .5;
+}
+#bossMapContent .boss.dead .cross {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(0,0,0,.5);
+  height: 64px;
+  width: 64px;
+  font-size: 64px;
+  line-height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .boss-container {
@@ -398,7 +509,6 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  padding-bottom: 100px;
 }
 
 .story {
@@ -472,44 +582,43 @@ body {
   color: #34495e;
 }
 
-.story:last-child {
-  margin-bottom: 100px
-}
-
 .action {
   padding: 8px;
   border-bottom: 1px solid rgba(0,0,0,.1);
 }
 
-.action:last-child {
-  margin-bottom: 100px
-}
 
 #team .member {
-  width: 100%;
+  width: 96%;
   display: flex;
   flex-direction: row;
-  /*justify-content: space-between;*/
+  justify-content: space-between;
   align-items: center;
   text-align: left;
   font-weight: normal;
   font-size: 11px;
-  padding: 4px 0;
+  padding: 4px 2%;
+}
+
+#team .member .honor-badge {
+  color: #f3b406;
+  font-size: 20px;
+  margin-left: 8px;
 }
 
 #team .member .honor {
   padding: 8px;
-  color: #ffc400;
+  color: #f3b406;
   font-weight: bold;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 2px;
   border-radius: 8px;
-  border: 2px solid #ffc400;
+  border: 2px solid #f3b406;
   transition: all .2s linear;
 }
 #team .member .honor:hover {
-  background: #ffc400;
+  background: #f3b406;
   color: #ffffff;
   cursor: pointer;
 }
@@ -552,4 +661,14 @@ body {
   font-size: 30px;
   color: black;
 }
-
+.login {
+  width: 400px;
+  height: auto;
+}
+.nav-wrap{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow:2;
+}

@@ -116,6 +116,6 @@ Naming Scheme:
 
 # Practices
 * Pull requests to develop are to be reviewed by **at least 2** people before being merged into develop
-* Pull requests to master are to be reviewed by **at least 6** people before being merged into master
+* Pull requests to master are to be reviewed by **at least 4** people before being merged into master
 * When reviewing a pull request, pull the branch to your local repository and test it in your own browser to confirm functionality before approving.
 * When a pull request is merged after being reviewed, **close** the branch that was merged.
