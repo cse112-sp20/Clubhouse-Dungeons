@@ -48,13 +48,6 @@ On the top left you will find the boss map icon <img src="../dist/images/map.png
 </p>
 
 ### Top Warriors
-<p align="center">
-<img src="images/warriors.png" width="500">
-
-
-
-
-### Top Warriors
 Here you will find the top warriors on the team that have contributed the most to the battle. The damage seen is the total amount of points from the stories you have completed in this iteration. Finish your stories and aim to become a top warrior.
 
 <p align="left">
