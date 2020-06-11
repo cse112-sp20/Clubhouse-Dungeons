@@ -321,6 +321,7 @@ const addToMyStoriesSection = story => {
     storyDiv.innerHTML += '<div class="points"></div>'
   }
 
+  // Values for story completion button based on timer
   var counter = 0
   var borderSize = 1
   var finishHoldEvent = new CustomEvent('finishHold')
@@ -529,19 +530,7 @@ document.addEventListener(
           iterationRange.innerHTML = 'No current iteration'
         }
 
-        /* Get top warriors and update text */
-        const topWarriors = getTopWarriors()
-        while (topWarriors.length < 3) {
-          topWarriors.push({ name: 'Empty', points: 0 })
-        }
-
-        document.getElementById('warrior1Name').innerText = getFNameAndLInitial(topWarriors[0].name)
-        document.getElementById('warrior2Name').innerText = getFNameAndLInitial(topWarriors[1].name)
-        document.getElementById('warrior3Name').innerText = getFNameAndLInitial(topWarriors[2].name)
-
-        document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
-        document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
-        document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
+        setTopWarriors()
 
         updateHealthBar()
 
