@@ -142,7 +142,7 @@ h1 {
   padding: 10px 3%;
 }
 #iterationTimelineContainer {
-  padding-left: 48px;
+  position:relative;
   color: rgba(255,255,255,.5);
   font-size: 9px;
   font-weight: bold;
@@ -255,14 +255,13 @@ h1 {
 }
 
 #openBossMap {
-  position: absolute;
-  top: 8px;
-  left: 8px;
+  position: relative;
   height: 40px;
   width: 40px;
   z-index: 7;
 }
 #openBossMap img {
+  position:relative;
   max-height: 50%;
   max-width: 50%;
   margin: 25%;
@@ -665,4 +664,11 @@ h1 {
 .login {
   width: 400px;
   height: auto;
+}
+.nav-wrap{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow:2;
 }
