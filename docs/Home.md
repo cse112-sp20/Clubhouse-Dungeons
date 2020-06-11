@@ -18,8 +18,8 @@ Below, find everything you need to get started with Clubhouse Dungeons
 **Build:** Chris Maytom <br/>
 **Build:** Jedd Wonohadidjojo <br/>
 **Coder:** Chase Sriprajittichai <br/>
-**Coder:** Kyle Johnson <br/>
 **Coder:** Matthew Kressin <br/>
+**Coder:** Kyle Johnson <br/>
 **Coder:** Randy Kim <br/>
 **QA/Testing:** Arren de Manuel <br/>
 **QA:** Kevin Montenegro <br/>
