@@ -43,16 +43,10 @@ Every story completion will be an attack against the monster and chip away at th
 
 ### Boss Map
 On the top left you will find the boss map icon <img src="../dist/images/map.png" width="20">. Click the icon and you will be able to view the bosses you have beaten and the next bosses you will encounter in upcoming iterations. 
+
 <p align="left">
-<img src="images/bossMap.png" width="30%" height="30%>
+<img src="images/bossMap.png" width="30%" height="30%">
 </p>
-
-### Top Warriors
-<p align="center">
-<img src="images/warriors.png" width="500">
-
-
-
 
 ### Top Warriors
 Here you will find the top warriors on the team that have contributed the most to the battle. The damage seen is the total amount of points from the stories you have completed in this iteration. Finish your stories and aim to become a top warrior.
@@ -87,6 +81,13 @@ Stay up to date with your team's battle. The Battle Log shows who has completed 
 
 <p align="left">
 <img src="images/battle.png" width="30%" height="30%">
+</p>
+
+#### Iteration Timeline
+Keep track of your team's current iteration start and end dates to see when the next boss is ready to fight and when to beat the boss by!
+
+<p align="left">
+<img src="images/timeline.png" width="30%" height="30%">
 </p>
 
 ## Signing Out
