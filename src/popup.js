@@ -28,6 +28,10 @@ import {
   memberLogin
 } from './db/firebase'
 
+// Story values for health bar
+var COMPLETED
+var TOTAL
+
 // Iteration timeline elements
 const iterationRange = document.getElementById('iterationRange')
 const iterationRemaining = document.getElementById('iterationRemaining')
@@ -181,6 +185,24 @@ function honorMember (honoredMember) {
 }
 
 /**
+ * Sets the top 3 warrior names and point values
+ */
+function setTopWarriors () {
+  const topWarriors = getTopWarriors()
+  while (topWarriors.length < 3) {
+    topWarriors.push({ name: 'Empty', points: 0 })
+  }
+
+  document.getElementById('warrior1Name').innerText = getFNameAndLInitial(topWarriors[0].name)
+  document.getElementById('warrior2Name').innerText = getFNameAndLInitial(topWarriors[1].name)
+  document.getElementById('warrior3Name').innerText = getFNameAndLInitial(topWarriors[2].name)
+
+  document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
+  document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
+  document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
+}
+
+/**
  * Callback to be called when the user wants to mark a story completed. First,
  * tries to update the story using the Clubhouse API. If successful, remove the
  * story from local references (i.e. myStories) and from the tab that it is in.
@@ -196,6 +218,15 @@ function onCompleteStory (story) {
       if (storiesNode) {
         stories.removeChild(storiesNode)
       }
+      // update the health bar values and text
+      COMPLETED += story.estimate
+      healthLeft.style.width = ((TOTAL - COMPLETED) / TOTAL) * 100 + '%'
+      healthText.innerText = `${TOTAL - COMPLETED} / ${TOTAL}`
+      updateHealthBarColor()
+
+      // update current user complete story point total
+      getSignedInMember().points += story.estimate
+      setTopWarriors()
 
       // add the completed story to the top of the battleLog tab
       addToBattleLogTab(story, true)
@@ -288,7 +319,54 @@ const addToMyStoriesSection = story => {
     storyDiv.innerHTML += '<div class="points"></div>'
   }
 
-  storyButton.addEventListener('click', () => onCompleteStory(story))
+  // Values for story completion button based on timer
+  var counter = 0
+  var borderSize = 1
+  var finishHoldEvent = new CustomEvent('finishHold')
+  var pressHoldDuration = 20
+  var timerID
+
+  // Event listeners for story button
+  storyButton.addEventListener('mousedown', pressingDown, false)
+  storyButton.addEventListener('mouseup', notPressingDown, false)
+  storyButton.addEventListener('finishHold', finishHold, false)
+
+  /**
+   * Sets timer for story completion mousedown event
+   */
+  function pressingDown () {
+    // Start the timer
+    requestAnimationFrame(timer)
+  }
+  /**
+   * Resets timer for sotry completion mouseup event
+   */
+  function notPressingDown () {
+    // Stop the timer
+    cancelAnimationFrame(timerID)
+    counter = 0
+    storyButton.style.border = '1px solid #FFD700'
+  }
+  /**
+   * Establish timer action during story completion mousedown event
+   */
+  function timer () {
+    if (counter < pressHoldDuration) {
+      timerID = requestAnimationFrame(timer)
+      counter++
+      borderSize += 0.2
+      storyButton.style.border = borderSize + 'px solid #32CD32'
+    } else {
+      storyButton.dispatchEvent(finishHoldEvent)
+    }
+  }
+  /**
+   * Completes story when pressHoldDuration threshold is met
+   */
+  function finishHold () {
+    onCompleteStory(story, storyDiv, 'myStoriesTab')
+  }
+
   storyDiv.prepend(storyButton)
   stories.appendChild(storyDiv)
 }
@@ -450,19 +528,7 @@ document.addEventListener(
           iterationRange.innerHTML = 'No current iteration'
         }
 
-        /* Get top warriors and update text */
-        const topWarriors = getTopWarriors()
-        while (topWarriors.length < 3) {
-          topWarriors.push({ name: 'Empty', points: 0 })
-        }
-
-        document.getElementById('warrior1Name').innerText = getFNameAndLInitial(topWarriors[0].name)
-        document.getElementById('warrior2Name').innerText = getFNameAndLInitial(topWarriors[1].name)
-        document.getElementById('warrior3Name').innerText = getFNameAndLInitial(topWarriors[2].name)
-
-        document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
-        document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
-        document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
+        setTopWarriors()
 
         updateHealthBar()
 
@@ -576,19 +642,27 @@ const initBossMap = async () => {
 function updateHealthBar () {
   /* Set progress bar values */
   const { completed, total } = getProgress()
+  COMPLETED = completed
+  TOTAL = total
   const healthTotal = total
   const health = total - completed
   const boss = getCurrentIterationIndex()
   monster.src = 'images/boss/' + boss + '.png'
   healthLeft.style.width = (health / healthTotal) * 100 + '%'
-  healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
+  healthText.innerText = `${health} / ${healthTotal}`
+  updateHealthBarColor()
+}
 
+/**
+ * Update the color of the health bar display depending on how much health left
+ */
+function updateHealthBarColor () {
   /* Set progress bar color change */
-  const greenThreshold = (2 / 5) * total
-  const yellowThreshold = (1 / 5) * total
-  healthLeft.className += (total - completed > greenThreshold) ? 'healthBarGreenState'
-    : (total - completed > yellowThreshold) ? 'healthBarYellowState'
-      : 'healthBarRedState'
+  const greenThreshold = (2 / 5) * TOTAL
+  const yellowThreshold = (1 / 5) * TOTAL
+  healthLeft.classList.add((TOTAL - COMPLETED > greenThreshold) ? 'healthBarGreenState'
+    : (TOTAL - COMPLETED > yellowThreshold) ? 'healthBarYellowState'
+      : 'healthBarRedState')
 }
 
 /**
