@@ -61,8 +61,8 @@ Final decision:
 
 Thoughts that lead us to thinking about using a database to keep a separate copy of Clubhouse stories, etc:
 
-    The way that clubhouse’s api is set up would allow us to grab data but we wanted it formatted in a way that is most 
-    useful for our project.
+    The way that clubhouse’s api is set up would allow us to grab data but we wanted it formatted in a way that 
+    is most useful for our project.
 
 Argument for:
 
@@ -114,9 +114,9 @@ Final decision:
 
 Thoughts that lead us to thinking about developing a full leaderboard:
 
-    We wanted our users to have a sense of who on the team is doing a lot of work and who isn’t. It also adds an element of 
-    multiplayer that would improve gamification. We want the extension to provide a sense of community with team members and 
-    this allows for it.
+    We wanted our users to have a sense of who on the team is doing a lot of work and who isn’t. It also adds an 
+    element of multiplayer that would improve gamification. We want the extension to provide a sense of community 
+    with team members and this allows for it.
 
 Argument for full leaderboard:
 
@@ -129,12 +129,13 @@ Argument against full leaderboard:
 
 Thoughts that lead us to thinking about developing a Top 3 List:
 
-    A top 3 list praises the team's top performers without making others feel like they aren’t as good and most people only care
-    about who’s on top anyways.
+    A top 3 list praises the team's top performers without making others feel like they aren’t as good and most people
+    only care about who’s on top anyways.
 
 Argument for Top 3 List:
 
-    Causes the feature to be more positive, singling out team members for praise, and not focusing on team members with few points.
+    Causes the feature to be more positive, singling out team members for praise, and not focusing on team members with 
+    few points. 
     Better looking UI design; simpler.
 
 Argument against Top 3 List:
@@ -145,8 +146,9 @@ Argument against Top 3 List:
 Final decision:
 
     Top 3 List
-    We chose a Top 3 List because it encourages people to try to do their best so they can be singled out in front of the team in 
-    a positive light. A leaderboard system would be less encouraging and cause low ranked team members to feel bad.
+    We chose a Top 3 List because it encourages people to try to do their best so they can be singled out in front of 
+    the team in a positive light. 
+    A leaderboard system would be less encouraging and cause low ranked team members to feel bad.
 
 
 ## 5.  Testing Framework: Jest vs Mocha
@@ -185,14 +187,14 @@ Argument against Mocha:
 Final decision:
 
     Jest
-    We chose Jest because of a certain mix of wanting to try new technologies (Jest, Puppeteer) and the novelty of the simplicity 
-    of its tests.  While testing with both frameworks we were surprised by how certain things in Jest just works. Despite needing 
-    to also use puppeteer with it, it ended up still being intuitive.
+    We chose Jest because of a certain mix of wanting to try new technologies (Jest, Puppeteer) and the novelty of 
+    the simplicity of its tests.  While testing with both frameworks we were surprised by how certain things in Jest 
+    just works. Despite needing to also use puppeteer with it, it ended up still being intuitive.
 
 ## 6. Why Puppeteer?
 
     Puppeteer provides a simple framework that automates end to end testing for our extension.  We were able to use it to
-    automatically install our extension into a fresh Chromium browser, log in, and interact with various features through the 
-    same UI that the end user would be exposed to.  This is important to test so that we can be sure that we can be sure that 
-    the end user experience functions properly.  Using puppeteer to do this, however, allows us to integrate these tests into 
-    our testing pipeline rather than just manually testing features every time. 
+    automatically install our extension into a fresh Chromium browser, log in, and interact with various features through 
+    the same UI that the end user would be exposed to.  This is important to test so that we can be sure that we can be 
+    sure that the end user experience functions properly.  Using puppeteer to do this, however, allows us to integrate 
+    these tests into our testing pipeline rather than just manually testing features every time. 
