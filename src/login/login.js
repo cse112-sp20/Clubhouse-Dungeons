@@ -41,19 +41,19 @@ const validateMember = (apiKey) => {
       switch (e.message) {
         case ERR_MSG_INTERNET:
           // Respond to internet error
-          document.getElementById('no-internet').innerHTML = 'No internet connection'
+          document.getElementById('error-message').innerHTML = 'No internet connection'
           break
         case ERR_MSG_INVALID_API_TOKEN:
           // Respond to invalid api token error
-          document.getElementById('token-error').innerHTML = 'Invalid API token!'
+          document.getElementById('error-message').innerHTML = 'Invalid API token!'
           break
         case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
           // Respond to quota exceeded
-          document.getElementById('quota-exceeded').innerHTML = 'Too many requests! Please try again in 2 minutes'
+          document.getElementById('error-message').innerHTML = 'Too many requests! Please try again in 2 minutes'
           break
         default:
           // Respond to unknown error
-          document.getElementById('unknown-error').innerHTML = 'Error logging in'
+          document.getElementById('error-message').innerHTML = 'Error logging in'
           break
       }
     })
