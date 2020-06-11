@@ -34,8 +34,8 @@ To include images, add them to the `docs/images` directory and link to them in o
 
 ## Tool Overview
 The tools we use for maintaining our API-level documentation include:
--  JSDoc
--  jsdoc-to-markdown
+- [JSDoc](https://jsdoc.app/)
+- [jsdoc-to-markdown](https://github.com/jsdoc2md/)
 
 ### How to install our tools
 After cloning our repository, run the command:
@@ -119,7 +119,7 @@ This is used by the two js files in the `scripts/` directory which generate docu
 ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code, with the goal of making code more consistent and avoiding bugs.
 
 ### Linting Rules
-1.  JSDoc Comments
+1.  [JSDoc Comments](https://jsdoc.app/about-getting-started.html)
 2.  [JS Standard Style guide](https://standardjs.com/rules-en.html)
 
 ### Command to run Eslint

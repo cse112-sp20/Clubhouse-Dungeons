@@ -1,5 +1,7 @@
 # Pipeline Basics
 ## Overview 
+This document outlines the implemented build pipeline that allows for the automatation of integration and testing processes. Having a pipeline enables our team the ability to edit, review, and iterate upon our product.
+
 Our pipeline comprises of 2 parts:
 *   the local version used by developers to work on the project
 *   the remote version that ensures new code that is added to the develop branch is up to our teams standard.
@@ -21,8 +23,19 @@ Local Pipelines are run using npm scripts. The entire pipeline is run by using t
 
 ## Remote Workflows
 Remote Pipelines are run using Github Actions which work similar to other CI platforms in that it functions via yml configuration files.
-![Basic Pipeline Diagram](https://github.com/cse112-sp20/Quaranteam-8/tree/develop/docs/images/diagram.png "Basic Pipeline Diagram")
-The overview of our pipeline is shown in the diagram above. Since our develop and master branches are protected all new code must first be pushed to Github and then a pull request needs to be created. Once created the base pipeline executes which builds our extension, runs our Linter, then runs our Unit tests, and finally CodeClimate Analyzes the branch and checks for new issues.
+<p align="center">
+<img src="images/diagram.png" width="70%" height="70%">
+</p>
+
+The overview of our pipeline is shown in the diagram above. The purposes and specifics of each stage in our pipeline are explained below:
+
+1. Local Repo: Our team members implement production code on local versions of the codebase so as to allow developers to continuously maintain and produce code for our extension.
+2. Linter: EsLint configured for the Javascript Standard Style to enforce styling conventions within our codebase. 
+3. Unit Test: Jest testing framework is used to unit test our codebase to ensure proper functionality of our code. Locally perfomed end-to-end tests are also done using Puppeteer.
+4. Code Quality: Codacy and Code Climate are used to automate code reviewing and track issues from pull requests in order to minimize the project’s technical debt. For more information, checkout our document on [quality control](https://github.com/cse112-sp20/Quaranteam-8/wiki/Code_Quality).
+5. Document Automation: JSDocs is our chosen markup language that automates external documentation and annotates the JavaScript source code files. 
+
+Since our develop and master branches are protected all new code must first be pushed to Github and then a pull request needs to be created. Once created the base pipeline executes which builds our extension, runs our Linter, then runs our Unit tests, and finally CodeClimate Analyzes the branch and checks for new issues.
 
 If all these pass and the pull request is merged into develop then our next workflow starts which generates coverage reports to send to Codacy and CodeClimate and also generates jsdoc based documentation and uploads it to our GitHub Wiki.
 
