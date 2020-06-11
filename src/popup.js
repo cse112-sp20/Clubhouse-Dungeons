@@ -7,8 +7,6 @@ import {
   getSignedInMember,
   getAllMembers,
   getMemberName,
-  getMemberId,
-  getMember,
   getMemberProfile,
   getProgress,
   getIterationTimeline,
@@ -227,7 +225,7 @@ function onCompleteStory (story) {
       updateHealthBarColor()
 
       // update current user complete story point total
-      getMember(getMemberId()).points += story.estimate
+      getSignedInMember().points += story.estimate
       setTopWarriors()
 
       // add the completed story to the top of the battleLog tab

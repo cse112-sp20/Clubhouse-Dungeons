@@ -22,3 +22,6 @@ coverage/
 # Dynamic Documentation
 docs/API_Documentation.md
 docs/Test_Documentation.md
+
+# VS code settings
+.vscode
