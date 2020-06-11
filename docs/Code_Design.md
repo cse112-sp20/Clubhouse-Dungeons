@@ -24,7 +24,7 @@ And that’s it! To keep our code modular, we’ve separated this architecture i
 Architecture Diagram:
 
 <p align="center">
-    <img src="images/architecture.jpg" width="80%">
+    <img src="https://github.com/cse112-sp20/Quaranteam-8/blob/develop/docs/images/architecture.jpg" width="80%">
 </p>
 
 ## login.js
