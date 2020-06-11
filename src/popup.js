@@ -9,11 +9,15 @@ import {
   getMemberName,
   getMemberProfile,
   getProgress,
+  getIterationTimeline,
+  getCurrentIterationId,
+  getCurrentIterationIndex,
   completeStory
 } from './popup-backend'
 import {
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
+  ERR_MSG_NO_ACTIVE_ITERATION,
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
   ERR_MSG_BROWSER_STORAGE,
   ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
@@ -24,12 +28,18 @@ import {
   memberLogin
 } from './db/firebase'
 
+// Iteration timeline elements
+const iterationRange = document.getElementById('iterationRange')
+const iterationRemaining = document.getElementById('iterationRemaining')
+
 // Member profile button and info
 const profileContainer = document.getElementById('profileContainer')
 // const memberProfile = document.getElementById('memberProfile')
 const memberIcon = document.getElementById('memberIcon')
 const memberName = document.getElementById('memberName')
 const memberTeam = document.getElementById('memberTeam')
+
+const monster = document.getElementById('monster')
 
 const healthText = document.getElementById('healthText')
 const healthLeft = document.getElementById('healthLeft')
@@ -42,24 +52,26 @@ const signoutButton = document.getElementById('signoutButton')
 // const selectedTabBG = document.getElementById("selectedTabBG");
 
 // Tab elements
-const myStoriesTab = document.getElementById('myStoriesTab')
-const allStoriesTab = document.getElementById('allStoriesTab')
+const storiesTab = document.getElementById('storiesTab')
+const teamTab = document.getElementById('teamTab')
 const battleLogTab = document.getElementById('battleLogTab')
 
 // Containers for actual elements
-const myStories = document.getElementById('myStories')
-const allStories = document.getElementById('allStories')
+const stories = document.getElementById('stories')
 const battleLog = document.getElementById('battleLog')
+const team = document.getElementById('team')
 
-// Event listener for open honor menu
-const membersList = document.getElementById('membersList')
-const membersListContainer = document.getElementById('membersListContainer')
-const membersListButton = document.getElementById('membersListButton')
-membersListButton.addEventListener('click', () => toggleMembersList())
+// Boss map
+const bossMap = document.getElementById('bossMap')
+const bossMapContent = document.getElementById('bossMapContent')
+const openBossMap = document.getElementById('openBossMap')
+const closeBossMap = document.getElementById('closeBossMap')
+openBossMap.addEventListener('click', () => toggleBossMap())
+closeBossMap.addEventListener('click', () => toggleBossMap())
 
 // Click event listeners for tabs
-myStoriesTab.addEventListener('click', () => selectTab(0))
-allStoriesTab.addEventListener('click', () => selectTab(1))
+storiesTab.addEventListener('click', () => selectTab(0))
+teamTab.addEventListener('click', () => selectTab(1))
 battleLogTab.addEventListener('click', () => selectTab(2))
 
 /**
@@ -82,6 +94,17 @@ const signout = () => {
 
 /**
  * Show member profile menu
+ */
+const toggleBossMap = () => {
+  if (bossMap.classList.contains('open')) {
+    bossMap.classList.remove('open')
+  } else {
+    bossMap.classList.add('open')
+  }
+}
+
+/**
+ * Show or hide the boss map
  */
 const toggleMemberMenu = () => {
   if (profileContainer.classList.contains('closed')) {
@@ -129,13 +152,14 @@ function selectTab (tabIndex) {
   switch (tabIndex) {
     // My Stories
     case 0:
-      myStoriesTab.classList.add('selected')
-      myStories.classList.add('selected')
+      storiesTab.classList.add('selected')
+      stories.classList.add('selected')
+      // allStories.classList.add('selected')
       break
-    // All Stories
+    // Team Tab / Honor List
     case 1:
-      allStoriesTab.classList.add('selected')
-      allStories.classList.add('selected')
+      teamTab.classList.add('selected')
+      team.classList.add('selected')
       break
     // Battle Log
     case 2:
@@ -144,17 +168,6 @@ function selectTab (tabIndex) {
       break
 
     default:
-  }
-}
-
-/**
- * Toggle members list for honors
- */
-function toggleMembersList () {
-  if (membersListContainer.classList.contains('show')) {
-    membersListContainer.classList.remove('show')
-  } else {
-    membersListContainer.classList.add('show')
   }
 }
 
@@ -179,19 +192,14 @@ function onCompleteStory (story) {
   completeStory(story.id)
     .then(story => {
       // Remove from my stories
-      const myStoriesNode = getStoryNodeFromContainer(myStories, story)
-      if (myStoriesNode) {
-        myStories.removeChild(myStoriesNode)
+      const storiesNode = getStoryNodeFromContainer(stories, story)
+      if (storiesNode) {
+        stories.removeChild(storiesNode)
       }
 
-      // Remove from all stories
-      const allStoriesNode = getStoryNodeFromContainer(allStories, story)
-      if (allStoriesNode) {
-        allStories.removeChild(allStoriesNode)
-      }
-
-      // add the completed story to the battleLog tab
-      addToBattleLogTab(story)
+      // add the completed story to the top of the battleLog tab
+      addToBattleLogTab(story, true)
+      // doDamage(story.estimate)
     })
     .catch((e) => {
       switch (e.message) {
@@ -261,11 +269,11 @@ const getStoryNodeFromContainer = (nodeContainer, story) => {
 }
 
 /**
- * Adds the passed in story to the myStories tab
+ * Adds the passed in story to the myStories section of the stories tab
  *
  * @param {Story} story the story to add to the myStories tab
  */
-const addToMyStoriesTab = story => {
+const addToMyStoriesSection = story => {
   const storyDiv = document.createElement('div')
   storyDiv.setAttribute('id', story.id)
   const storyButton = document.createElement('div')
@@ -282,53 +290,61 @@ const addToMyStoriesTab = story => {
 
   storyButton.addEventListener('click', () => onCompleteStory(story))
   storyDiv.prepend(storyButton)
-  myStories.appendChild(storyDiv)
+  stories.appendChild(storyDiv)
 }
 
 /**
- * Adds the passed in story to the allStories tab
+ * Adds the passed in story to the allStories section of the stories tab
  *
  * @param {Story} story the story to add to the allStories tab
  */
-const addToAllStoriesTab = story => {
+const addToAllStoriesSection = story => {
   const ownerNames = story.owner_ids.length > 0
     ? story.owner_ids.map(memberId => getMemberName(memberId))
     : ['Unassigned']
 
-  const storyDiv = document.createElement('div')
-  storyDiv.setAttribute('id', story.id)
-  const storyButton = document.createElement('div')
-  storyDiv.classList.add('story')
-  storyButton.classList.add('story-button')
-  storyButton.innerHTML = '<img src="images/sword.png" >'
-  storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
-
-  if (story.estimate) {
-    storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
-  } else {
-    storyDiv.innerHTML += '<div class="points"></div>'
-  }
-
+  let signedInOwner = false
+  const signedInOwnerName = getMemberName(getSignedInMember().id)
   const ownersDiv = document.createElement('div')
   ownersDiv.classList.add('owners')
   ownerNames.forEach(ownerName => {
+    if (ownerName === signedInOwnerName) {
+      signedInOwner = true
+    }
     const ownerDiv = document.createElement('div')
     ownerDiv.innerHTML = ownerName
     ownersDiv.append(ownerDiv)
   })
 
-  storyButton.addEventListener('click', () => onCompleteStory(story))
-  storyDiv.prepend(storyButton)
-  storyDiv.append(ownersDiv)
-  allStories.appendChild(storyDiv)
+  if (!signedInOwner) {
+    const storyDiv = document.createElement('div')
+    storyDiv.setAttribute('id', story.id)
+    const storyButton = document.createElement('div')
+    storyDiv.classList.add('story')
+    storyButton.classList.add('story-button')
+    storyButton.innerHTML = '<img src="images/sword.png" >'
+    storyDiv.innerHTML = '<div class="name">' + story.name + '</div>'
+
+    if (story.estimate) {
+      storyDiv.innerHTML += '<div class="points">' + story.estimate + ' DMG</div>'
+    } else {
+      storyDiv.innerHTML += '<div class="points"></div>'
+    }
+
+    storyButton.addEventListener('click', () => onCompleteStory(story))
+    storyDiv.prepend(storyButton)
+    storyDiv.append(ownersDiv)
+    stories.appendChild(storyDiv)
+  }
 }
 
 /**
  * Add the passed in story to the battleLog tab
  *
  * @param {Story} story the story to add to the battleLog tab
+ * @param {boolean} [addToTop=false] - whether to add the story to the top of the battleLog tab
  */
-const addToBattleLogTab = story => {
+const addToBattleLogTab = (story, addToTop = false) => {
   const ownerNames = story.owner_ids.length > 0
     ? story.owner_ids.map(memberId => getMemberName(memberId)).join(', ')
     : 'unassigned'
@@ -341,7 +357,12 @@ const addToBattleLogTab = story => {
     actionDiv.innerHTML = ownerNames + ' completed ' + story.name
   }
 
-  battleLog.appendChild(actionDiv)
+  if (addToTop) {
+    console.log('add to top of battleLog')
+    battleLog.prepend(actionDiv)
+  } else {
+    battleLog.appendChild(actionDiv)
+  }
 }
 
 /**
@@ -356,6 +377,120 @@ document.addEventListener(
   'DOMContentLoaded',
   () => {
     setup()
+      .then(() => {
+        const memberProfile = getMemberProfile()
+        const allMemberIds = getAllMembers().map(member => member.id)
+        memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace, getCurrentIterationId())
+          .then(() => {
+            // needs to wait for the database variables to be setup by memberLogin
+            getHonoredByMap(allMemberIds)
+              .then((honoredByMap) => {
+                /*
+                 * For each member in the array returned by getAllMembers(),
+                 * create HTML 'div' elements (which includes the member name
+                 * and honor button) to add into the honorButton drop-down list.
+                 */
+                getAllMembers().map(member => {
+                  const memberDiv = document.createElement('div')
+                  memberDiv.classList.add('member')
+                  const memberName = document.createElement('div')
+                  memberName.innerHTML = member.profile.name
+                  const honorBadge = document.createElement('div')
+                  honorBadge.classList.add('badge')
+                  const hoverText = document.createElement('span')
+                  hoverText.classList.add('hovertext')
+
+                  /*
+                   * If the current member has an honored_by array that's greater
+                   * than 0, add the honorBadge image to the honorBadge div element
+                   * that will be appended to memberDiv. Also, for each member in
+                   * the current member's honored_by array, add them to the tooltip
+                   * that pops up when the cursor hovers over the badge.
+                   */
+                  if (honoredByMap[member.id].length > 0) {
+                    honorBadge.innerHTML = '<span class="honor-badge">&#9733;</span>' // Use HTML entity instead of png
+                    // honorBadge.innerHTML = '<img src="images/honorBadge.png" >'
+                    hoverText.innerHTML = '<b><u>Honored by:</u></b>'
+                    for (const m of honoredByMap[member.id]) {
+                      hoverText.innerHTML += '<br>' + getFNameAndLInitial(getMemberName(m))
+                    }
+                    honorBadge.appendChild(hoverText)
+                  }
+                  const honorButton = document.createElement('div')
+                  honorButton.classList.add('honor')
+                  honorButton.innerHTML = 'Honor'
+                  honorButton.addEventListener('click', () => honorMember(member))
+                  memberName.appendChild(honorBadge)
+                  memberDiv.appendChild(memberName)
+                  memberDiv.appendChild(honorButton)
+                  team.appendChild(memberDiv)
+                })
+              })
+          })
+
+        /* Get member info for profile button */
+        memberIcon.src = memberProfile.icon
+        memberName.innerHTML = memberProfile.name
+        memberTeam.innerHTML = memberProfile.workspace
+
+        /* Get iteration timeline details */
+        const iterationTimeline = getIterationTimeline()
+        if (iterationTimeline) {
+          const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+          const startMonth = months[iterationTimeline.start_date.getMonth()]
+          const startDay = iterationTimeline.start_date.getDate()
+          const endMonth = months[iterationTimeline.end_date.getMonth()]
+          const endDay = iterationTimeline.end_date.getDate()
+          iterationRange.innerHTML = `${startMonth} ${startDay} - ${endMonth} ${endDay}`
+
+          const daysRemaining = iterationTimeline.days_remaining
+          iterationRemaining.innerHTML = `${daysRemaining} ${daysRemaining === 1 ? 'day' : 'days'} remaining`
+        } else {
+          iterationRange.innerHTML = 'No current iteration'
+        }
+
+        /* Get top warriors and update text */
+        const topWarriors = getTopWarriors()
+        while (topWarriors.length < 3) {
+          topWarriors.push({ name: 'Empty', points: 0 })
+        }
+
+        document.getElementById('warrior1Name').innerText = getFNameAndLInitial(topWarriors[0].name)
+        document.getElementById('warrior2Name').innerText = getFNameAndLInitial(topWarriors[1].name)
+        document.getElementById('warrior3Name').innerText = getFNameAndLInitial(topWarriors[2].name)
+
+        document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
+        document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
+        document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
+
+        updateHealthBar()
+
+        initBossMap()
+
+        /* Populate tabs */
+        // add My Stories heading to the stories tab
+        const myStoriesH1 = document.createElement('h1')
+        myStoriesH1.innerHTML = 'My Stories'
+        stories.appendChild(myStoriesH1)
+
+        getMyIncompleteStories().map(story => {
+          addToMyStoriesSection(story)
+        })
+
+        // add All Stories heading to the stories tab
+        const allStoriesH1 = document.createElement('h1')
+        allStoriesH1.innerHTML = 'All Stories'
+        stories.appendChild(allStoriesH1)
+
+        getAllIncompleteStories().map(story => {
+          addToAllStoriesSection(story)
+        })
+
+        getBattleLog().map(story => {
+          addToBattleLogTab(story)
+        })
+      })
       .catch((e) => {
         switch (e.message) {
           case ERR_MSG_INTERNET:
@@ -364,6 +499,10 @@ document.addEventListener(
             break
           case ERR_MSG_INVALID_API_TOKEN:
             signout()
+            /* TODO: UI */
+            break
+          case ERR_MSG_NO_ACTIVE_ITERATION:
+            // Respond to iterations being turned off or no iteration set up
             /* TODO: UI */
             break
           case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
@@ -381,71 +520,54 @@ document.addEventListener(
             break
         }
       })
-      .then(() => {
-        const memberProfile = getMemberProfile()
-
-        const allMemberIds = getAllMembers().map(member => member.id)
-        memberLogin(getSignedInMember().id, allMemberIds, memberProfile.workspace)
-          .then(() => {
-            // needs to wait for the database variables to be setup by memberLogin
-            getHonoredByMap(allMemberIds)
-          })
-
-        /* Get member info for profile button */
-        memberIcon.src = memberProfile.icon
-        memberName.innerHTML = memberProfile.name
-        memberTeam.innerHTML = memberProfile.workspace
-
-        /* Get top warraiors and update text */
-        const topWarriors = getTopWarriors()
-        while (topWarriors.length < 3) {
-          topWarriors.push({ name: 'Empty', points: 0 })
-        }
-
-        document.getElementById('warrior1Name').innerText = getFNameAndLInitial(topWarriors[0].name)
-        document.getElementById('warrior2Name').innerText = getFNameAndLInitial(topWarriors[1].name)
-        document.getElementById('warrior3Name').innerText = getFNameAndLInitial(topWarriors[2].name)
-
-        document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
-        document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
-        document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
-
-        updateHealthBar()
-
-        /* Populate tabs */
-        getMyIncompleteStories().map(story => {
-          addToMyStoriesTab(story)
-        })
-
-        getAllIncompleteStories().map(story => {
-          addToAllStoriesTab(story)
-        })
-
-        getBattleLog().map(story => {
-          addToBattleLogTab(story)
-        })
-
-        /*
-         * For each member in the array returned by getAllMembers(),
-         * create HTML 'div' elements (which includes the member name
-         * and honor button) to add into the honorButton drop-down list.
-         */
-        getAllMembers().map(member => {
-          const memberDiv = document.createElement('div')
-          memberDiv.classList.add('member')
-          const memberName = document.createElement('div')
-          memberName.innerHTML = member.profile.name
-          const honorButton = document.createElement('div')
-          honorButton.classList.add('honor')
-          honorButton.innerHTML = 'Honor'
-          honorButton.addEventListener('click', () => honorMember(member))
-          memberDiv.appendChild(memberName)
-          memberDiv.appendChild(honorButton)
-          membersList.appendChild(memberDiv)
-        })
-      })
   }
 ) // addEventListener()
+
+/**
+ * Populate the map with bosses
+ */
+const initBossMap = async () => {
+  // const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace);
+  const { completed, total } = getProgress()
+  const healthTotal = total
+  const health = total - completed
+  const boss = getCurrentIterationIndex()
+  const numBosses = 10
+  // Iterate through all the bosses, adding each to the map
+  for (let i = numBosses; i >= 0; i--) {
+    const bossDiv = document.createElement('div')
+    bossDiv.classList.add('boss')
+    // If this boss is the current boss apply active style
+    if (boss === i) {
+      bossDiv.classList.add('active')
+      const miniHealthBar = document.createElement('div')
+      const miniHealthBarFill = document.createElement('div')
+      miniHealthBar.classList.add('mini-health')
+      miniHealthBarFill.classList.add('mini-health-fill')
+      miniHealthBarFill.style.width = ((health / healthTotal) * 100) + '%'
+      miniHealthBar.appendChild(miniHealthBarFill)
+      bossDiv.appendChild(miniHealthBar)
+    } else if (boss > i) {
+      // If boss is greater than this boss it's already been defeated
+      bossDiv.classList.add('dead')
+      const crossDiv = document.createElement('div')
+      crossDiv.classList.add('cross')
+      crossDiv.innerHTML = '<span>&#10005;</span>'
+      bossDiv.appendChild(crossDiv)
+    } else {
+      bossDiv.classList.add('locked')
+    }
+    const bossImg = document.createElement('img')
+    bossImg.src = 'images/boss/' + i + '.png'
+    bossDiv.appendChild(bossImg)
+    bossMapContent.appendChild(bossDiv)
+    if (i !== 0) {
+      const trailDiv = document.createElement('div')
+      trailDiv.classList.add('trail')
+      bossMapContent.appendChild(trailDiv)
+    }
+  }
+}
 
 /**
  * Calculate the amount of health the boss has left and display it as a health
@@ -454,8 +576,12 @@ document.addEventListener(
 function updateHealthBar () {
   /* Set progress bar values */
   const { completed, total } = getProgress()
-  healthLeft.style.width = (completed / total) * 100 + '%'
-  healthText.appendChild(document.createTextNode(`${completed} / ${total}`))
+  const healthTotal = total
+  const health = total - completed
+  const boss = getCurrentIterationIndex()
+  monster.src = 'images/boss/' + boss + '.png'
+  healthLeft.style.width = (health / healthTotal) * 100 + '%'
+  healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
 
   /* Set progress bar color change */
   const greenThreshold = (2 / 5) * total
@@ -464,3 +590,33 @@ function updateHealthBar () {
     : (total - completed > yellowThreshold) ? 'healthBarYellowState'
       : 'healthBarRedState'
 }
+
+/**
+ * Calculate the amount of health the boss has left and display it as a health
+ * bar in the DOM
+ */
+// const updateHealthBar = async () => {
+//   // Reset health text
+//   healthText.innerHTML = ''
+//   /* Set progress bar values */
+//   const { boss, healthTotal, health } = await getBoss(getMemberProfile().workspace)
+//   monster.src = 'images/boss/' + boss + '.png'
+//   healthLeft.style.width = (health / healthTotal) * 100 + '%'
+//   healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
+
+//   /* Set progress bar color change */
+//   const greenThreshold = (2 / 5) * health
+//   const yellowThreshold = (1 / 5) * health
+//   healthLeft.className += (health - healthTotal > greenThreshold) ? 'healthBarGreenState'
+//     : (health - healthTotal > yellowThreshold) ? 'healthBarYellowState'
+//       : 'healthBarRedState'
+// }
+
+/**
+ * Deal damage to the boss by calling appropriate Firebase function
+ *
+ * @param {!number} damage - amount of damage (story points) being done
+ */
+// function doDamage(damage) {
+//   damageBoss(getMemberProfile().workspace, damage).then(() => updateHealthBar())
+// }

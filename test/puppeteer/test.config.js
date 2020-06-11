@@ -9,12 +9,12 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, '../../dist')
   },
   plugins: [
     new CopyPlugin(
       [
-        { from: 'src/manifest.json', to: '' },
+        { from: 'test/puppeteer/manifest.json', to: '' },
         { from: 'src/login/login.html', to: '' },
         { from: 'src/popup.html', to: '' },
         { from: 'src/popup.css', to: '' },

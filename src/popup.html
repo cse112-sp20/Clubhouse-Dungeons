@@ -12,27 +12,44 @@
   <div class="battlefield" id="battlefield">
 
     <div class="nav">
-
-      <div></div>
-      <div id="profileContainer" class="closed">
-        <!-- Member profile info and button to open menu -->
-        <div id="memberProfile">
-          <div class="member-icon">
-            <img id="memberIcon" />
-          </div>
-          <div>
-            <div id="memberName"></div>
-            <div id="memberTeam"></div>
-          </div>
-          <span class="carrot">&#9662</span>
+      <!-- Icon to open map -->
+      <div id="openBossMap">
+        <img src="images/map.png">
+      </div>
+      <div class="nav-wrap">
+        <!-- Section in top left to display the current iteration details-->
+        <div id="iterationTimelineContainer">
+          <div id="iterationRange"></div>
+          <div id="iterationRemaining"></div>
         </div>
+        <div id="profileContainer" class="closed">
+          <!-- Member profile info and button to open menu -->
+          <div id="memberProfile">
+            <div class="member-icon">
+              <img id="memberIcon" />
+            </div>
+            <div>
+              <div id="memberName"></div>
+              <div id="memberTeam"></div>
+            </div>
+            <span class="carrot">&#9662</span>
+          </div>
 
-        <!-- Member profile menu -->
-        <div id="memberMenu" class="hide">
-          <div id="signoutButton" class="menu-item">Signout</div>
+          <!-- Member profile menu -->
+          <div id="memberMenu" class="hide">
+            <div id="signoutButton" class="menu-item">Signout</div>
+          </div>
         </div>
       </div>
+    </div>
 
+
+    <!-- Map showing all bosses -->
+    <div id="bossMap">
+      <div id="bossMapContent">
+        <!-- <div id="trail"></div> -->
+        <div id="closeBossMap"><span>&#10005;</span></div>
+      </div>
     </div>
 
     <div class="boss-container">
@@ -48,30 +65,16 @@
     <div class="top-warriors">
       <div class="top-warriors-title">Top Warriors</div>
       <div class="top-warrior">
-        <div class="number">1</div>
         <div class="name" id="warrior1Name"></div>
         <div class="points" id="warrior1Points"></div>
       </div>
       <div class="top-warrior">
-        <div class="number">2</div>
         <div class="name" id="warrior2Name"></div>
         <div class="points" id="warrior2Points"></div>
       </div>
       <div class="top-warrior">
-        <div class="number">3</div>
         <div class="name" id="warrior3Name"></div>
         <div class="points" id="warrior3Points"></div>
-      </div>
-
-      <div id="membersListContainer">
-        <div id="membersListButton">
-          <span>&#8226;</span>
-          <span>&#8226;</span>
-          <span>&#8226;</span>
-          <div>&#x2715;</div>
-        </div>
-
-        <div id="membersList"></div>
       </div>
     </div>
 
@@ -82,18 +85,18 @@
     <!-- Tabs contains the buttons for displaying stories and logs -->
     <div class="tabs">
 
-      <div class="tab selected" id="myStoriesTab">My Stories</div>
-      <div class="tab" id="allStoriesTab">All Stories</div>
+      <div class="tab selected" id="storiesTab">Stories</div>
+      <div class="tab" id="teamTab">Team</div>
       <div class="tab" id="battleLogTab">Battle Log</div>
 
     </div>
 
     <!-- All stories assigned to user -->
-    <div class="panel-item selected" id="myStories">
+    <div class="panel-item selected" id="stories">
     </div>
 
-    <!-- All stories -->
-    <div class="panel-item" id="allStories">
+    <!-- Team tab -->
+    <div class="panel-item" id="team">
     </div>
 
     <!-- Log of all actions -->

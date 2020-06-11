@@ -1,32 +1,24 @@
-# Quaranteam-8 Chrome Extension
+# Clubhouse Dungeons
+By Quaranteam-8
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/94edb40a997842e993defc1bd247e1db)](https://www.codacy.com/gh/cse112-sp20/Quaranteam-8?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cse112-sp20/Quaranteam-8&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/94edb40a997842e993defc1bd247e1db)](https://www.codacy.com/gh/cse112-sp20/Quaranteam-8?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cse112-sp20/Quaranteam-8&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/94edb40a997842e993defc1bd247e1db)](https://www.codacy.com/gh/cse112-sp20/Quaranteam-8?utm_source=github.com&utm_medium=referral&utm_content=cse112-sp20/Quaranteam-8&utm_campaign=Badge_Coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e3bdb7ab134bd2fc4eef/maintainability)](https://codeclimate.com/github/cse112-sp20/Quaranteam-8/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/e3bdb7ab134bd2fc4eef/test_coverage)](https://codeclimate.com/github/cse112-sp20/Quaranteam-8/test_coverage)
 ![Base Pipeline](https://github.com/cse112-sp20/Quaranteam-8/workflows/Base%20Pipeline/badge.svg?branch=develop)
 ## Getting setup
 
 1.  First clone this repository by entering <code>git clone https://github.com/cse112-sp20/Quaranteam-8.git</code> into terminal
-2.  If you don't have node installed on your computer, install it from https://nodejs.org/en/download/. Once you have node installed, go to the root of the repository and run <code>npm install</code>
+2.  If you don't have node installed on your computer, install it from https://nodejs.org/en/download/.
+3.  Once you have node installed, go to the root of the repository and run <code>npm install</code>
 
-## How to lint
+## Basic Commands
+| Command                  | Description                                                                                                      |
+|--------------------------|------------------------------------------------------------------------------------------------------------------|
+| `npm run build`          | Builds the chrome extension using the files in the `src/` directory and outputs the files into `dist/` directory |
+| `npm run lint`           | Runs Eslint on all js files in the `src/` and `test/` directories                                                |
+| `npm run test`           | Runs Jest on all unit test files in the `test/unit` directory                                                    |
+| `npm run test:puppeteer` | Runs Jest on all puppeteer test files in the `test/puppeteer` directory                                          |
+| `npm run docs:build`     | Generates documentation from jsdoc comments and outputs them into the `docs/` directory                          |
+| `npm run all`            | Runs all commands above                                                                                          |
+| `npm run clean`          | Deletes the `dist/` and `coverage/` directories if they are found                                                |
 
-1.  First setup the project using the instructions above
-2.  Then to lint all js files in <code>src/</code> run the command <code>npm run lint</code>. 
-3.  If you want to remove the npm errors caused by linting errors, run the command <code>npm run lint -s</code>
-
-## How to run tests
-
-1.  First setup the project using the instructions above
-2.  Then to run all jest tests in <code>test/</code> run the command <code>npm run test</code>. 
-3.  If you want to remove the npm errors caused by jest errors, run the command <code>npm run test -s</code>
-
-## How to test extension in Chrome
-
-1.  `npm run build`
-2.  In Chrome go to URL <code>chrome://extensions</code>
-3.  Toggle on Developer mode
-4.  Click Load unpacked
-5.  Select the dist folder from the repository
-
-## How to clean your build
-
-1. `npm run clean`
+## For More Info Checkout Our [Wiki](https://github.com/cse112-sp20/Quaranteam-8/wiki)

@@ -69,6 +69,8 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
+const HONOR_AMOUNT_LIMIT = 3
+
 /**
  * The reference to the Database service of our extension
  *
@@ -216,11 +218,11 @@ const getHonoredByMap = async allMemberIds => {
  * @param {!string} memberId - The id of the member whose data we are storing
  * @param {!Array<string>} allMemberIds - Member ids of all members in the workspace
  * @param {!string} workspace - The key identifying the workspace the member is in
+ * @param {!number} iterationId - ID of the current iteration
  */
-const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */) => {
-  const PLACEHOLDER_ITERATION = 2
-  const HONOR_AMOUNT_LIMIT = 3
-  currentIterationId = PLACEHOLDER_ITERATION
+const memberLogin = async (memberId, allMemberIds, workspace, iterationId) => {
+  // Init currentIterationId
+  currentIterationId = iterationId
 
   const buildMemberHonoredByObj = () => {
     const dbObj = {}
@@ -236,7 +238,8 @@ const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */)
 
   const workspaceExists = await checkIfExists(WORKSPACES_REF, workspace)
   if (!workspaceExists) {
-    // Create the workspace and the current iteration
+    // Create the workspace with current iteration and new boss
+    // const bossHealth =  Math.floor(Math.random() * 50) + 50;
     const workspaceDbObj = {
       [workspace]: {
         [currentIterationId]: buildMemberHonoredByObj()
@@ -263,13 +266,65 @@ const memberLogin = async (memberId, allMemberIds, workspace /*, iterationId */)
   member = getMember(memberId)
 
   // Set the local member object's honored_by attribute
-  memberRef.on('value', (dataSnapshot) => {
+  memberRef.once('value', (dataSnapshot) => {
     if (dataSnapshot.exists()) {
       member.honoredBy = dataSnapshot.val().honored_by
       member.honorRecognitionsRemaining = dataSnapshot.val().honorRecognitionsRemaining
     }
   })
 }
+
+/**
+ * Retreive information about the team's boss
+ *
+ * @param {!string} workspace - The key identifying the workspace the member is in
+ * @returns {object}
+ */
+// const getBoss = async (workspace) => {
+
+//   workspaceRef = WORKSPACES_REF.child(workspace)
+//   const bossInfo = {}
+//   await workspaceRef.once('value')
+//     .then((snapshot) => {
+//       if (snapshot.child('boss').exists()) {
+//         bossInfo.boss = snapshot.val().boss
+//       }
+//       if (snapshot.child('healthTotal').exists()) {
+//         bossInfo.healthTotal = snapshot.val().healthTotal
+//       }
+//       if (snapshot.child('health').exists()) {
+//         bossInfo.health = snapshot.val().health
+//       }
+//     })
+//   console.log(bossInfo)
+//   return bossInfo
+// }
+
+/**
+ *
+ *
+ * @param {!string} workspace - The key identifying the workspace the member is in
+ * @param {!number} damage - The damage (story points) to be done to the boss
+ */
+// const damageBoss = async (workspace, damage) => {
+//   workspaceRef = WORKSPACES_REF.child(workspace)
+//   const bossInfo = await getBoss(workspace)
+//   // If the damage brings health to below 0 the boss has been defeated
+//   if (bossInfo.health - damage < 1) {
+//     // Move team to next boss
+//     const bossHealth = Math.floor(Math.random() * 50) + 50
+//     return await workspaceRef.update({
+//       boss: bossInfo.boss + 1,
+//       healthTotal: bossHealth,
+//       health: bossHealth
+//     })
+//   } else {
+//     // Otherwise deal damage to the current boss
+//     return await workspaceRef.update({
+//       health: bossInfo.health - damage
+//     })
+//   }
+// }
 
 /**
  * Check to see if the passed in key already exists within the passed in reference
@@ -295,4 +350,4 @@ const checkIfExists = async (nodeRef, key) => {
   return exists
 }
 
-export { memberLogin, honorDatabaseMember, getHonoredByMap, workspaceRef }
+export { memberLogin, honorDatabaseMember, getHonoredByMap, workspaceRef, memberRef }
