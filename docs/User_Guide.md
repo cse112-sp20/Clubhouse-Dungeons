@@ -42,10 +42,10 @@ Every story completion will be an attack against the monster and chip away at th
 </p>
 
 ### Boss Map
-<p align="left">
-<img src="images/bossMap.png" width="500">
-</p>
 On the top left you will find the boss map icon <img src="../dist/images/map.png" width="20">. Click the icon and you will be able to view the bosses you have beaten and the next bosses you will encounter in upcoming iterations. 
+<p align="left">
+<img src="images/bossMap.png" width="30%" height="30%>
+</p>
 
 ### Top Warriors
 <p align="center">
