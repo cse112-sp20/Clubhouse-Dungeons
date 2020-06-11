@@ -192,8 +192,9 @@ Final decision:
 
 ## 6. Why Puppeteer?
 
-    Puppeteer provides a simple framework that automates end to end testing for our extension.  We were able to use it 
-    to automatically install our extension into a fresh Chromium browser, log in, and interact with various features 
-    throughthe same UI that the end user would be exposed to.  This is important to test so that we can be sure that we 
-    can be sure that the end user experience functions properly.  Using puppeteer to do this, however, allows us to 
-    integrate these tests into our testing pipeline rather than just manually testing features every time. 
+    Puppeteer provides a simple framework that automates end to end testing for our extension.  We were able to use 
+    it to automatically install our extension into a fresh Chromium browser, log in, and interact with various 
+    features throughthe same UI that the end user would be exposed to.  This is important to test so that we can be 
+    sure that we can be sure that the end user experience functions properly.  Using puppeteer to do this, however,
+    allows us to integrate these tests into our testing pipeline rather than just manually testing features 
+    every time. 
