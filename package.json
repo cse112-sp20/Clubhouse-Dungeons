@@ -8,9 +8,9 @@
   },
   "scripts": {
     "test": "npm run test:unit",
-    "test:unit": "jest test/unit/",
-    "test:puppeteer": "npm run build:test && jest test/puppeteer/",
-    "test:coverage": "jest test/unit/ --coverage",
+    "test:unit": "jest test/unit/ --silent",
+    "test:puppeteer": "npm run build:test && jest test/puppeteer/ --silent",
+    "test:coverage": "jest test/unit/ --coverage --silent",
     "build": "webpack",
     "build:test": "webpack --config test/puppeteer/test.config.js",
     "clean": "run-script-os",
