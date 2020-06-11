@@ -119,7 +119,7 @@ This is used by the two js files in the `scripts/` directory which generate docu
 ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code, with the goal of making code more consistent and avoiding bugs.
 
 ### Linting Rules
-1.  JSDoc Comments
+1.  [JSDoc Comments](https://jsdoc.app/about-getting-started.html)
 2.  [JS Standard Style guide](https://standardjs.com/rules-en.html)
 
 ### Command to run Eslint
