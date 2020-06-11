@@ -34,8 +34,8 @@ To include images, add them to the `docs/images` directory and link to them in o
 
 ## Tool Overview
 The tools we use for maintaining our API-level documentation include:
--  JSDoc
--  jsdoc-to-markdown
+- [JSDoc](https://jsdoc.app/)
+- [jsdoc-to-markdown](https://github.com/jsdoc2md/)
 
 ### How to install our tools
 After cloning our repository, run the command:
