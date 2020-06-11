@@ -217,6 +217,15 @@ const getMemberName = (memberId) => {
 }
 
 /**
+ * Get the current member id
+ *
+ * @returns {string} ID of the specified member
+ */
+const getMemberId = () => {
+  return MEMBER_ID
+}
+
+/**
  * Get the display info - workspace, name, and display icon - of the signed-in
  * member.
  *
@@ -381,6 +390,7 @@ export {
   getBattleLog,
   getTopWarriors,
   getMember,
+  getMemberId,
   getSignedInMember,
   getAllMembers,
   getMemberName,

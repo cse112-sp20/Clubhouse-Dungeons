@@ -531,6 +531,7 @@ h1 {
 }
 
 .story .story-button {
+  box-sizing:border-box;
   position: absolute;
   top: 7px;
   left: 7px;

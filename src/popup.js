@@ -7,12 +7,14 @@ import {
   getSignedInMember,
   getAllMembers,
   getMemberName,
+  getMemberId,
   getMemberProfile,
   getProgress,
   getIterationTimeline,
   getCurrentIterationId,
   getCurrentIterationIndex,
-  completeStory
+  completeStory,
+  getMember
 } from './popup-backend'
 import {
   ERR_MSG_INTERNET,
@@ -185,6 +187,24 @@ function honorMember (honoredMember) {
 }
 
 /**
+ * Sets the top 3 warrior names and point values
+ */
+function setTopWarriors () {
+  const topWarriors = getTopWarriors()
+  while (topWarriors.length < 3) {
+    topWarriors.push({ name: 'Empty', points: 0 })
+  }
+
+  document.getElementById('warrior1Name').innerText = getFNameAndLInitial(topWarriors[0].name)
+  document.getElementById('warrior2Name').innerText = getFNameAndLInitial(topWarriors[1].name)
+  document.getElementById('warrior3Name').innerText = getFNameAndLInitial(topWarriors[2].name)
+
+  document.getElementById('warrior1Points').innerText = `${topWarriors[0].points}` + ' DMG'
+  document.getElementById('warrior2Points').innerText = `${topWarriors[1].points}` + ' DMG'
+  document.getElementById('warrior3Points').innerText = `${topWarriors[2].points}` + ' DMG'
+}
+
+/**
  * Callback to be called when the user wants to mark a story completed. First,
  * tries to update the story using the Clubhouse API. If successful, remove the
  * story from local references (i.e. myStories) and from the tab that it is in.
@@ -200,11 +220,15 @@ function onCompleteStory (story) {
       if (storiesNode) {
         stories.removeChild(storiesNode)
       }
-      // update the health bar values and color
+      // update the health bar values and text
       COMPLETED += story.estimate
       healthLeft.style.width = ((TOTAL - COMPLETED) / TOTAL) * 100 + '%'
       healthText.innerText = `${TOTAL - COMPLETED} / ${TOTAL}`
       updateHealthBarColor()
+
+      // update current user complete story point total
+      getMember(getMemberId()).points += story.estimate
+      setTopWarriors()
 
       // add the completed story to the top of the battleLog tab
       addToBattleLogTab(story, true)
@@ -299,14 +323,14 @@ const addToMyStoriesSection = story => {
 
   var counter = 0
   var borderSize = 1
-  var pressHoldEvent = new CustomEvent('pressHold')
+  var finishHoldEvent = new CustomEvent('finishHold')
   var pressHoldDuration = 20
   var timerID
 
   // Event listeners for story button
   storyButton.addEventListener('mousedown', pressingDown, false)
   storyButton.addEventListener('mouseup', notPressingDown, false)
-  storyButton.addEventListener('pressHold', finishHold, false)
+  storyButton.addEventListener('finishHold', finishHold, false)
 
   /**
    * Sets timer for story completion mousedown event
@@ -322,7 +346,7 @@ const addToMyStoriesSection = story => {
     // Stop the timer
     cancelAnimationFrame(timerID)
     counter = 0
-    borderSize = 1
+    storyButton.style.border = '1px solid #FFD700'
   }
   /**
    * Establish timer action during story completion mousedown event
@@ -331,10 +355,10 @@ const addToMyStoriesSection = story => {
     if (counter < pressHoldDuration) {
       timerID = requestAnimationFrame(timer)
       counter++
-      borderSize += 0.1
-      storyButton.style.border = borderSize + 'px solid #FFD700'
+      borderSize += 0.2
+      storyButton.style.border = borderSize + 'px solid #32CD32'
     } else {
-      storyButton.dispatchEvent(pressHoldEvent)
+      storyButton.dispatchEvent(finishHoldEvent)
     }
   }
   /**
