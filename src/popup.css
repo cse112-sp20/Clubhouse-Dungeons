@@ -3,8 +3,11 @@ body {
   font-family: sans-serif;
   margin: 0;
 
-  height: 600px;
+  height: 500px;
   width: 400px;
+}
+h1 {
+  font-size: 16px;
 }
 
 .login-container {
@@ -260,8 +263,9 @@ body {
   z-index: 7;
 }
 #openBossMap img {
-  max-height: 100%;
-  max-width: 100%;
+  max-height: 50%;
+  max-width: 50%;
+  margin: 25%;
 }
 #bossMap {
   display: none;
@@ -291,8 +295,11 @@ body {
 }
 #closeBossMap {
   position: fixed;
-  top: 30px;
-  right: 20px;
+  top: 0px;
+  right: 0px;
+  margin: 5%;
+  padding-right: 16px;
+  padding-top:8px;
   color: rgba(255,255,255,.7);
   /* background: rgba(0,0,0,0.3); */
   border-radius: 500px;
@@ -504,9 +511,6 @@ body {
   justify-content: flex-start;
   align-items: stretch;
 }
-.panel-item.selected .story:last-child {
-  margin-bottom: 100px;
-}
 
 .story {
   position: relative;
@@ -579,18 +583,11 @@ body {
   color: #34495e;
 }
 
-.story:last-child {
-  margin-bottom: 100px
-}
-
 .action {
   padding: 8px;
   border-bottom: 1px solid rgba(0,0,0,.1);
 }
 
-.action:last-child {
-  margin-bottom: 100px
-}
 
 #team .member {
   width: 96%;
@@ -603,9 +600,7 @@ body {
   font-size: 11px;
   padding: 4px 2%;
 }
-#team .member:last-child {
-  margin-bottom: 100px;
-}
+
 #team .member .honor-badge {
   color: #f3b406;
   font-size: 20px;
@@ -667,4 +662,7 @@ body {
   font-size: 30px;
   color: black;
 }
-
+.login {
+  width: 400px;
+  height: auto;
+}
