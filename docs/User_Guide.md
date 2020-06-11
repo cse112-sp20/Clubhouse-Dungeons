@@ -42,6 +42,12 @@ Here is the monster for this week’s iteration. Your team will need to complete
 
 Every story completion will be an attack against the monster and chip away at the health bar. When every story in the iteration is complete, you beat the monster!
 
+### Boss Map
+<p align="center">
+<img src="images/bossMap.png" width="500">
+</p>
+On the top left you will find the boss map icon <img src="../dist/images/map.png" width="20">. Click the icon and you will be able to view the bosses you have beaten and the next bosses you will encounter in upcoming iterations. 
+
 ### Top Warriors
 <p align="center">
 <img src="images/warriors.png" width="500">
