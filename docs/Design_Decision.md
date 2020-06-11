@@ -102,12 +102,11 @@ Argument against:
     Effort on the side of the user to go and grab their API key and input it.
     Not conventional, users may be expecting to login with their normal clubhouse credentials.
 
-
-
 Final decision: 
 
-	We chose to use an API key login since it is easier to implement, and allows the user to stay signed in indefinitely 
-    across all chrome browsers where they are logged in. It is a simple one time use login until the user logs out.
+	We chose to use an API key login since it is easier to implement, and allows the user to stay signed in 
+    indefinitely across all chrome browsers where they are logged in. It is a simple one time use login 
+    until the user logs out.
 
 
 ## 4.  Full Leaderboard vs Top 3 Warriors
@@ -134,8 +133,8 @@ Thoughts that lead us to thinking about developing a Top 3 List:
 
 Argument for Top 3 List:
 
-    Causes the feature to be more positive, singling out team members for praise, and not focusing on team members with 
-    few points. 
+    Causes the feature to be more positive, singling out team members for praise, and not focusing on team members 
+    with few points. 
     Better looking UI design; simpler.
 
 Argument against Top 3 List:
@@ -193,8 +192,8 @@ Final decision:
 
 ## 6. Why Puppeteer?
 
-    Puppeteer provides a simple framework that automates end to end testing for our extension.  We were able to use it to
-    automatically install our extension into a fresh Chromium browser, log in, and interact with various features through 
-    the same UI that the end user would be exposed to.  This is important to test so that we can be sure that we can be 
-    sure that the end user experience functions properly.  Using puppeteer to do this, however, allows us to integrate 
-    these tests into our testing pipeline rather than just manually testing features every time. 
+    Puppeteer provides a simple framework that automates end to end testing for our extension.  We were able to use it 
+    to automatically install our extension into a fresh Chromium browser, log in, and interact with various features 
+    throughthe same UI that the end user would be exposed to.  This is important to test so that we can be sure that we 
+    can be sure that the end user experience functions properly.  Using puppeteer to do this, however, allows us to 
+    integrate these tests into our testing pipeline rather than just manually testing features every time. 
