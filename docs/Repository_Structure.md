@@ -2,8 +2,9 @@
 
 ## src
 Contains all source code for the chrome extension
-### Structure TODO
-We divided
+### Structure 
+We separated components of the extension into separate directories within the src directory. This includes the `/src/db/` directory which contains our Realtime FireBase database integration, the `/src/api/` directory which contains our ClubHouse Rest API V3 integration, the `/src/images/` directory which contains images displayed in the extension, and the `src/login/` directory which contains user login components. Directly within the src directory are the components for popup. 
+
 
 ## test
 Contains all source code for testing our project. This includes all our jest and puppeteer tests and two example test files(`test.example.js` and `puppeteer.example.js`) to demonstrate how Jest and Puppeteer tests work.
