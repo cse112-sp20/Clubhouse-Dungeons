@@ -26,6 +26,14 @@
 4. Navigate to the project directory and select the `dist` folder <br/>
    You should now see the extension installed in your browser!
 
+## Signing in with a Clubhouse API key
+1. Login to clubhouse.io with your account credentials
+2. In the top right click on the dropdown menu then click settings
+3. On the left, click on API Tokens
+4. Enter any name for your token and click generate
+5. This token will only be shown once, save it to some safe place!
+6. Paste the token into the extension to complete login
+
 ## Next Steps
 1. Review the [repository structure](https://github.com/cse112-sp20/Quaranteam-8/wiki/Repository_Structure)
 2. Take a code tour with our [API Guide](https://github.com/cse112-sp20/Quaranteam-8/wiki/API_Documentation)
