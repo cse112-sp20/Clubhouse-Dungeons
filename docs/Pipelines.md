@@ -24,7 +24,7 @@ Local Pipelines are run using npm scripts. The entire pipeline is run by using t
 ## Remote Workflows
 Remote Pipelines are run using Github Actions which work similar to other CI platforms in that it functions via yml configuration files.
 <p align="center">
-<img src="images/diagram.png" width="40%" height="40%">
+<img src="images/diagram.png" width="70%" height="70%">
 </p>
 
 The overview of our pipeline is shown in the diagram above. The purposes and specifics of each stage in our pipeline are explained below:
