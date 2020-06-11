@@ -3,8 +3,7 @@ import {
   ERR_MSG_INTERNET,
   ERR_MSG_INVALID_API_TOKEN,
   ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED,
-  ERR_MSG_BROWSER_STORAGE,
-  ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE
+  ERR_MSG_BROWSER_STORAGE
 } from '../api/clubhouse-api'
 
 /**
@@ -41,24 +40,19 @@ const validateMember = (apiKey) => {
       switch (e.message) {
         case ERR_MSG_INTERNET:
           // Respond to internet error
-          /* TODO: UI */
+          document.getElementById('error-message').innerHTML = 'No internet connection'
           break
         case ERR_MSG_INVALID_API_TOKEN:
           // Respond to invalid api token error
-          /* TODO: UI */
+          document.getElementById('error-message').innerHTML = 'Invalid API token!'
           break
         case ERR_MSG_CLUBHOUSE_API_QUOTA_EXCEEDED:
           // Respond to quota exceeded
-          /* TODO: UI */
+          document.getElementById('error-message').innerHTML = 'Too many requests! Please try again in 2 minutes'
           break
-        case ERR_MSG_BROWSER_STORAGE:
-          // Respond to error reading/writing to browser storage
-          /* TODO: UI */
-          break
-        case ERR_MSG_UNKNOWN_CLUBHOUSE_RESPONSE:
         default:
           // Respond to unknown error
-          /* TODO: UI */
+          document.getElementById('error-message').innerHTML = 'Error logging in'
           break
       }
     })
