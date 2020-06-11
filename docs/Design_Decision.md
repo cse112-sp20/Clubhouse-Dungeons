@@ -1,5 +1,8 @@
 # Design Decisions
 
+## Overview
+This document outlines several of the decisions we made during our previous progress in building the extension. For each decision we explain the justification of our choices and how we reached our conclusions. 
+
 ## Table of Contents
 
 1.  Chrome Extension vs Code Extension
