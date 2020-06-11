@@ -21,5 +21,6 @@ module.exports = {
         { from: 'src/images', to: 'images' }
       ]
     )
-  ]
+  ],
+  stats: 'errors-only'
 }
