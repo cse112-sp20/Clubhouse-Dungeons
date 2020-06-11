@@ -298,6 +298,13 @@ const getIterationTimeline = () => {
 const getCurrentIterationId = () => CURRENT_ITERATION.id
 
 /**
+ * Get the index of the current iteration
+ *
+ * @returns {number} Index of the current iteration
+ */
+const getCurrentIterationIndex = () => CURRENT_ITERATION.index
+
+/**
  * Get the SETUP promise. If SETUP hasn't been initialized yet, create it.
  * Otherwise, return the existing promise - do not recreate/restart it.
  *
@@ -322,7 +329,7 @@ const setup = () => {
         fetchIterationsAsync(API_TOKEN)
           .then(async iterations => {
             CURRENT_ITERATION = iterations.find(iter => iter.status === 'started')
-
+            CURRENT_ITERATION.index = iterations.findIndex(iter => iter.status === 'started')
             if (!CURRENT_ITERATION) {
               throw Error(ERR_MSG_NO_ACTIVE_ITERATION)
             }
@@ -381,6 +388,7 @@ export {
   getProgress,
   getIterationTimeline,
   getCurrentIterationId,
+  getCurrentIterationIndex,
   setup,
   completeStory
 }
