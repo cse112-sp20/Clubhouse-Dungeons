@@ -216,7 +216,6 @@ const getMemberName = (memberId) => {
   return MEMBER_MAP[memberId].profile.name
 }
 
-
 /**
  * Get the display info - workspace, name, and display icon - of the signed-in
  * member.
