@@ -49,3 +49,5 @@ There are Automatic Check-ins every week, but the only required one is the "What
 3. Check out our [documentation standards](https://github.com/cse112-sp20/Quaranteam-8/wiki/Documentation_Guide)
 4. Take a look at our [quality control](https://github.com/cse112-sp20/Quaranteam-8/wiki/Code_Quality)
 5. Understand our [testing procedures](https://github.com/cse112-sp20/Quaranteam-8/wiki/Testing_Guide)
+6. Read the [code guide](https://github.com/cse112-sp20/Quaranteam-8/wiki/Code_Guide)
+7. Browse the [tools guide](https://github.com/cse112-sp20/Quaranteam-8/wiki/Tools_Guide)
