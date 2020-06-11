@@ -28,6 +28,10 @@ import {
   memberLogin
 } from './db/firebase'
 
+// Story values for health bar
+var COMPLETED
+var TOTAL
+
 // Iteration timeline elements
 const iterationRange = document.getElementById('iterationRange')
 const iterationRemaining = document.getElementById('iterationRemaining')
@@ -196,6 +200,11 @@ function onCompleteStory (story) {
       if (storiesNode) {
         stories.removeChild(storiesNode)
       }
+      // update the health bar values and color
+      COMPLETED += story.estimate
+      healthLeft.style.width = ((TOTAL - COMPLETED) / TOTAL) * 100 + '%'
+      healthText.innerText = `${TOTAL - COMPLETED} / ${TOTAL}`
+      updateHealthBarColor()
 
       // add the completed story to the top of the battleLog tab
       addToBattleLogTab(story, true)
@@ -288,7 +297,53 @@ const addToMyStoriesSection = story => {
     storyDiv.innerHTML += '<div class="points"></div>'
   }
 
-  storyButton.addEventListener('click', () => onCompleteStory(story))
+  var counter = 0
+  var borderSize = 1
+  var pressHoldEvent = new CustomEvent('pressHold')
+  var pressHoldDuration = 20
+  var timerID
+
+  // Event listeners for story button
+  storyButton.addEventListener('mousedown', pressingDown, false)
+  storyButton.addEventListener('mouseup', notPressingDown, false)
+  storyButton.addEventListener('pressHold', finishHold, false)
+
+  /**
+   * Sets timer for story completion mousedown event
+   */
+  function pressingDown () {
+    // Start the timer
+    requestAnimationFrame(timer)
+  }
+  /**
+   * Resets timer for sotry completion mouseup event
+   */
+  function notPressingDown () {
+    // Stop the timer
+    cancelAnimationFrame(timerID)
+    counter = 0
+    borderSize = 1
+  }
+  /**
+   * Establish timer action during story completion mousedown event
+   */
+  function timer () {
+    if (counter < pressHoldDuration) {
+      timerID = requestAnimationFrame(timer)
+      counter++
+      borderSize += 0.1
+      storyButton.style.border = borderSize + 'px solid #FFD700'
+    } else {
+      storyButton.dispatchEvent(pressHoldEvent)
+    }
+  }
+  /**
+   * Completes story when pressHoldDuration threshold is met
+   */
+  function finishHold () {
+    onCompleteStory(story, storyDiv, 'myStoriesTab')
+  }
+
   storyDiv.prepend(storyButton)
   stories.appendChild(storyDiv)
 }
@@ -576,19 +631,27 @@ const initBossMap = async () => {
 function updateHealthBar () {
   /* Set progress bar values */
   const { completed, total } = getProgress()
+  COMPLETED = completed
+  TOTAL = total
   const healthTotal = total
   const health = total - completed
   const boss = getCurrentIterationIndex()
   monster.src = 'images/boss/' + boss + '.png'
   healthLeft.style.width = (health / healthTotal) * 100 + '%'
-  healthText.appendChild(document.createTextNode(`${health} / ${healthTotal}`))
+  healthText.innerText = `${health} / ${healthTotal}`
+  updateHealthBarColor()
+}
 
+/**
+ * Update the color of the health bar display depending on how much health left
+ */
+function updateHealthBarColor () {
   /* Set progress bar color change */
-  const greenThreshold = (2 / 5) * total
-  const yellowThreshold = (1 / 5) * total
-  healthLeft.className += (total - completed > greenThreshold) ? 'healthBarGreenState'
-    : (total - completed > yellowThreshold) ? 'healthBarYellowState'
-      : 'healthBarRedState'
+  const greenThreshold = (2 / 5) * TOTAL
+  const yellowThreshold = (1 / 5) * TOTAL
+  healthLeft.classList.add((TOTAL - COMPLETED > greenThreshold) ? 'healthBarGreenState'
+    : (TOTAL - COMPLETED > yellowThreshold) ? 'healthBarYellowState'
+      : 'healthBarRedState')
 }
 
 /**
