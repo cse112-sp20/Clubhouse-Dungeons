@@ -24,7 +24,7 @@ And that’s it! To keep our code modular, we’ve separated this architecture i
 Architecture Diagram:
 
 <p align="center">
-    <img src="images/architecture.jpg" width="30%">
+    <img src="images/architecture.jpg" width="80%">
 </p>
 
 ## login.js
