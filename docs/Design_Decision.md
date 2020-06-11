@@ -13,20 +13,29 @@
 ## 1. Chrome Extension vs Code Extension
 
 Thoughts that lead us to thinking about developing a Chrome extension:
-
-    We wanted to be able to have access to the tool no matter where on the web you are. With a Chrome extension you are able to access the tool from your web browser without having to go to a specific website to access it.
+    We wanted to be able to have access to the tool no matter where on the web you are. With a Chrome extension 
+    you are able to access the tool from your web browser without having to go to a specific website to access it.
 
 Argument for Chrome extension:
 
-	Developers can’t get away from having a browser open during their work hours - they will most likely have documentation and requirements open as well as any research they may be doing. A Chrome extension is easily accessible regardless of the page a user is on, so our extension will allow users to view a gamified burndown chart at any time without having to go directly to Clubhouse.
+	Developers can’t get away from having a browser open during their work hours - they will most likely have 
+    documentation and requirements open as well as any research they may be doing. A Chrome extension is easily 
+    accessible regardless of the page a user is on, so our extension will allow users to view a gamified burndown 
+    chart at any time without having to go directly to Clubhouse.
+     
 
 Argument against Chrome extension:
 
-    One of the many goals of this class and this project was to reduce the number of applications that developers “live in” during their work hours. By creating a Chrome extension that essentially mirrors our Clubhouse data in a gamified way, we don’t reach the goal of reducing the number of apps - we could already view our Clubhouse data in Chrome. 
+    One of the many goals of this class and this project was to reduce the number of applications that developers 
+    “live in” during their work hours. By creating a Chrome extension that essentially mirrors our Clubhouse data 
+    in a gamified way, we don’t reach the goal of reducing the number of apps - we could already view our Clubhouse 
+    data in Chrome. 
 
 Thoughts that lead us to thinking about developing a VS Code extensions:
 
-    When you are working on the heart of your project you are most likely in your IDE. One of the most popular IDE’s is VS Code. In order to stay focused on the task at hand, an extension for VS Code would allow the user to stay within their IDE.
+    When you are working on the heart of your project you are most likely in your IDE. One of the most popular IDE’s 
+    is VS Code. In order to stay focused on the task at hand, an extension for VS Code would allow the user to stay 
+    within their IDE.
 
 Argument for VS Code extension:
 
@@ -52,11 +61,13 @@ Final decision:
 
 Thoughts that lead us to thinking about using a database to keep a separate copy of Clubhouse stories, etc:
 
-    The way that clubhouse’s api is set up would allow us to grab data but we wanted it formatted in a way that is most useful for our project.
+    The way that clubhouse’s api is set up would allow us to grab data but we wanted it formatted in a way that is most 
+    useful for our project.
 
 Argument for:
 
-    Keeping our own db would allow us to filter out unnecessary clubhouse data from the api calls and keep only the data we need.
+    Keeping our own db would allow us to filter out unnecessary clubhouse data from the api calls and keep only the 
+    data we need.
     Allows for quicker client-side data access.
 
 Argument against:
@@ -69,13 +80,15 @@ Notes: May still use a DB for could have gamification features.
 
 Final decision:
 
-    We opted against a database copy of Clubhouse data because the benefit of having filtered data that still required a network request to retrieve didn’t outweigh the performance cost of having that additional request
+    We opted against a database copy of Clubhouse data because the benefit of having filtered data that still required 
+    a network request to retrieve didn’t outweigh the performance cost of having that additional request
 
 
 ## 3.  Login with User API Key
 Thoughts that lead us to choose to log in with the user’s API key:
 
-    The user’s api key is unique to them, so it will pull all of their personal clubhouse data as well as the projects they are a member of 
+    The user’s api key is unique to them, so it will pull all of their personal clubhouse data as well as the projects 
+    they are a member of 
 
 Argument for:
 
@@ -93,14 +106,17 @@ Argument against:
 
 Final decision: 
 
-	We chose to use an API key login since it is easier to implement, and allows the user to stay signed in indefinitely across all chrome browsers where they are logged in. It is a simple one time use login until the user logs out.
+	We chose to use an API key login since it is easier to implement, and allows the user to stay signed in indefinitely 
+    across all chrome browsers where they are logged in. It is a simple one time use login until the user logs out.
 
 
 ## 4.  Full Leaderboard vs Top 3 Warriors
 
 Thoughts that lead us to thinking about developing a full leaderboard:
 
-    We wanted our users to have a sense of who on the team is doing a lot of work and who isn’t. It also adds an element of multiplayer that would improve gamification. We want the extension to provide a sense of community with team members and this allows for it.
+    We wanted our users to have a sense of who on the team is doing a lot of work and who isn’t. It also adds an element of 
+    multiplayer that would improve gamification. We want the extension to provide a sense of community with team members and 
+    this allows for it.
 
 Argument for full leaderboard:
 
@@ -113,7 +129,8 @@ Argument against full leaderboard:
 
 Thoughts that lead us to thinking about developing a Top 3 List:
 
-    A top 3 list praises the team's top performers without making others feel like they aren’t as good and most people only care about who’s on top anyways.
+    A top 3 list praises the team's top performers without making others feel like they aren’t as good and most people only care
+    about who’s on top anyways.
 
 Argument for Top 3 List:
 
@@ -128,7 +145,8 @@ Argument against Top 3 List:
 Final decision:
 
     Top 3 List
-    We chose a Top 3 List because it encourages people to try to do their best so they can be singled out in front of the team in a positive light. A leaderboard system would be less encouraging and cause low ranked team members to feel bad.
+    We chose a Top 3 List because it encourages people to try to do their best so they can be singled out in front of the team in 
+    a positive light. A leaderboard system would be less encouraging and cause low ranked team members to feel bad.
 
 
 ## 5.  Testing Framework: Jest vs Mocha
@@ -167,8 +185,14 @@ Argument against Mocha:
 Final decision:
 
     Jest
-    We chose Jest because of a certain mix of wanting to try new technologies (Jest, Puppeteer) and the novelty of the simplicity of its tests.  While testing with both frameworks we were surprised by how certain things in Jest just works.  Despite needing to also use puppeteer with it, it ended up still being intuitive.
+    We chose Jest because of a certain mix of wanting to try new technologies (Jest, Puppeteer) and the novelty of the simplicity 
+    of its tests.  While testing with both frameworks we were surprised by how certain things in Jest just works. Despite needing 
+    to also use puppeteer with it, it ended up still being intuitive.
 
 ## 6. Why Puppeteer?
 
-Puppeteer provides a simple framework that automates end to end testing for our extension.  We were able to use it to automatically install our extension into a fresh Chromium browser, log in, and interact with various features through the same UI that the end user would be exposed to.  This is important to test so that we can be sure that we can be sure that the end user experience functions properly.  Using puppeteer to do this, however, allows us to integrate these tests into our testing pipeline rather than just manually testing features every time. 
+    Puppeteer provides a simple framework that automates end to end testing for our extension.  We were able to use it to
+    automatically install our extension into a fresh Chromium browser, log in, and interact with various features through the 
+    same UI that the end user would be exposed to.  This is important to test so that we can be sure that we can be sure that 
+    the end user experience functions properly.  Using puppeteer to do this, however, allows us to integrate these tests into 
+    our testing pipeline rather than just manually testing features every time. 
