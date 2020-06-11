@@ -8,13 +8,13 @@ import {
   getAllMembers,
   getMemberName,
   getMemberId,
+  getMember,
   getMemberProfile,
   getProgress,
   getIterationTimeline,
   getCurrentIterationId,
   getCurrentIterationIndex,
-  completeStory,
-  getMember
+  completeStory
 } from './popup-backend'
 import {
   ERR_MSG_INTERNET,
